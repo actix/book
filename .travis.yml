@@ -24,7 +24,7 @@ before_script:
 script:
   - |
        cargo clean
-       RUST_BACKTRACE=1 cargo test -- --nocapture
+       #RUST_BACKTRACE=1 cargo test -- --nocapture
 
 # Upload docs
 after_success:
