@@ -29,4 +29,4 @@ cd examples/basics
 cargo run
 ```
 
-Check [examples/](https://github.com/actix/examples/tree/master/examples) directory for more examples.
+Check [examples](https://github.com/actix/examples) repository for more examples.
