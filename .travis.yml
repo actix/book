@@ -3,7 +3,7 @@ sudo: false
 dist: trusty
 
 cache:
-  cargo: true
+  cargo: false
   apt: true
 
 matrix:
@@ -14,19 +14,22 @@ matrix:
   allow_failures:
     - rust: nightly
 
-# Add clippy
+env:
+  global:
+    - RUSTFLAGS="-C link-dead-code"
+
 before_script:
   - export PATH=$PATH:~/.cargo/bin
 
 script:
   - |
        cargo clean
-       cargo test -- --nocapture
+       RUST_BACKTRACE=1 cargo test -- --nocapture
 
 # Upload docs
 after_success:
   - |
-    if [[ "$TRAVIS_OS_NAME" == "linux" && "$TRAVIS_PULL_REQUEST" = "false" && "$TRAVIS_BRANCH" == "master" && "$TRAVIS_RUST_VERSION" == "stable" ]]; then
+    if [[ "$TRAVIS_OS_NAME" == "linux" && "$TRAVIS_PULL_REQUEST" = "false" && "$TRAVIS_BRANCH" == "master" && "$TRAVIS_RUST_VERSION" == "beta" ]]; then
       curl -sL https://github.com/rust-lang-nursery/mdBook/releases/download/v0.1.5/mdbook-v0.1.5-x86_64-unknown-linux-gnu.tar.gz | tar xvz -C $HOME/.cargo/bin &&
       cd actix && mdbook build -d ../target/doc/actix && cd .. &&
       cd actix-web && mdbook build -d ../target/doc/actix-web && cd .. &&

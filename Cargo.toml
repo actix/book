@@ -17,11 +17,13 @@ build = "build.rs"
 
 [lib]
 src="src/lib.rs"
+crate-type = ["dylib"]
 
 [dependencies]
 actix = "^0.5.5"
 actix-web = "^0.5.1"
 
+flate2 = "1.0"
 serde = "1.0"
 serde_json = "1.0"
 serde_urlencoded = "0.5"
