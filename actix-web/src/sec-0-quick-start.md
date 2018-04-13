@@ -19,14 +19,14 @@ Actix web framework requires rust version 1.21 and up.
 ## Running Examples
 
 The fastest way to start experimenting with actix web is to clone the
-[repository](https://github.com/actix/actix-web) and run the included examples.
+[repository](https://github.com/actix/examples) and run the included examples.
 
 The following set of commands runs the `basics` example:
 
 ```bash
-git clone https://github.com/actix/actix-web
-cd actix-web/examples/basics
+git clone https://github.com/actix/examples
+cd examples/basics
 cargo run
 ```
 
-Check [examples/](https://github.com/actix/actix-web/tree/master/examples) directory for more examples.
+Check [examples/](https://github.com/actix/examples/tree/master/examples) directory for more examples.

@@ -96,5 +96,5 @@ fn main() {
 `actix::System` initializes actor system, `HttpServer` is an actor and must run within a
 properly configured actix system.
 
-> For more information, check out the [actix documentation](https://actix.github.io/actix/actix/)
-> and [actix guide](https://actix.github.io/actix/guide/).
+> For more information, check out the [actix documentation](https://actix.rs/actix/actix/)
+> and [actix guide](https://actix.rs/book/actix/).

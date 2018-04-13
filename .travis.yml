@@ -14,13 +14,6 @@ matrix:
   allow_failures:
     - rust: nightly
 
-env:
-  global:
-    - RUSTFLAGS="-C link-dead-code"
-
-before_script:
-  - export PATH=$PATH:~/.cargo/bin
-
 script:
   - |
        #cargo clean
@@ -28,6 +21,7 @@ script:
 
 # Upload docs
 after_success:
+  - export PATH=$PATH:~/.cargo/bin
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" && "$TRAVIS_PULL_REQUEST" = "false" && "$TRAVIS_BRANCH" == "master" && "$TRAVIS_RUST_VERSION" == "beta" ]]; then
       curl -sL https://github.com/rust-lang-nursery/mdBook/releases/download/v0.1.5/mdbook-v0.1.5-x86_64-unknown-linux-gnu.tar.gz | tar xvz -C $HOME/.cargo/bin &&
