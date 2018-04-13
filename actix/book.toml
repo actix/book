@@ -1,6 +1,6 @@
 [book]
-title = "Actix book"
-description = "Actix web framework book"
+title = "Actix"
+description = "Actix - actor framework"
 author = "Actix Project and Contributors"
 
 [output.html]
