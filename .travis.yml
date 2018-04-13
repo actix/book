@@ -14,13 +14,14 @@ matrix:
   allow_failures:
     - rust: nightly
 
-script:
-  - |
-       #cargo clean
-       RUST_BACKTRACE=1 cargo test -- --nocapture
+# script:
+#  - |
+#       #cargo clean
+#       RUST_BACKTRACE=1 cargo test -- --nocapture
 
 # Upload docs
-after_success:
+# after_success:
+script:
   - export PATH=$PATH:~/.cargo/bin
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" && "$TRAVIS_PULL_REQUEST" = "false" && "$TRAVIS_BRANCH" == "master" && "$TRAVIS_RUST_VERSION" == "beta" ]]; then
