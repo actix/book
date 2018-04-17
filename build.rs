@@ -13,6 +13,7 @@ fn main() {
           "actix-web/src/sec-2-application.md",
           "actix-web/src/sec-3-server.md",
           "actix-web/src/sec-4-handler.md",
+          "actix-web/src/sec-4-1-extractors.md",
           "actix-web/src/sec-5-errors.md",
           "actix-web/src/sec-6-url-dispatch.md",
           "actix-web/src/sec-7-request-response.md",
