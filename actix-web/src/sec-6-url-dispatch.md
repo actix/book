@@ -6,7 +6,8 @@ a particular handler object is invoked.
 
 > A handler is a specific object that implements the
 > `Handler` trait, defined in your application, that receives the request and returns
-> a response object. More information is available in the [handler section](../qs_4.html).
+> a response object. More information is available in the
+> [handler section](sec-4-handler.html).
 
 ## Resource configuration
 
@@ -17,7 +18,7 @@ A resource also has a pattern, meant to match against the *PATH* portion of a *U
 It does not match against the *QUERY* portion (the portion following the scheme and
 port, e.g., */foo/bar* in the *URL* *http://localhost:8080/foo/bar?q=value*).
 
-The [App::route](../actix_web/struct.App.html#method.route) method provides
+The [*App::route()*](../../actix-web/actix_web/struct.App.html#method.route) method provides
 simple way of registering routes. This method adds a single route to application
 routing table. This method accepts a *path pattern*,
 *http method* and a handler function. `route()` method could be called multiple times
@@ -41,7 +42,7 @@ fn main() {
 
 While *App::route()* provides simple way of registering routes, to access
 complete resource configuration, different method has to be used.
-The [App::resource](../actix_web/struct.App.html#method.resource) method
+The [*App::resource()*](../../actix-web/actix_web/struct.App.html#method.resource) method
 adds a single resource to application routing table. This method accepts a *path pattern*
 and a resource configuration function.
 
@@ -107,25 +108,29 @@ and path equals to `/path`, Resource calls handle of the first matching route.
 
 If a resource can not match any route, a "NOT FOUND" response is returned.
 
-[*Resource::route()*](../actix_web/struct.Resource.html#method.route) returns a
-[*Route*](../actix_web/struct.Route.html) object. Route can be configured with a
+[*Resource::route()*](../../actix-web/actix_web/struct.Resource.html#method.route) returns a
+[*Route*](../../actix-web/actix_web/struct.Route.html) object. Route can be configured with a
 builder-like pattern. Following configuration methods are available:
 
-* [*Route::filter()*](../actix_web/struct.Route.html#method.filter) registers a new predicate.
-  Any number of predicates can be registered for each route.
+* [*Route::filter()*](../../actix-web/actix_web/struct.Route.html#method.filter)
+  registers a new predicate. Any number of predicates can be registered for each route.
 
-* [*Route::f()*](../actix_web/struct.Route.html#method.f) registers handler function
-  for this route. Only one handler can be registered. Usually handler registration
-  is the last config operation. Handler function can be a function or closure and has the type
+* [*Route::f()*](../../actix-web/actix_web/struct.Route.html#method.f) registers
+  handler function for this route. Only one handler can be registered.
+  Usually handler registration
+  is the last config operation. Handler function can be a function or closure
+  and has the type
   `Fn(HttpRequest<S>) -> R + 'static`
 
-* [*Route::h()*](../actix_web/struct.Route.html#method.h) registers a handler object
-  that implements the `Handler` trait. This is similar to `f()` method - only one handler can
+* [*Route::h()*](../../actix-web/actix_web/struct.Route.html#method.h) registers
+  a handler object that implements the `Handler` trait. This is
+  similar to `f()` method - only one handler can
   be registered. Handler registration is the last config operation.
 
-* [*Route::a()*](../actix_web/struct.Route.html#method.a) registers an async handler
-  function for this route. Only one handler can be registered. Handler registration
-  is the last config operation. Handler function can be a function or closure and has the type
+* [*Route::a()*](../../actix-web/actix_web/struct.Route.html#method.a) registers
+  an async handler function for this route. Only one handler can be registered.
+  Handler registration is the last config operation. Handler function can
+  be a function or closure and has the type
   `Fn(HttpRequest<S>) -> Future<Item = HttpResponse, Error = Error> + 'static`
 
 ## Route matching
@@ -346,12 +351,12 @@ fn main() {
 ```
 
 List of `FromParam` implementations can be found in
-[api docs](../actix_web/dev/trait.FromParam.html#foreign-impls)
+[api docs](../../actix-web/actix_web/dev/trait.FromParam.html#foreign-impls)
 
 ## Path information extractor
 
 Actix provides functionality for type safe path information extraction.
-[Path](../actix_web/struct.Path.html) extracts information, destination type
+[*Path*](../../actix-web/actix_web/struct.Path.html) extracts information, destination type
 could be defined in several different forms. Simplest approach is to use
 `tuple` type. Each element in tuple must correpond to one element from
 path pattern. i.e. you can match path pattern `/{id}/{username}/` against
@@ -400,13 +405,13 @@ fn main() {
 }
 ```
 
-[Query](../actix_web/struct.Query.html) provides similar functionality for
-request query parameters.
+[*Query*](../../actix-web/actix_web/struct.Query.html) provides similar
+functionality for request query parameters.
 
 
 ## Generating resource URLs
 
-Use the [HttpRequest.url_for()](../actix_web/struct.HttpRequest.html#method.url_for)
+Use the [*HttpRequest.url_for()*](../../actix-web/actix_web/struct.HttpRequest.html#method.url_for)
 method to generate URLs based on resource patterns. For example, if you've configured a
 resource with the name "foo" and the pattern "{a}/{b}/{c}", you might do this:
 
@@ -434,7 +439,7 @@ fn main() {
 
 This would return something like the string *http://example.com/test/1/2/3* (at least if
 the current protocol and hostname implied http://example.com).
-`url_for()` method returns [*Url object*](https://docs.rs/url/1.6.0/url/struct.Url.html) so you
+`url_for()` method returns [*Url object*](https://docs.rs/url/1.7.0/url/struct.Url.html) so you
 can modify this url (add query parameters, anchor, etc).
 `url_for()` could be called only for *named* resources otherwise error get returned.
 
@@ -560,8 +565,8 @@ it will generate a URL with that same path.
 You can think of a predicate as a simple function that accepts a *request* object reference
 and returns *true* or *false*. Formally, a predicate is any object that implements the
 [`Predicate`](../actix_web/pred/trait.Predicate.html) trait. Actix provides
-several predicates, you can check [functions section](../actix_web/pred/index.html#functions)
-of api docs.
+several predicates, you can check
+[functions section](../../actix-web/actix_web/pred/index.html#functions) of api docs.
 
 Here is a simple predicate that check that a request contains a specific *header*:
 
@@ -592,7 +597,7 @@ In this example, *index* handler will be called only if request contains *CONTEN
 
 Predicates have access to the application's state via `HttpRequest::state()`.
 Also predicates can store extra information in
-[request extensions](../actix_web/struct.HttpRequest.html#method.extensions).
+[request extensions](../../actix-web/actix_web/struct.HttpRequest.html#method.extensions).
 
 ### Modifying predicate values
 

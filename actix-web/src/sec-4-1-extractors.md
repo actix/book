@@ -228,16 +228,16 @@ fn index(form: Form<FormData>) -> Result<String> {
 
 Actix also provides several other extractors:
 
-* [*State*](../../actix-web/actix-web/actix_web/struct.State.html) - If you need
+* [*State*](../../actix-web/actix_web/struct.State.html) - If you need
   access to an application state. This is similar to a `HttpRequest::state()`.
   
 * *HttpRequest* - *HttpRequest* itself is an extractor which returns self.
   In case if you need access to the request.
   
 * *String* - You can convert request's payload to a *String*.
-  [*Example*](../../actix-web/actix-web/actix_web/trait.FromRequest.html#example-1)
+  [*Example*](../../actix-web/actix_web/trait.FromRequest.html#example-1)
   is available in doc strings.
 
 * *bytes::Bytes* - You can convert request's payload to a *Bytes*.
-  [*Example*](../../actix-web/actix-web/actix_web/trait.FromRequest.html#example)
+  [*Example*](../../actix-web/actix_web/trait.FromRequest.html#example)
   is available in doc strings.

@@ -10,7 +10,7 @@ Actix web automatically upgrades connections to *HTTP/2.0* if possible.
 > Currently, only `rust-openssl` has support.
 
 `alpn` negotiation requires enabling the feature. When enabled, `HttpServer` provides the
-[serve_tls](../actix_web/struct.HttpServer.html#method.serve_tls) method.
+[serve_tls](../../actix-web/actix_web/server/struct.HttpServer.html#method.serve_tls) method.
 
 ```toml
 [dependencies]
@@ -42,5 +42,5 @@ Upgrades to *HTTP/2.0* schema described in
 Starting *HTTP/2* with prior knowledge is supported for both clear text connection
 and tls connection. [rfc section 3.4](https://http2.github.io/http2-spec/#rfc.section.3.4)
 
-> Check out [examples/tls](https://github.com/actix/actix-web/tree/master/examples/tls)
+> Check out [examples/tls](https://github.com/actix/examples/tree/master/tls)
 > for a concrete example.

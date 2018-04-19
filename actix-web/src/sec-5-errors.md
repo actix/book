@@ -1,8 +1,8 @@
 # Errors
 
-Actix uses the [`Error` type](../actix_web/error/struct.Error.html)
-and [`ResponseError` trait](../actix_web/error/trait.ResponseError.html)
-for handling handler's errors.
+Actix uses the [*Error*](../../actix-web/actix_web/error/struct.Error.html) type
+and [*ResponseError*](../../actix-web/actix_web/error/trait.ResponseError.html)
+trait for handling handler's errors.
 
 Any error that implements the `ResponseError` trait can be returned as an error value.
 `Handler` can return an `Result` object. By default, actix provides a

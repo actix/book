@@ -6,7 +6,8 @@ integration tests.
 ## Unit tests
 
 For unit testing, actix provides a request builder type and a simple handler runner.
-[*TestRequest*](../actix_web/test/struct.TestRequest.html) implements a builder-like pattern.
+[*TestRequest*](../../actix-web/actix_web/test/struct.TestRequest.html)
+implements a builder-like pattern.
 You can generate a `HttpRequest` instance with `finish()`, or you can
 run your handler with `run()` or `run_async()`.
 
@@ -39,7 +40,7 @@ fn main() {
 ## Integration tests
 
 There are several methods for testing your application. Actix provides
-[*TestServer*](../actix_web/test/struct.TestServer.html), which can be used
+[*TestServer*](../../actix-web/actix_web/test/struct.TestServer.html), which can be used
 to run the application with specific handlers in a real http server.
 
 `TestServer::get()`, `TestServer::post()`, and `TestServer::client()`
@@ -49,7 +50,8 @@ A simple form `TestServer` can be configured to use a handler.
 `TestServer::new` method accepts a configuration function, and the only argument 
 for this function is a *test application* instance.
 
-> Check the [api documentation](../actix_web/test/struct.TestApp.html) for more information.
+> Check the [api documentation](../../actix-web/actix_web/test/struct.TestApp.html)
+> for more information.
 
 ```rust
 # extern crate actix_web;

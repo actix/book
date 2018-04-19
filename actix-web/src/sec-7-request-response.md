@@ -6,7 +6,7 @@ A builder-like pattern is used to construct an instance of `HttpResponse`.
 `HttpResponse` provides several methods that return a `HttpResponseBuilder` instance,
 which implements various convenience methods for building responses.
 
-> Check the [documentation](../actix_web/dev/struct.HttpResponseBuilder.html)
+> Check the [documentation](../../actix-web/actix_web/dev/struct.HttpResponseBuilder.html)
 > for type descriptions.
 
 The methods `.body`, `.finish`, and `.json` finalize response creation and
@@ -127,7 +127,7 @@ fn main() {
 ```
 
 Another option is to use *HttpResponse::json()*. This method returns a
-[*JsonBody*](../actix_web/dev/struct.JsonBody.html) object which resolves into
+[*JsonBody*](../../actix-web/actix_web/dev/struct.JsonBody.html) object which resolves into
 the deserialized value.
 
 ```rust
@@ -190,7 +190,7 @@ fn index(req: HttpRequest) -> Box<Future<Item=HttpResponse, Error=Error>> {
 ```
 
 > A complete example for both options is available in
-> [examples directory](https://github.com/actix/actix-web/tree/master/examples/json/).
+> [examples directory](https://github.com/actix/examples/tree/master/json/).
 
 ## JSON Response
 
@@ -252,10 +252,11 @@ fn index(req: HttpRequest) -> HttpResponse {
 ## Multipart body
 
 Actix provides multipart stream support.
-[*Multipart*](../actix_web/multipart/struct.Multipart.html) is implemented as
+[*Multipart*](../../actix-web/actix_web/multipart/struct.Multipart.html) is implemented as
 a stream of multipart items. Each item can be a
-[*Field*](../actix_web/multipart/struct.Field.html) or a nested *Multipart* stream.
-`HttpResponse::multipart()` returns the *Multipart* stream for the current request.
+[*Field*](../../actix-webactix_web/multipart/struct.Field.html) or a nested
+*Multipart* stream.`HttpResponse::multipart()` returns the *Multipart* stream
+for the current request.
 
 The following demonstrates multipart stream handling for a simple form:
 
@@ -288,13 +289,13 @@ fn index(req: HttpRequest) -> Box<Future<...>> {
 ```
 
 > A full example is available in the
-> [examples directory](https://github.com/actix/actix-web/tree/master/examples/multipart/).
+> [examples directory](https://github.com/actix/examples/tree/master/multipart/).
 
 ## Urlencoded body
 
 Actix provides support for *application/x-www-form-urlencoded* encoded bodies.
 `HttpResponse::urlencoded()` returns a
-[*UrlEncoded*](../actix_web/dev/struct.UrlEncoded.html) future, which resolves
+[*UrlEncoded*](../../actix-web/actix_web/dev/struct.UrlEncoded.html) future, which resolves
 to the deserialized instance. The type of the instance must implement the
 `Deserialize` trait from *serde*.
 

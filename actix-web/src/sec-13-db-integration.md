@@ -122,7 +122,7 @@ fn index(req: HttpRequest<State>) -> Box<Future<Item=HttpResponse, Error=Error>>
 ```
 
 > A full example is available in the
-> [examples directory](https://github.com/actix/actix-web/tree/master/examples/diesel/).
+> [examples directory](https://github.com/actix/examples/tree/master/diesel/).
 
 > More information on sync actors can be found in the
 > [actix documentation](https://docs.rs/actix/0.5.0/actix/sync/index.html).
