@@ -133,7 +133,7 @@ fn main() {
 > [tls alpn](https://tools.ietf.org/html/rfc7301).
 > At the moment, only `openssl` has `alpn` support.
 > For a full example, check out
-> [examples/tls](https://github.com/actix/actix-examples/tree/master/tls).
+> [examples/tls](https://github.com/actix/examples/tree/master/tls).
 
 ## Keep-Alive
 

@@ -101,7 +101,7 @@ fn main() {
 ```
 
 Multiple extractors could be comdined together, i.e. to use two extractors you
-need to use [*Route::with2()*](../../actix-web/actix_web/dev/struct.Route.html#method.with)
+need to use [*Route::with2()*](../../actix-web/actix_web/dev/struct.Route.html#method.with2)
 method.
 
 For example we can use path extractor and query extractor at the same time.
@@ -131,8 +131,9 @@ fn main() {
 
 ## Json
 
-To extract typed information from request's body, the type `T` must
-implement the `Deserialize` trait from *serde*.
+[*Json*](../../actix-web/actix_web/struct.Json.html) allows to deserialize
+request body to a struct. To extract typed information from request's body,
+the type `T` must implement the `Deserialize` trait from *serde*.
 
 ### Example
 
