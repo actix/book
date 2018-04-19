@@ -254,7 +254,7 @@ fn index(req: HttpRequest) -> HttpResponse {
 Actix provides multipart stream support.
 [*Multipart*](../../actix-web/actix_web/multipart/struct.Multipart.html) is implemented as
 a stream of multipart items. Each item can be a
-[*Field*](../../actix-webactix_web/multipart/struct.Field.html) or a nested
+[*Field*](../../actix-web/actix_web/multipart/struct.Field.html) or a nested
 *Multipart* stream.`HttpResponse::multipart()` returns the *Multipart* stream
 for the current request.
 
