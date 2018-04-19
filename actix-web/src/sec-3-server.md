@@ -1,6 +1,6 @@
 # Server
 
-The [**HttpServer**](../actix_web/server/struct.HttpServer.html) type is responsible for
+The [**HttpServer**](../../actix-web/actix_web/server/struct.HttpServer.html) type is responsible for
 serving http requests.
 
 `HttpServer` accepts an application factory as a parameter, and the
@@ -108,7 +108,7 @@ integration and `alpn` is for `openssl`.
 
 ```toml
 [dependencies]
-actix-web = { git = "https://github.com/actix/actix-web", features=["alpn"] }
+actix-web = { version="0.5", features=["alpn"] }
 ```
 
 ```rust,ignore
@@ -133,7 +133,7 @@ fn main() {
 > [tls alpn](https://tools.ietf.org/html/rfc7301).
 > At the moment, only `openssl` has `alpn` support.
 > For a full example, check out
-> [examples/tls](https://github.com/actix/actix-web/tree/master/examples/tls).
+> [examples/tls](https://github.com/actix/actix-examples/tree/master/tls).
 
 ## Keep-Alive
 

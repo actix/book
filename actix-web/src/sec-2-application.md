@@ -36,7 +36,7 @@ In this example, an application with the `/app` prefix and a `index.html` resour
 are created. This resource is available through the `/app/index.html` url.
 
 > For more information, check the
-> [URL Dispatch](./qs_5.html#using-a-application-prefix-to-compose-applications) section.
+> [URL Dispatch](./sec-6-url-dispatch.html#using-a-application-prefix-to-compose-applications) section.
 
 Multiple applications can be served with one server:
 
