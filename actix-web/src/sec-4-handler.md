@@ -1,11 +1,11 @@
 # Handler
 
 A request handler can be any object that implements
-[**Handler**](../../actix-web/actix_web/dev/trait.Handler.html) trait.
+[*Handler*](../../actix-web/actix_web/dev/trait.Handler.html) trait.
 
 Request handling happens in two stages. First the handler object is called,
 returning any object that implements the
-[**Responder**](../../actix-web/actix_web/trait.Responder.html#foreign-impls) trait.
+[*Responder*](../../actix-web/actix_web/trait.Responder.html#foreign-impls) trait.
 Then, `respond_to()` is called on the returned object, converting itself to a `Reply` or `Error`.
 
 By default actix provides `Responder` implementations for some standard types,
@@ -175,7 +175,7 @@ fn main() {
 ## Async handlers
 
 There are two different types of async handlers. Response objects can be generated asynchronously
-or more precisely, any type that implements the [**Responder**](../../actix-web/actix_web/trait.Responder.html) trait.
+or more precisely, any type that implements the [*Responder*](../../actix-web/actix_web/trait.Responder.html) trait.
 
 In this case, the handler must return a `Future` object that resolves to the *Responder* type, i.e:
 
@@ -271,7 +271,7 @@ fn index(req: HttpRequest) -> Result<Box<Future<Item=HttpResponse, Error=Error>>
 Sometimes, you need to return different types of responses. For example,
 you can error check and return errors, return async responses, or any result that requires two different types.
 
-For this case, the [**Either**](../../actix-web/actix_web/enum.Either.html) type can be used.
+For this case, the [*Either*](../../actix-web/actix_web/enum.Either.html) type can be used.
 `Either` allows combining two different responder types into a single type.
 
 ```rust

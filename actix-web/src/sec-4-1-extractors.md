@@ -5,8 +5,9 @@ actix provides several different extractor implementations.
 
 ## Path
 
-[*Path*](../actix_web/struct.Path.html) provides information that can be extracted
-from the Request's path. You can deserialize any variable segment from the path.
+[*Path*](../../actix-web/actix_web/struct.Path.html) provides information that can
+be extracted from the Request's path. You can deserialize any variable
+segment from the path.
 
 For instance, for resource that registered for `/users/{userid}/{friend}` path
 two segments could be deserialized, `userid` and `friend`. This segments 
@@ -36,7 +37,7 @@ fn main() {
 ```
 
 Remember! handler function that uses extractors has to be registered with 
-[*Route::with()*](actix_web/dev/struct.Route.html#method.with) method.
+[*Route::with()*](../../actix-web/actix_web/dev/struct.Route.html#method.with) method.
 
 It is also possible to extract path information to a specific type that
 implements `Deserialize` trait from *serde*. Here is equivalent example that uses *serde*
@@ -69,7 +70,8 @@ fn main() {
 
 ## Query
 
-Same can be done with the request's query. [*Query*](../actix_web/struct.Query.html)
+Same can be done with the request's query.
+[*Query*](../../actix-web/actix_web/struct.Query.html)
 type provides extraction functionality. Underneath it uses *serde_urlencoded* crate.
 
 ### Example
@@ -99,7 +101,8 @@ fn main() {
 ```
 
 Multiple extractors could be comdined together, i.e. to use two extractors you
-need to use [*Route::with2()*](actix_web/dev/struct.Route.html#method.with) method.
+need to use [*Route::with2()*](../../actix-web/actix_web/dev/struct.Route.html#method.with)
+method.
 
 For example we can use path extractor and query extractor at the same time.
 
@@ -156,7 +159,7 @@ fn main() {
 ```
 
 Some extractors provide a way to configure extraction process. Json extracor
-[*JsonConfig*](../actix_web/dev/struct.JsonConfig.html) type for configuration.
+[*JsonConfig*](../../actix-web/actix_web/dev/struct.JsonConfig.html) type for configuration.
 When you register handler `Route::with()` returns configuration instance. In case of
 *Json* extractor it returns *JsonConfig*. You can configure max size of the json
 payload and custom error handler function.
@@ -198,7 +201,7 @@ At the moment only url-encoded forms are supported. Url encoded body
 could be extracted to a specific type. This type must implement
 the `Deserialize` trait from *serde* crate.
 
-[**FormConfig**](../actix_web/dev/struct.FormConfig.html) allows
+[*FormConfig*](../../actix-web/actix_web/dev/struct.FormConfig.html) allows
 to configure extraction process.
 
 ```rust
@@ -224,16 +227,16 @@ fn index(form: Form<FormData>) -> Result<String> {
 
 Actix also provides several other extractors:
 
-* [*State*](../actix-web/actix_web/struct.State.html) - If you need
+* [*State*](../../actix-web/actix-web/actix_web/struct.State.html) - If you need
   access to an application state. This is similar to a `HttpRequest::state()`.
   
 * *HttpRequest* - *HttpRequest* itself is an extractor which returns self.
   In case if you need access to the request.
   
 * *String* - You can convert request's payload to a *String*.
-  [*Example*](../actix-web/actix_web/trait.FromRequest.html#example-1) is available
-  in doc strings.
+  [*Example*](../../actix-web/actix-web/actix_web/trait.FromRequest.html#example-1)
+  is available in doc strings.
 
 * *bytes::Bytes* - You can convert request's payload to a *Bytes*.
-  [*Example*](../actix-web/actix_web/trait.FromRequest.html#example) is available
-  in doc strings.
+  [*Example*](../../actix-web/actix-web/actix_web/trait.FromRequest.html#example)
+  is available in doc strings.
