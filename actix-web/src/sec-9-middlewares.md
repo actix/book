@@ -15,7 +15,7 @@ Typically, middleware is involved in the following actions:
 
 Middleware is registered for each application and executed in same order as
 registration. In general, a *middleware* is a type that implements the
-[*Middleware trait*](../../actix-web/actix_web/middlewares/trait.Middleware.html).
+[*Middleware trait*](../../actix-web/actix_web/middleware/trait.Middleware.html).
 Each method in this trait has a default implementation. Each method can return
 a result immediately or a *future* object.
 
