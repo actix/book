@@ -156,13 +156,13 @@ fn main() {
 ## User sessions
 
 Actix provides a general solution for session management. The
-[**SessionStorage**](../actix_web/middleware/struct.SessionStorage.html) middleware can be
+[**SessionStorage**](../actix_web/middleware/session/struct.SessionStorage.html) middleware can be
 used with different backend types to store session data in different backends.
 
 > By default, only cookie session backend is implemented. Other backend implementations
 > can be added.
 
-[**CookieSessionBackend**](../actix_web/middleware/struct.CookieSessionBackend.html)
+[**CookieSessionBackend**](../actix_web/middleware/session/struct.CookieSessionBackend.html)
 uses cookies as session storage. `CookieSessionBackend` creates sessions which
 are limited to storing fewer than 4000 bytes of data, as the payload must fit into a
 single cookie. An internal server error is generated if a session contains more than 4000 bytes.
@@ -173,21 +173,19 @@ A *signed* cookie may be viewed but not modified by the client. A *private* cook
 
 The constructors take a key as an argument. This is the private key for cookie session - when this value is changed, all session data is lost.
 
-
-
 In general, you create a
 `SessionStorage` middleware and initialize it with specific backend implementation,
 such as a `CookieSessionBackend`. To access session data,
-[*HttpRequest::session()*](../actix_web/middleware/trait.RequestSession.html#tymethod.session)
+[*HttpRequest::session()*](../actix_web/middleware/session/trait.RequestSession.html#tymethod.session)
  must be used. This method returns a
-[*Session*](../actix_web/middleware/struct.Session.html) object, which allows us to get or set
+[*Session*](../actix_web/middleware/session/struct.Session.html) object, which allows us to get or set
 session data.
 
 ```rust
 # extern crate actix;
 # extern crate actix_web;
 use actix_web::{server, App, HttpRequest, Result};
-use actix_web::middleware::{RequestSession, SessionStorage, CookieSessionBackend};
+use actix_web::middleware::session::{RequestSession, SessionStorage, CookieSessionBackend};
 
 fn index(mut req: HttpRequest) -> Result<&'static str> {
     // access session data
@@ -202,17 +200,17 @@ fn index(mut req: HttpRequest) -> Result<&'static str> {
 }
 
 fn main() {
-#   let sys = actix::System::new("basic-example");
+    let sys = actix::System::new("basic-example");
     server::new(
-        || App::new()
-            .middleware(SessionStorage::new(          // <- create session middleware
-                CookieSessionBackend::signed(&[0; 32]) // <- create signed cookie session backend
-                    .secure(false)
+        || App::new().middleware(
+           SessionStorage::new(          // <- create session middleware
+             CookieSessionBackend::signed(&[0; 32]) // <- create signed cookie session backend
+                .secure(false)
             )))
         .bind("127.0.0.1:59880").unwrap()
         .start();
 #     actix::Arbiter::system().do_send(actix::msgs::SystemExit(0));
-#     let _ = sys.run();
+    let _ = sys.run();
 }
 ```
 
