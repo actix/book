@@ -108,26 +108,26 @@ and path equals to `/path`, Resource calls handle of the first matching route.
 
 If a resource can not match any route, a "NOT FOUND" response is returned.
 
-[*Resource::route()*](../../actix-web/actix_web/struct.Resource.html#method.route) returns a
-[*Route*](../../actix-web/actix_web/struct.Route.html) object. Route can be configured with a
+[*ResourceHandler::route()*](../../actix-web/actix_web/dev/struct.ResourceHandler.html#method.route) returns a
+[*Route*](../../actix-web/actix_web/dev/struct.Route.html) object. Route can be configured with a
 builder-like pattern. Following configuration methods are available:
 
-* [*Route::filter()*](../../actix-web/actix_web/struct.Route.html#method.filter)
+* [*Route::filter()*](../../actix-web/actix_web/dev/struct.Route.html#method.filter)
   registers a new predicate. Any number of predicates can be registered for each route.
 
-* [*Route::f()*](../../actix-web/actix_web/struct.Route.html#method.f) registers
+* [*Route::f()*](../../actix-web/actix_web/dev/struct.Route.html#method.f) registers
   handler function for this route. Only one handler can be registered.
   Usually handler registration
   is the last config operation. Handler function can be a function or closure
   and has the type
   `Fn(HttpRequest<S>) -> R + 'static`
 
-* [*Route::h()*](../../actix-web/actix_web/struct.Route.html#method.h) registers
+* [*Route::h()*](../../actix-web/actix_web/dev/struct.Route.html#method.h) registers
   a handler object that implements the `Handler` trait. This is
   similar to `f()` method - only one handler can
   be registered. Handler registration is the last config operation.
 
-* [*Route::a()*](../../actix-web/actix_web/struct.Route.html#method.a) registers
+* [*Route::a()*](../../actix-web/actix_web/dev/struct.Route.html#method.a) registers
   an async handler function for this route. Only one handler can be registered.
   Handler registration is the last config operation. Handler function can
   be a function or closure and has the type
