@@ -474,7 +474,7 @@ By normalizing it means:
 * Double slashes are replaced by one.
 
 The handler returns as soon as it finds a path that resolves
-correctly. The order if all enable is 1) merge, 3) both merge and append
+correctly. The order if all enable is 1) merge, 2) both merge and append
 and 3) append. If the path resolves with
 at least one of those conditions, it will redirect to the new path.
 
@@ -573,7 +573,7 @@ Here is a simple predicate that check that a request contains a specific *header
 ```rust
 # extern crate actix_web;
 # use actix_web::*;
-use actix_web::{http, pred::Predicate, App, HttpRequest};
+use actix_web::{http, pred::Predicate, App, HttpMessage, HttpRequest};
 
 struct ContentTypeHeader;
 
