@@ -108,3 +108,37 @@ fn main() {
 > must be constructed multiple times. If you want to share state between different threads, a
 > shared object should be used, e.g. `Arc`. Application state does not need to be `Send` and `Sync`,
 > but the application factory must be `Send` + `Sync`.
+
+## Combining applications with different state
+
+Combining multiple applications with different state is possible as well.
+
+[server::new](https://docs.rs/actix-web/*/actix_web/server/fn.new.html) requires the handler to have a single type. 
+
+This limitation can easily be overcome with the [App::boxed](https://docs.rs/actix-web/*/actix_web/struct.App.html#method.boxed) method, which converts an App into a boxed trait object.
+
+```rust
+# use std::thread;
+# extern crate actix_web;
+use actix_web::{server, App, HttpResponse};
+
+struct State1;
+
+struct State2;
+
+fn main() {
+# thread::spawn(|| {
+    server::new(|| { vec![
+        App::with_state(State1)
+             .prefix("/app1")
+             .resource("/", |r| r.f(|r| HttpResponse::Ok()))
+             .boxed(),
+        App::with_state(State2)
+             .prefix("/app2")
+             .resource("/", |r| r.f(|r| HttpResponse::Ok()))
+             .boxed() ]})
+        .bind("127.0.0.1:8080").unwrap()
+        .run()
+# });
+}
+```
