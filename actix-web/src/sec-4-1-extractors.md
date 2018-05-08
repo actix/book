@@ -1,7 +1,7 @@
 # Type-safe information extraction
 
 Actix provides facility for type-safe request information extraction. By default,
-actix provides several different extractor implementations. 
+actix provides several extractor implementations.
 
 ## Path
 
@@ -100,35 +100,6 @@ fn main() {
 }
 ```
 
-Multiple extractors could be comdined together, i.e. to use two extractors you
-need to use [*Route::with2()*](../../actix-web/actix_web/dev/struct.Route.html#method.with2)
-method.
-
-For example we can use path extractor and query extractor at the same time.
-
-```rust
-# extern crate bytes;
-# extern crate actix_web;
-# extern crate futures;
-#[macro_use] extern crate serde_derive;
-use actix_web::{App, Query, Path, http};
-
-#[derive(Deserialize)]
-struct Info {
-    username: String,
-}
-
-fn index(path: Path<(u32, String)>, info: Query<Info>) -> String {
-    format!("Welcome {}!", info.username)
-}
-
-fn main() {
-    let app = App::new().resource(
-       "/users/{userid}/{friend}",                    // <- define path parameters
-       |r| r.method(http::Method::GET).with2(index)); // <- use `with` extractor
-}
-```
-
 ## Json
 
 [*Json*](../../actix-web/actix_web/struct.Json.html) allows to deserialize
@@ -159,7 +130,7 @@ fn main() {
 }
 ```
 
-Some extractors provide a way to configure extraction process. Json extracor
+Some extractors provide a way to configure extraction process. Json extractor
 [*JsonConfig*](../../actix-web/actix_web/dev/struct.JsonConfig.html) type for configuration.
 When you register handler `Route::with()` returns configuration instance. In case of
 *Json* extractor it returns *JsonConfig*. You can configure max size of the json
@@ -222,6 +193,67 @@ fn index(form: Form<FormData>) -> Result<String> {
      Ok(format!("Welcome {}!", form.username))
 }
 # fn main() {}
+```
+
+## Multiple extractors
+
+There are two way to use multiple extractor for the same handler.
+Actix provides extractor implementation for tuples which elements provide `FromRequest`
+impl.
+
+For example we can use path extractor and query extractor at the same time.
+
+```rust
+# extern crate bytes;
+# extern crate actix_web;
+# extern crate futures;
+#[macro_use] extern crate serde_derive;
+use actix_web::{App, Query, Path, http};
+
+#[derive(Deserialize)]
+struct Info {
+    username: String,
+}
+
+fn index(data: (Path<(u32, String)>, Query<Info>)) -> String {
+    format!("Welcome {}!", data.1.username)
+}
+
+fn main() {
+    let app = App::new().resource(
+       "/users/{userid}/{friend}",                    // <- define path parameters
+       |r| r.method(http::Method::GET).with(index)); // <- use `with` extractor
+}
+```
+
+Alternative option is to use 
+[*Route::with2()*](../../actix-web/actix_web/dev/struct.Route.html#method.with2) or
+[*Route::with3()*](../../actix-web/actix_web/dev/struct.Route.html#method.with3)
+methods for 2 extractors and 3 three extractors. 
+
+Here is above example rewritten to use `.with2()` method.
+
+```rust
+# extern crate bytes;
+# extern crate actix_web;
+# extern crate futures;
+#[macro_use] extern crate serde_derive;
+use actix_web::{App, Query, Path, http};
+
+#[derive(Deserialize)]
+struct Info {
+    username: String,
+}
+
+fn index(path: Path<(u32, String)>, query: Query<Info>) -> String {
+    format!("Welcome {}!", query.username)
+}
+
+fn main() {
+    let app = App::new().resource(
+       "/users/{userid}/{friend}",                    // <- define path parameters
+       |r| r.method(http::Method::GET).with2(index)); // <- use `with` extractor
+}
 ```
 
 ## Other

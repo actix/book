@@ -1,6 +1,6 @@
 [package]
 name = "actix-book"
-version = "0.5.1"
+version = "0.6.0"
 authors = ["Actix Project and Contributors"]
 readme = "README.md"
 keywords = ["http", "web", "framework", "async", "futures"]
@@ -21,7 +21,7 @@ crate-type = ["dylib"]
 
 [dependencies]
 actix = "^0.5.6"
-actix-web = "^0.5.2"
+actix-web = "^0.6"
 
 flate2 = "1.0"
 serde = "1.0"

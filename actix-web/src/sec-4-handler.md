@@ -6,7 +6,7 @@ A request handler can be any object that implements
 Request handling happens in two stages. First the handler object is called,
 returning any object that implements the
 [*Responder*](../../actix-web/actix_web/trait.Responder.html#foreign-impls) trait.
-Then, `respond_to()` is called on the returned object, converting itself to a `Reply` or `Error`.
+Then, `respond_to()` is called on the returned object, converting itself to a `AsyncResult` or `Error`.
 
 By default actix provides `Responder` implementations for some standard types,
 such as `&'static str`, `String`, etc.
@@ -142,7 +142,7 @@ impl Responder for MyObj {
     type Item = HttpResponse;
     type Error = Error;
 
-    fn respond_to(self, req: HttpRequest) -> Result<HttpResponse, Error> {
+    fn respond_to<S>(self, req: &HttpRequest<S>) -> Result<HttpResponse, Error> {
         let body = serde_json::to_string(&self)?;
 
         // Create response and set content type

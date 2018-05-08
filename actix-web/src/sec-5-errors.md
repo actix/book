@@ -126,7 +126,7 @@ struct MyError {
 fn index(req: HttpRequest) -> Result<&'static str> {
     let result: Result<&'static str, MyError> = Err(MyError{name: "test"});
 
-    Ok(result.map_err(|e| error::ErrorBadRequest(e))?)
+    Ok(result.map_err(|e| error::ErrorBadRequest(e.name))?)
 }
 # fn main() {
 #     App::new()

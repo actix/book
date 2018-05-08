@@ -7,11 +7,11 @@ serving http requests.
 application factory must have `Send` + `Sync` boundaries. More about that in the
 *multi-threading* section.
 
-To bind to a specific socket address, `bind()` must be used, and it may be called multiple times.
+To bind to a specific socket address, `bind()` must be used, and it may be
+called multiple times. To bind ssl socket `bind_ssl()` or `bind_tls()` should be used.
 To start the http server, one of the start methods.
 
-- use `start()` for a simple server
-- use `start_tls()` or `start_ssl()` for a ssl server
+- use `start()` for a server
 
 `HttpServer` is an actix actor. It must be initialized within a properly configured actix system:
 
@@ -34,12 +34,12 @@ fn main() {
 }
 ```
 
-> It is possible to start a server in a separate thread with the `spawn()` method. In that
+> It is possible to start a server in a separate thread with the `run()` method. In that
 > case the server spawns a new thread and creates a new actix system in it. To stop
 > this server, send a `StopServer` message.
 
 `HttpServer` is implemented as an actix actor. It is possible to communicate with the server
-via a messaging system. All start methods, e.g. `start()` and `start_ssl()`, return the
+via a messaging system. Start method, e.g. `start()`, returns the
 address of the started http server. It accepts several messages:
 
 - `PauseServer` - Pause accepting incoming connections
@@ -80,7 +80,7 @@ fn main() {
 
 `HttpServer` automatically starts an number of http workers, by default
 this number is equal to number of logical CPUs in the system. This number
-can be overridden with the `HttpServer::threads()` method.
+can be overridden with the `HttpServer::workers()` method.
 
 ```rust
 # extern crate actix_web;
@@ -91,7 +91,7 @@ fn main() {
     HttpServer::new(
         || App::new()
             .resource("/", |r| r.f(|_| HttpResponse::Ok())))
-        .threads(4); // <- Start 4 workers
+        .workers(4); // <- Start 4 workers
 }
 ```
 
@@ -103,12 +103,12 @@ is not shared between threads. To share state, `Arc` could be used.
 
 ## SSL
 
-There are two features for ssl server: `tls` and `alpn`. The `tls` feature is for `native-tls`
-integration and `alpn` is for `openssl`.
+There are two features for ssl server: `tls` and `alpn`. The `tls` feature is
+for `native-tls` integration and `alpn` is for `openssl`.
 
 ```toml
 [dependencies]
-actix-web = { version="0.5", features=["alpn"] }
+actix-web = { version="0.6", features=["alpn"] }
 ```
 
 ```rust,ignore
@@ -124,8 +124,8 @@ fn main() {
     server::new(
         || App::new()
             .resource("/index.html", |r| r.f(index)))
-        .bind("127.0.0.1:8080").unwrap()
-        .serve_ssl(builder).unwrap();
+        .bind_ssl("127.0.0.1:8080", builder).unwrap()
+        .serve();
 }
 ```
 
