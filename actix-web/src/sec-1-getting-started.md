@@ -70,7 +70,7 @@ The full source of src/main.rs is listed below:
 ```rust
 # use std::thread;
 extern crate actix_web;
-use actix_web::{server, App, HttpRequest, HttpResponse};
+use actix_web::{server, App, HttpRequest};
 
 fn index(req: HttpRequest) -> &'static str {
     "Hello world!"
