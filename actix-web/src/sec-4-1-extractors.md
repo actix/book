@@ -197,9 +197,8 @@ fn index(form: Form<FormData>) -> Result<String> {
 
 ## Multiple extractors
 
-There are two way to use multiple extractor for the same handler.
-Actix provides extractor implementation for tuples which elements provide `FromRequest`
-impl.
+Actix provides extractor implementation for tuples (up to 10 elements)
+which elements provide `FromRequest` impl.
 
 For example we can use path extractor and query extractor at the same time.
 
@@ -216,43 +215,14 @@ struct Info {
 }
 
 fn index(data: (Path<(u32, String)>, Query<Info>)) -> String {
-    format!("Welcome {}!", data.1.username)
-}
-
-fn main() {
-    let app = App::new().resource(
-       "/users/{userid}/{friend}",                    // <- define path parameters
-       |r| r.method(http::Method::GET).with(index)); // <- use `with` extractor
-}
-```
-
-Alternative option is to use 
-[*Route::with2()*](../../actix-web/actix_web/dev/struct.Route.html#method.with2) or
-[*Route::with3()*](../../actix-web/actix_web/dev/struct.Route.html#method.with3)
-methods for 2 extractors and 3 three extractors. 
-
-Here is above example rewritten to use `.with2()` method.
-
-```rust
-# extern crate bytes;
-# extern crate actix_web;
-# extern crate futures;
-#[macro_use] extern crate serde_derive;
-use actix_web::{App, Query, Path, http};
-
-#[derive(Deserialize)]
-struct Info {
-    username: String,
-}
-
-fn index(path: Path<(u32, String)>, query: Query<Info>) -> String {
+    let (path, query) = data;
     format!("Welcome {}!", query.username)
 }
 
 fn main() {
     let app = App::new().resource(
        "/users/{userid}/{friend}",                    // <- define path parameters
-       |r| r.method(http::Method::GET).with2(index)); // <- use `with` extractor
+       |r| r.method(http::Method::GET).with(index)); // <- use `with` extractor
 }
 ```
 
