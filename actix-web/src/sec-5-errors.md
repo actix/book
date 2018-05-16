@@ -1,10 +1,11 @@
 # Errors
 
-Actix uses the [*Error*](../../actix-web/actix_web/error/struct.Error.html) type
-and [*ResponseError*](../../actix-web/actix_web/error/trait.ResponseError.html)
-trait for error handling from web handlers.
+Actix uses its own [`actix_web::error::Error`][actixerror] type and
+[`actix_web::error::ResponseError`][responseerror] trait for error handling
+from web handlers.
 
-If a handler returns an `Error` in a `Result` that implements the
+If a handler returns an `Error` (referring to the [general Rust trait
+`std::error::Error`][stderror]) in a `Result` that also implements the
 `ResponseError` trait, actix will render that error as an HTTP response.
 `ResponseError` has a single function called `error_response()` that returns
 `HttpResponse`:
@@ -26,9 +27,9 @@ impl<T: Responder, E: Into<Error>> Responder for Result<T, E>
 `Error` in the code above is actix's error definition, and any errors that
 implement `ResponseError` can be converted to one automatically.
 
-Certain non-actix errors have default `ResponseError` implementations. For
-example, if a handler responds with an `io::Error`, that error is converted
-into an `HttpInternalServerError`:
+Actix-web provides `ResponseError` implementations for some common non-actix
+errors. For example, if a handler responds with an `io::Error`, that error is
+converted into an `HttpInternalServerError`:
 
 ```rust
 # extern crate actix_web;
@@ -64,7 +65,7 @@ struct MyError {
    name: &'static str
 }
 
-/// Use default implementation for `error_response()` method
+// Use default implementation for `error_response()` method
 impl error::ResponseError for MyError {}
 
 fn index(req: HttpRequest) -> Result<&'static str, MyError> {
@@ -157,9 +158,9 @@ full list of available error helpers.
 ## Compatibility with failure
 
 Actix-web provides automatic compatibility with the [failure] library so that
-errors deriving `fail` will be converted automatically an actix error. Keep in
-that those errors will render with the default *500* status code unless you
-also provide your own `error_response()` implementation.
+errors deriving `fail` will be converted automatically to an actix error. Keep
+in that those errors will render with the default *500* status code unless you
+also provide your own `error_response()` implementation for them.
 
 ## Error logging
 
@@ -183,8 +184,8 @@ into two broad groups: those which are intended to be be user-facing, and those
 which are not.
 
 An example of the former is that I might use failure to specify a `UserError`
-enum which encapsulates a `ValidationError` that I'll return whenever a user
-sends bad input:
+enum which encapsulates a `ValidationError` to return whenever a user sends bad
+input:
 
 ```rust
 # extern crate actix_web;
@@ -214,12 +215,12 @@ impl error::ResponseError for UserError {
 ```
 
 This will behave exactly as intended because the error message defined with
-`display` is written with the explicit intent of being user-facing.
+`display` is written with the explicit intent to be read by a user.
 
-However, sending back an error's message isn't desirable for all errors. There
-are many failures that occur in a server environment where we'd probably want
-the specifics to be hidden from the user. For example, if a database goes down
-and client libraries start producing connect timeout errors, or if an HTML
+However, sending back an error's message isn't desirable for all errors --
+there are many failures that occur in a server environment where we'd probably
+want the specifics to be hidden from the user. For example, if a database goes
+down and client libraries start producing connect timeout errors, or if an HTML
 template was improperly formatted and errors when rendered. In these cases, it
 might be preferable to map the errors to a generic error suitable for user
 consumption.
@@ -259,6 +260,13 @@ fn index(_req: HttpRequest) -> Result<&'static str, UserError> {
 # }
 ```
 
-[errorhelpers]: https://actix.rs/actix-web/actix_web/error/index.html#functions
+By dividing errors into those which are user facing and those which are not, we
+can ensure that we don't accidentally expose users to errors thrown by
+application internals which they weren't meant to see.
+
+[actixerror]: ../../actix-web/actix_web/error/struct.Error.html
+[errorhelpers]: ../../actix-web/actix_web/error/index.html#functions
 [failure]: https://github.com/rust-lang-nursery/failure
-[responseerrorimpls]: https://actix.rs/actix-web/actix_web/error/trait.ResponseError.html#foreign-impls
+[responseerror]: ../../actix-web/actix_web/error/trait.ResponseError.html
+[responseerrorimpls]: ../../actix-web/actix_web/error/trait.ResponseError.html#foreign-impls
+[stderror]: https://doc.rust-lang.org/std/error/trait.Error.html
