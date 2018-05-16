@@ -6,6 +6,6 @@
 
 * [Actix Web User Guide](https://actix.rs/book/actix-web/)
 * [Actix Web API Documentation (Development)](https://actix.rs/actix-web/actix_web/)
-* [Actix WEb API Documentation (Releases)](https://docs.rs/actix-web/)
+* [Actix Web API Documentation (Releases)](https://docs.rs/actix-web/)
 
 * [Chat on gitter](https://gitter.im/actix/actix)
