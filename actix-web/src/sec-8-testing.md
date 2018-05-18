@@ -55,11 +55,12 @@ for this function is a *test application* instance.
 
 ```rust
 # extern crate actix_web;
-use actix_web::{HttpRequest, HttpResponse, HttpMessage};
+use actix_web::{HttpRequest, HttpMessage};
 use actix_web::test::TestServer;
+use std::str;
 
-fn index(req: HttpRequest) -> HttpResponse {
-     HttpResponse::Ok().into()
+fn index(req: HttpRequest) -> &'static str {
+     "Hello world!"
 }
 
 fn main() {
@@ -70,6 +71,8 @@ fn main() {
     assert!(response.status().is_success());                  // <- check response
 
     let bytes = srv.execute(response.body()).unwrap();        // <- read response body
+    let body = str::from_utf8(&bytes).unwrap();               // <- convert to a string
+    assert_eq!(body, "Hello world!");
 }
 ```
 
