@@ -12,7 +12,7 @@ The context object is available only during execution. Each actor has a separate
 execution context. The execution context also controls the lifecycle of an actor.
 
 Actors communicate exclusively by exchanging messages. The sending actor can
-wait for the response. Actors are not referenced directly, but by different
+optionally wait for the response. Actors are not referenced directly, but by different
 types of addresses: non thread safe [*Addr<Unsync, A>*](../actix/struct.Addr.html) or
 thread safe [*Addr<Syn, A>*](../actix/struct.Syn.html)
 
@@ -37,7 +37,7 @@ async streams or do any other required configuration.
 ### Running
 
 After an Actor's `started()` method is called, the actor transitions to the `Running` state.
-The Actor can stay in `running` state indefinitely long.
+The Actor can stay in `running` state indefinitely.
 
 ### Stopping
 
