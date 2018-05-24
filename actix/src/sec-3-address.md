@@ -1,7 +1,7 @@
 # Address
 
-Actors communicate exclusively by exchanging messages. The sending actor can
-wait for the response. Actors can not be referenced directly, only by their address.
+Actors communicate exclusively by exchanging messages. The sending actor can optionally
+wait for the response. Actors cannot be referenced directly, only by their address.
 There are two types of addresses, one that references actors that
 run in the same thread and one that references actors in a different thread:
 non thread safe [`Addr<Unsync, A>`](../actix/struct.Addr.html) and thread safe address
@@ -9,7 +9,7 @@ non thread safe [`Addr<Unsync, A>`](../actix/struct.Addr.html) and thread safe a
 `Syn` and `Unsync` are types of reference. `Syn` is thread safe, `Unsync` is non thread
 safe.
 
-There are several ways how to get the address of an actor. The `Actor` trait provides
+There are several ways to get the address of an actor. The `Actor` trait provides
 two helper methods for starting an actor. Both return the address of the started actor.
 
 Here is an example of `Actor::start()` method usage. In this example `MyActor` actor
@@ -83,7 +83,7 @@ To send a message to an actor, the `Addr` object needs to be used. `Addr` provid
 ways to send a message.
 
   * `Addr::do_send(M)` - this method ignores the actor's mailbox capacity and puts
-  the message to a mailbox unconditionally. This method does not return the result of
+  the message to a mailbox unconditionally. This method does not return the result
   of message handling and fails silently if the actor is gone.
 
   * `Addr::try_send(M)` - this method tries to send the message immediately. If
