@@ -1,6 +1,6 @@
 [book]
 title = "Actix web"
-description = "Actix - web framework for Rust"
+description = "Actix - web framework in Rust"
 author = "Actix Project and Contributors"
 
 [output.html]
