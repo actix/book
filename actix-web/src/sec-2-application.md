@@ -10,7 +10,7 @@ It also stores application state shared across all handlers within same applicat
 
 Applications act as a namespace for all routes, i.e all routes for a specific application
 have the same url path prefix. The application prefix always contains a leading "/" slash.
-If a supplied prefix does not contain leading slash, it is automatically inserted.
+If a supplied prefix does not contain a leading slash, it is automatically inserted.
 The prefix should consist of value path segments.
 
 > For an application with prefix `/app`,
