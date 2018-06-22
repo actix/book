@@ -12,3 +12,4 @@
 - [Supervisor](./sec-9-supervisor.md)
 - [Registry](./sec-10-registry.md)
 - [Helper actors](./sec-11-helper-actors.md)
+- [Coming from Akka](./sec-12-coming-from-akka.md)

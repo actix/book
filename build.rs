@@ -36,6 +36,7 @@ fn main() {
           "actix/src/sec-9-supervisor.md",
           "actix/src/sec-10-registry.md",
           "actix/src/sec-11-helper-actors.md",
+          "actix/src/sec-12-coming-from-akka.md",
 
         ]);
 }
