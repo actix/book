@@ -75,7 +75,7 @@ can access it.
 ```rust,ignore
 /// This is state where we will store *DbExecutor* address.
 struct State {
-    db: Addr<Syn, DbExecutor>,
+    db: Addr<DbExecutor>,
 }
 
 fn main() {
