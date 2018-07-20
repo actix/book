@@ -20,7 +20,7 @@ contains the following:
 
 ```toml
 [dependencies]
-actix = "0.5"
+actix = "0.7"
 ```
 
 Let's create an actor that will accept a `Ping` message and respond with the number of pings processed.
@@ -146,9 +146,9 @@ fn main() {
     // send message and get future for result
     let res = addr.send(Ping(10));
 
-    Arbiter::handle().spawn(
+    Arbiter::spawn(
         res.map(|res| {
-            # Arbiter::system().do_send(actix::msgs::SystemExit(0));
+            # System::current().stop();
             println!("RESULT: {}", res == 20);
         })
         .map_err(|_| ()));

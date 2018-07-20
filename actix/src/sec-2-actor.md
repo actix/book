@@ -146,13 +146,13 @@ fn main() {
     let result = addr.send(Ping);
 
     // spawn future to reactor
-    Arbiter::handle().spawn(
+    Arbiter::spawn(
         result.map(|res| {
             match res {
                 Ok(result) => println!("Got result: {}", result),
                 Err(err) => println!("Got error: {}", err),
             }
-#           Arbiter::system().do_send(actix::msgs::SystemExit(0));
+#           System::current().stop();
         })
         .map_err(|e| {
             println!("Actor is probably died: {}", e);
@@ -246,18 +246,15 @@ fn main() {
     let ping_future = addr.send(Messages::Ping);
     let pong_future = addr.send(Messages::Pong);
 
-    // Get handle to Arbiter's reactor
-    let handle = Arbiter::handle();
-
     // Spawn pong_future onto event loop
-    handle.spawn(
+    Arbiter::spawn(
         pong_future
             .map(|res| {
                 match res {
                     Responses::GotPing => println!("Ping received"),
                     Responses::GotPong => println!("Pong received"),
                 }
-#               Arbiter::system().do_send(actix::msgs::SystemExit(0));
+#               System::current().stop();
             })
             .map_err(|e| {
                 println!("Actor is probably died: {}", e);
@@ -265,14 +262,14 @@ fn main() {
     );
 
     // Spawn ping_future onto event loop
-    handle.spawn(
+    Arbiter::spawn(
         ping_future
             .map(|res| {
                 match res {
                     Responses::GotPing => println!("Ping received"),
                     Responses::GotPong => println!("Pong received"),
                 }
-#               Arbiter::system().do_send(actix::msgs::SystemExit(0));
+#               System::current().stop();
             })
             .map_err(|e| {
                 println!("Actor is probably died: {}", e);

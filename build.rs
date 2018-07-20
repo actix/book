@@ -8,23 +8,7 @@ fn main() {
     let _ = fs::remove_file(f);
     // generates doc tests.
     skeptic::generate_doc_tests(
-        &["actix-web/src/sec-0-quick-start.md",
-          "actix-web/src/sec-1-getting-started.md",
-          "actix-web/src/sec-2-application.md",
-          "actix-web/src/sec-3-server.md",
-          "actix-web/src/sec-4-handler.md",
-          "actix-web/src/sec-4-1-extractors.md",
-          "actix-web/src/sec-5-errors.md",
-          "actix-web/src/sec-6-url-dispatch.md",
-          "actix-web/src/sec-7-request-response.md",
-          "actix-web/src/sec-8-testing.md",
-          "actix-web/src/sec-9-middlewares.md",
-          "actix-web/src/sec-10-static-files.md",
-          "actix-web/src/sec-11-websockets.md",
-          "actix-web/src/sec-12-http2.md",
-          "actix-web/src/sec-13-db-integration.md",
-
-          "actix/src/sec-0-quick-start.md",
+        &["actix/src/sec-0-quick-start.md",
           "actix/src/sec-1-getting-started.md",
           "actix/src/sec-2-actor.md",
           "actix/src/sec-3-address.md",
