@@ -23,22 +23,6 @@ let addr = MyActor.start();
 # }
 ```
 
-Same example, but returned address is thread safe and can be sent to different thread.
-
-```rust
-# extern crate actix;
-# use actix::prelude::*;
-struct MyActor;
-impl Actor for MyActor {
-    type Context = Context<Self>;
-}
-
-# fn main() {
-# System::new("test");
-let addr = MyActor.start();
-# }
-```
-
 An async actor can get its address from the `Context` object. The context needs to
 implement the `AsyncContext` trait. `AsyncContext::address()` provides the actor's address.
 
