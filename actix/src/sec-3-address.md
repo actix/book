@@ -1,13 +1,14 @@
 # Address
 
 Actors communicate exclusively by exchanging messages. The sending actor can optionally
-wait for the response. Actors cannot be referenced directly, only by their address.
+wait for the response. Actors cannot be referenced directly, only by their addresses.
 
 There are several ways to get the address of an actor. The `Actor` trait provides
 two helper methods for starting an actor. Both return the address of the started actor.
 
 Here is an example of `Actor::start()` method usage. In this example `MyActor` actor
-is asynchronous and is started in the same thread as the caller.
+is asynchronous and is started in the same thread as the caller - threads are covered in
+the [SyncArbiter](./sec-6-sync-arbiter.md) chapter.
 
 ```rust
 # extern crate actix;
@@ -23,7 +24,7 @@ let addr = MyActor.start();
 # }
 ```
 
-An async actor can get its address from the `Context` object. The context needs to
+An async actor can get its address from the `Context` struct. The context needs to
 implement the `AsyncContext` trait. `AsyncContext::address()` provides the actor's address.
 
 ```rust
@@ -40,14 +41,6 @@ impl Actor for MyActor {
 # fn main() {}
 ```
 
-## Mailbox
-
-All messages go to the actor's mailbox first, then the actor's execution context
-calls specific message handlers. Mailboxes in general are bounded. The capacity is
-specific to the context implementation. For the `Context`  type the capacity is set to
-16 messages by default and can be increased with
-[*Context::set_mailbox_capacity()*](../actix/struct.Context.html#method.set_mailbox_capacity).
-
 ## Message
 
 To be able to handle a specific message the actor has to provide a
@@ -60,9 +53,10 @@ streams to the execution context. The actor trait provides several methods that 
 To send a message to an actor, the `Addr` object needs to be used. `Addr` provides several
 ways to send a message.
 
-  * `Addr::do_send(M)` - this method ignores the actor's mailbox capacity and puts
-  the message to a mailbox unconditionally. This method does not return the result
-  of message handling and fails silently if the actor is gone.
+  * `Addr::do_send(M)` - this method ignores any errors in message sending. If the mailbox
+  is full the message is still queued, bypassing the limit. If the actor's mailbox is closed,
+  the message is silently dropped. This method does not return the result, so if the
+  mailbox is closed and a failure occurs, you won't have an indication of this.
 
   * `Addr::try_send(M)` - this method tries to send the message immediately. If
   the mailbox is full or closed (actor is dead), this method returns a
@@ -83,6 +77,9 @@ For example recipient can be used for a subscription system. In the following ex
 be any actor that implements the `Handler<Signal>` trait.
 
 ```rust
+# // This example is incomplete, so I don't think people can follow it and get value from what it's
+# // trying to communicate or teach.
+
 # #[macro_use] extern crate actix;
 # use actix::prelude::*;
 #[derive(Message)]
