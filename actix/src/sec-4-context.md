@@ -30,15 +30,18 @@ let addr = MyActor.start();
 # }
 ```
 
-Remember that this doesn't apply to `Addr::do_send(M)`, `Addr::notify(M)` or `Addr::notify_later(M, Duration)` which bypass the Mailbox queue limit.
+Remember that this doesn't apply to `Addr::do_send(M)`, `AsyncContext::notify(M)` or
+`AsyncContext::notify_later(M, Duration)` which bypass the Mailbox queue limit.
 
 ## Getting your actors Address
 
 An actor can view it's own address from it's context. Perhaps you want to requeue an event for
 later, or you want to transform the message type. Maybe you want to respond with your address
-to a message.
+to a message. If you want and actor to send a message to itself, have a look at
+`AsyncContext::notify(M)` instead.
 
-To get your address from the context you call [*Context::address()*](../actix/struct.Context.html#method.address). An example is:
+To get your address from the context you call
+[*Context::address()*](../actix/struct.Context.html#method.address). An example is:
 
 ```rust
 # extern crate actix;
