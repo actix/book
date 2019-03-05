@@ -30,8 +30,9 @@ let addr = MyActor.start();
 # }
 ```
 
-Remember that this doesn't apply to `Addr::do_send(M)`, `AsyncContext::notify(M)` or
-`AsyncContext::notify_later(M, Duration)` which bypass the Mailbox queue limit.
+Remember that this doesn't apply to `Addr::do_send(M)` which bypasses the Mailbox queue limit, or
+`AsyncContext::notify(M)` and `AsyncContext::notify_later(M, Duration)` which bypasses the mailbox
+entirely.
 
 ## Getting your actors Address
 
