@@ -5,8 +5,15 @@ contains a Context that defines it's Actor specific execution state, Arbiters
 host the environment where an actor runs.
 
 As a result Arbiters perform a number of function. Most notably, they are able
-to spawn a new OS thread, run an event loop, execute functions asynchronously
-and act as helpers for asynchronous tasks.
+to spawn a new OS thread, run an event loop, spawn tasks asynchronously on
+that event loop, and act as helpers for asynchronous tasks.
+
+## System and Arbiter
+
+In all our previous code examples the function `System::new` creates an Arbiter
+for your actors to run inside. When you call `start()` on your actor it is then
+running inside of the System Arbiter's thread. In many cases, this is all you
+will need for a program using Actix.
 
 ## Using Arbiter for resolving async events
 
@@ -94,10 +101,15 @@ fn main() {
 
 ```
 
-## Why can't I create my own?
+## Creating more Arbiters
+
+Or: "Why can't I create my own Arbiters"?
 
 Today (2019-03-15) there are lots of changes going on in the Arbiter
 code, moving from actix to actix-rt, and interface changes associated.
 We'll update these docs later once these changes are released.
 
+## Assigning an Actor to a specific Arbiter
+
+WIP
 
