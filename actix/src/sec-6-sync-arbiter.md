@@ -1,20 +1,21 @@
 # SyncArbiter
 
-When you normally run Actors, there are multiple Actors sharing a single
-thread and event loop in the System. However for CPU bound workloads, or
-highly concurrent workloads, you may wish to have a single Actor able
-to run on a pool of OS threads.
+When you normally run Actors, there are multiple Actors running on the
+System's Arbiter thread, using it's event loop. However for CPU bound workloads,
+or highly concurrent workloads, you may wish to have an Actor running multiple
+instances in parallel.
 
-This is what a SyncArbiter provides - an enviroment allowing a single Actor
-to be run on multiple threads concurrently.
+This is what a SyncArbiter provides - the ability to launch multiple instances of
+an Actor on a pool of OS threads.
 
-It's important to note a SyncArbiter can only host a single type of Actor. If
-you want to have two types of Actors running, you'll need to define two SyncArbiters
+It's important to note a SyncArbiter can only host a single type of Actor. This means
+you need to create a SyncArbiter for each type of Actor you want to run in this
+manner.
 
 ## Creating a Sync Actor
 
-When constructing your Actor, you have to change `Context` to `SyncContext`
-to define that the Actor will run on a SyncArbiter instead.
+When implementing your Actor to be run on a SyncArbiter, it requires that your Actor's
+Context is changed from `Context` to `SyncContext`.
 
 ```rust
 # extern crate actix;
