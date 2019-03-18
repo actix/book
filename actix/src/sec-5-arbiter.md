@@ -101,15 +101,3 @@ fn main() {
 
 ```
 
-## Creating more Arbiters
-
-Or: "Why can't I create my own Arbiters"?
-
-Today (2019-03-15) there are lots of changes going on in the Arbiter
-code, moving from actix to actix-rt, and interface changes associated.
-We'll update these docs later once these changes are released.
-
-## Assigning an Actor to a specific Arbiter
-
-WIP
-
