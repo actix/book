@@ -18,3 +18,5 @@ project. To use it for this project:
 - Install `mdBook` if you haven't already: `cargo install mdbook`
 - In the `actix` directory: `mdbook watch -o`
   - This automatically opens your browser and watches the md files for changing
+  - You'll still have to refresh the page, as there is no hot-reloading for
+    `mdbook`
