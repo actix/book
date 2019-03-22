@@ -121,19 +121,23 @@ fn main() {
 
     // Define an execution flow using futures
     //
-    // `Addr::send` responds with a `Request`, which implements `Future`
-    // When awaited or mapped, it will resolve to a `Result<usize, MailboxError>`
+    // Start by sending a `Value(6, 7)` to our `SumActor`.
+    // `Addr::send` responds with a `Request`, which implements `Future`.
+    // When awaited or mapped, it will resolve to a `Result<usize, MailboxError>`.
     let execution = sum_addr
         .send(Value(6, 7))
-        // turn from `Future<usize, MailboxError>` to `Future<usize, ()>` with `.map_err`
+        // `.map_err` turns `Future<usize, MailboxError>` into `Future<usize, ()>`
+        //   and prints any `MailboxError`s we encounter
         .map_err(|e| {
             eprintln!("Encountered mailbox error: {:?}", e);
         })
-        // chain another computation onto the future (assuming the send was successful)
-        // returning a future from `and_then` chains that computation.
-        // In this case, becasue the `Arbiter` is executing the futures, the result of
-        // `dis_addr.send` (also a `Response`) will be spawned and executed on the Arbiter in the
-        // same thread.
+        // Assuming the send was successful, chain another computation
+        //   onto the future. Returning a future from `and_then` chains
+        //   that computation to the end of the existing future.
+        //
+        // In this case, because the `Arbiter` is executing the futures,
+        //   the result of `dis_addr.send` (also a `Response`) will be
+        //   spawned and executed on the Arbiter in the same thread.
         .and_then(move |res| {
             // `res` is now the `usize` returned from
 
@@ -142,10 +146,11 @@ fn main() {
             dis_addr.send(Display(res)).map(move |_| ()).map_err(|_| ())
         })
         .map(move |_| {
-            // We only want to do one computation in this example, so we shut down the `System`
-            // which will stop any Arbiters within it (including the System Arbiter), which will
-            // in turn stop any Actor Contexts running within those Arbiters, finally shutting
-            // down all Actors.
+            // We only want to do one computation in this example, so we
+            // shut down the `System` which will stop any Arbiters within
+            // it (including the System Arbiter), which will in turn stop
+            // any Actor Contexts running within those Arbiters, finally
+            // shutting down all Actors.
             System::current().stop();
         });
 
