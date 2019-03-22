@@ -68,78 +68,90 @@ can use `Arbiter::spawn` to assist with this task.
 ```rust
 # extern crate actix;
 # extern crate futures;
-# use futures::Future;
 # use actix::prelude::*;
-# 
-# struct SumActor {}
-# 
-# impl Actor for SumActor {
-#     type Context = Context<Self>;
-# }
+# use futures::Future;
+#
+struct SumActor {}
+
+impl Actor for SumActor {
+    type Context = Context<Self>;
+}
 
 struct Value(usize, usize);
 
-# impl Message for Value {
-#    type Result = usize;
-# }
+impl Message for Value {
+    type Result = usize;
+}
 
 impl Handler<Value> for SumActor {
     type Result = usize;
 
-    fn handle(&mut self, msg: Value, ctx: &mut Context<Self>) -> Self::Result {
+    fn handle(&mut self, msg: Value, _ctx: &mut Context<Self>) -> Self::Result {
         msg.0 + msg.1
     }
 }
 
-# struct DisplayActor {}
-# 
-# impl Actor for DisplayActor {
-#     type Context = Context<Self>;
-# }
+struct DisplayActor {}
+
+impl Actor for DisplayActor {
+    type Context = Context<Self>;
+}
 
 struct Display(usize);
 
-# impl Message for Display {
-#    type Result = ();
-# }
+impl Message for Display {
+    type Result = ();
+}
 
 impl Handler<Display> for DisplayActor {
     type Result = ();
 
-    fn handle(&mut self, msg: Display, ctx: &mut Context<Self>) -> Self::Result {
+    fn handle(&mut self, msg: Display, _ctx: &mut Context<Self>) -> Self::Result {
         println!("Got {:?}", msg.0);
     }
 }
 
-
 fn main() {
-    let system = System::new("test");
+    let system = System::new("single-arbiter-example");
 
-    // start new actor
-    let sum_addr = SumActor{}.start();
-    let dis_addr = DisplayActor{}.start();
+    // `Actor::start` spawns the `Actor` on the *current* `Arbiter`, which
+    // in this case is the System arbiter
+    let sum_addr = SumActor {}.start();
+    let dis_addr = DisplayActor {}.start();
 
-    let res = sum_addr.send(Value(6, 7));
+    // Define an execution flow using futures
+    //
+    // `Addr::send` responds with a `Request`, which implements `Future`
+    // When awaited or mapped, it will resolve to a `Result<usize, MailboxError>`
+    let execution = sum_addr
+        .send(Value(6, 7))
+        // turn from `Future<usize, MailboxError>` to `Future<usize, ()>` with `.map_err`
+        .map_err(|e| {
+            eprintln!("Encountered mailbox error: {:?}", e);
+        })
+        // chain another computation onto the future (assuming the send was successful)
+        // returning a future from `and_then` chains that computation.
+        // In this case, becasue the `Arbiter` is executing the futures, the result of
+        // `dis_addr.send` (also a `Response`) will be spawned and executed on the Arbiter in the
+        // same thread.
+        .and_then(move |res| {
+            // `res` is now the `usize` returned from
 
-    Arbiter::spawn(
-        res.map(move |res| {
+            // Once the future is complete, send the successful response (`usize`)
+            // to the `DisplayActor` wrapped in a `Display
+            dis_addr.send(Display(res)).map(move |_| ()).map_err(|_| ())
+        })
+        .map(move |_| {
+            // We only want to do one computation in this example, so we shut down the `System`
+            // which will stop any Arbiters within it (including the System Arbiter), which will
+            // in turn stop any Actor Contexts running within those Arbiters, finally shutting
+            // down all Actors.
+            System::current().stop();
+        });
 
-            let dis_res = dis_addr.send(Display(res));
-
-            Arbiter::spawn(
-                dis_res.map(move |_| {
-                    // Shutdown gracefully now.
-                    System::current().stop();
-                })
-                .map_err(|_| ())
-            );
-
-        }) // end res.map
-        .map_err(|_| ())
-    );
+    // Spawn the future onto the current Arbiter/event loop
+    Arbiter::spawn(execution);
 
     system.run();
 }
-
 ```
-
