@@ -28,20 +28,16 @@ spawns a task (via `Arbiter::spawn`, `Context<Actor>::run_later`, or similar
 constructs), the Arbiter queues the task for execution on that task queue. When
 you think `Arbiter`, you can think "single-threaded event loop".
 
-If you pay close attention to way both `ActorFuture` and the methods in the
-`Actor` trait specify their parameters, actor behavior always references both
-the actor and the context as mutable: `&mut self` (or `&mut A` in `ActorFuture`)
-and `&mut Self::Context`. This is because all of these tasks have **exclusive**
-rights to the actor and its context. This is achieved by putting all actor logic
-in the same thread, so we know no two pieces of logic involving the actor are
-running concurrently without having to use synchronization primitives.
-
 Actix in general does support concurrency, but normal `Arbiter`s (not
 `SyncArbiter`s) do not. To use Actix in a concurrent way, you can spin up
 multiple `Arbiter`s using `Arbiter::new`, `ArbiterBuilder`, or `Arbiter::start`.
-Each `Arbiter` will represent one thread Actors can communicate using `Addr`s
-and `Recipient`s with other Actors regardless of which Arbiter the Actors are
-on.
+
+When you create a new Arbiter, this creates a new execution context for Actors.
+The new thread is available to add new Actors to it, but Actors cannot freely
+move between Arbiters: they are tied to the Arbiter they were spawned in.
+However, Actors on different Arbiters can still communicate with each other
+using the normal `Addr`/`Recipient` methods. The method of passing messages is
+agnostic to whether the Actors are running on the same or different Arbiters.
 
 ## Using Arbiter for resolving async events
 
