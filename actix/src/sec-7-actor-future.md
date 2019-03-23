@@ -95,7 +95,7 @@ impl Actor for WeatherActor {
 }
 #
 # fn main() {
-#     let system = System::new("single-arbiter-example");
+#     let system = System::new("actor-future-example");
 #
 #     let _weather_addr = WeatherActor::new().start();
 #
