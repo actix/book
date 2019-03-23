@@ -1,7 +1,7 @@
 # SyncArbiter
 
 When you normally run Actors, there are multiple Actors running on the
-System's Arbiter thread, using it's event loop. However for CPU bound workloads,
+System's Arbiter thread, using its event loop. However for CPU bound workloads,
 or highly concurrent workloads, you may wish to have an Actor running multiple
 instances in parallel.
 
