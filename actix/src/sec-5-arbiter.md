@@ -23,10 +23,10 @@ consider using [`SyncArbiter`](./sec-6-sync-arbiter.md).
 
 ## The event loop
 
-One `Arbiter` is in control of one thread with one task queue, and when tasks
-get spawned in an Actor's context or using `Arbiter::spawn`, the task gets
-queued up for execution in that thread. When you think `Arbiter`, you can think
-"single-threaded event loop".
+One `Arbiter` is in control of one thread with one event pool. When an Arbiter
+spawns a task (via `Arbiter::spawn`, `Context<Actor>::run_later`, or similar
+constructs), the Arbiter queues the task for execution on that task queue. When
+you think `Arbiter`, you can think "single-threaded event loop".
 
 If you pay close attention to way both `ActorFuture` and the methods in the
 `Actor` trait specify their parameters, actor behavior always references both
