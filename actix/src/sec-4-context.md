@@ -38,7 +38,7 @@ entirely.
 
 An actor can view it's own address from it's context. Perhaps you want to requeue an event for
 later, or you want to transform the message type. Maybe you want to respond with your address
-to a message. If you want and actor to send a message to itself, have a look at
+to a message. If you want an actor to send a message to itself, have a look at
 `AsyncContext::notify(M)` instead.
 
 To get your address from the context you call
