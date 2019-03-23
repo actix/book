@@ -1,8 +1,8 @@
 # Context
 
 Actors all maintain an internal execution context, or state. This
-allows an actor to determine it's own Address, change mailbox limits,
-or stop it's execution.
+allows an actor to determine its own Address, change mailbox limits,
+or stop its execution.
 
 ## Mailbox
 
@@ -36,7 +36,7 @@ entirely.
 
 ## Getting your actors Address
 
-An actor can view it's own address from it's context. Perhaps you want to requeue an event for
+An actor can view its own address from its context. Perhaps you want to requeue an event for
 later, or you want to transform the message type. Maybe you want to respond with your address
 to a message. If you want an actor to send a message to itself, have a look at
 `AsyncContext::notify(M)` instead.
