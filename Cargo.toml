@@ -32,6 +32,11 @@ bytes = "0.4"
 futures = "0.1"
 http = "0.1"
 
+tokio = "0.1"
+tokio-codec = "0.1"
+tokio-io = "0.1"
+tokio-tcp = "0.1"
+
 [dev-dependencies]
 env_logger = "0.5"
 skeptic = "0.13"
