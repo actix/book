@@ -145,7 +145,9 @@ impl Encoder for ByteCodec {
 }
 ```
 
-For more about the implementation of Codecs, see ...
+For more about the implementation of Codecs, see tokio's documentation about Frames https://tokio.rs/docs/going-deeper/frames/
+
+^ How to make this a proper link?
 
 # Using the Codec with messages
 
@@ -299,4 +301,5 @@ further and shows how you would implement a simple chat service with streams.
 
 # Using TLS as a stream
 
+Future content ... https://github.com/tokio-rs/tokio/tree/master/tokio-tls
 
