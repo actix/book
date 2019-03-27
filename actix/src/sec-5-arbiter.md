@@ -116,7 +116,7 @@ fn main() {
         //   onto the future. Returning a future from `and_then` chains
         //   that computation to the end of the existing future.
         .and_then(move |res| {
-            // `res` is now the `usize` returned from
+            // `res` is now the `usize` returned from `SumActor` as a response to `Value(6, 7)`
 
             // Once the future is complete, send the successful response (`usize`)
             // to the `DisplayActor` wrapped in a `Display
