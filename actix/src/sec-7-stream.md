@@ -1,8 +1,9 @@
 # Streams
 
-Actix allows the handling of Tokio Streams to act as a source of events
+Actix allows the handling of Streams to act as a source of events
 or messages to actors. This is commonly used with networking servers
-and clients, for communication over TCP, UDP and UnixSockets.
+and clients, for communication over TCP, UDP and UnixSockets, but can
+also be used as an abstraction allowing handling of future messages.
 
 At it's core, Actix when using streams provides a mechanism for taking
 whole message frames from a stream, and converting these to messages which
@@ -12,12 +13,12 @@ To show how these parts are created, we'll create a TCP echo server.
 
 ## Wrapping a stream of events
 
-A stream provides a series of frames to Actix which reperesent some event
-or input provided by the stream. The first method to handle these inputs
+A stream provides a series of frames to Actix which represent input or events
+provided by the stream. The first method to handle these inputs
 from a stream, is to asynchronously map over the inputs and turn these into
 messages that can be sent to an Actor.
 
-The best example for this is a TcpListener, which provides a stream
+An example of this is a TcpListener, which provides a stream
 of new connections coming in from clients. As each client connects, we
 can wrap the new connection into a message, which is sent to a handler
 to process.
@@ -145,7 +146,7 @@ impl Encoder for ByteCodec {
 }
 ```
 
-For more about the implementation of Codecs, see tokio's documentation about Frames https://tokio.rs/docs/going-deeper/frames/
+For more about the implementation of Codecs, see [tokio's documentation](https://tokio.rs/docs/going-deeper/frames/) about Frames.
 
 ^ How to make this a proper link?
 
