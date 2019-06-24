@@ -21,6 +21,7 @@ contains the following:
 ```toml
 [dependencies]
 actix = "0.7"
+futures = "0.1"
 ```
 
 Let's create an actor that will accept a `Ping` message and respond with the number of pings processed.
