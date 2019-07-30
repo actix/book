@@ -138,7 +138,7 @@ In the following example we are going to create a `MyActor` actor and send one m
 #     }
 # }
 #
-fn main() -> io::Result<()> {
+fn main() -> std::io::Result<()> {
     let system = System::new("test");
 
     // start new actor
