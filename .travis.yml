@@ -1,6 +1,5 @@
 language: rust
-sudo: false
-dist: trusty
+dist: bionic
 
 cache:
   cargo: false
@@ -14,14 +13,11 @@ matrix:
   allow_failures:
     - rust: nightly
 
-# script:
-#  - |
-#       #cargo clean
-#       RUST_BACKTRACE=1 cargo test -- --nocapture
+script:
+  - cargo test --verbose
 
 # Upload docs
-# after_success:
-script:
+after_success:
   - export PATH=$PATH:~/.cargo/bin
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" && "$TRAVIS_PULL_REQUEST" = "false" && "$TRAVIS_BRANCH" == "master" && "$TRAVIS_RUST_VERSION" == "beta" ]]; then
