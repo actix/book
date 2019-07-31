@@ -12,9 +12,8 @@ The context object is available only during execution. Each actor has a separate
 execution context. The execution context also controls the lifecycle of an actor.
 
 Actors communicate exclusively by exchanging messages. The sending actor can
-optionally wait for the response. Actors are not referenced directly, but by different
-types of addresses: non thread safe [*Addr<Unsync, A>*](../actix/struct.Addr.html) or
-thread safe [*Addr<Syn, A>*](../actix/struct.Syn.html)
+optionally wait for the response. Actors are not referenced directly, but by means
+of addresses.
 
 Any rust type can be an actor, it only needs to implement the [*Actor*](../actix/trait.Actor.html) trait.
 
@@ -140,20 +139,20 @@ fn main() {
     let sys = System::new("example");
 
     // Start MyActor in current thread
-    let addr: Addr<Unsync, _> = MyActor.start();
+    let addr = MyActor.start();
 
     // Send Ping message.
     // send() message returns Future object, that resolves to message result
     let result = addr.send(Ping);
 
     // spawn future to reactor
-    Arbiter::handle().spawn(
+    Arbiter::spawn(
         result.map(|res| {
             match res {
                 Ok(result) => println!("Got result: {}", result),
                 Err(err) => println!("Got error: {}", err),
             }
-#           Arbiter::system().do_send(actix::msgs::SystemExit(0));
+#           System::current().stop();
         })
         .map_err(|e| {
             println!("Actor is probably died: {}", e);
@@ -240,25 +239,22 @@ fn main() {
     let sys = System::new("example");
 
     // Start MyActor in current thread
-    let addr: Addr<Unsync, _> = MyActor.start();
+    let addr = MyActor.start();
 
     // Send Ping message.
     // send() message returns Future object, that resolves to message result
     let ping_future = addr.send(Messages::Ping);
     let pong_future = addr.send(Messages::Pong);
 
-    // Get handle to Arbiter's reactor
-    let handle = Arbiter::handle();
-
     // Spawn pong_future onto event loop
-    handle.spawn(
+    Arbiter::spawn(
         pong_future
             .map(|res| {
                 match res {
                     Responses::GotPing => println!("Ping received"),
                     Responses::GotPong => println!("Pong received"),
                 }
-#               Arbiter::system().do_send(actix::msgs::SystemExit(0));
+#               System::current().stop();
             })
             .map_err(|e| {
                 println!("Actor is probably died: {}", e);
@@ -266,14 +262,14 @@ fn main() {
     );
 
     // Spawn ping_future onto event loop
-    handle.spawn(
+    Arbiter::spawn(
         ping_future
             .map(|res| {
                 match res {
                     Responses::GotPing => println!("Ping received"),
                     Responses::GotPong => println!("Pong received"),
                 }
-#               Arbiter::system().do_send(actix::msgs::SystemExit(0));
+#               System::current().stop();
             })
             .map_err(|e| {
                 println!("Actor is probably died: {}", e);

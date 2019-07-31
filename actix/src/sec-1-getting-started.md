@@ -20,7 +20,7 @@ contains the following:
 
 ```toml
 [dependencies]
-actix = "0.5"
+actix = "0.8"
 ```
 
 Let's create an actor that will accept a `Ping` message and respond with the number of pings processed.
@@ -88,7 +88,7 @@ To do this, the actor needs to implement the `Handler<Ping>` trait.
 impl Handler<Ping> for MyActor {
     type Result = usize;
 
-    fn handle(&mut self, msg: Ping, ctx: &mut Context<Self>) -> Self::Result {
+    fn handle(&mut self, msg: Ping, _ctx: &mut Context<Self>) -> Self::Result {
         self.count += msg.0;
 
         self.count
@@ -115,6 +115,7 @@ In the following example we are going to create a `MyActor` actor and send one m
 # extern crate actix;
 # extern crate futures;
 # use futures::Future;
+# use std::io;
 # use actix::prelude::*;
 # struct MyActor {
 #    count: usize,
@@ -137,23 +138,23 @@ In the following example we are going to create a `MyActor` actor and send one m
 #     }
 # }
 #
-fn main() {
+fn main() -> std::io::Result<()> {
     let system = System::new("test");
 
     // start new actor
-    let addr: Addr<Unsync, _> = MyActor{count: 10}.start();
+    let addr = MyActor{count: 10}.start();
 
     // send message and get future for result
     let res = addr.send(Ping(10));
 
-    Arbiter::handle().spawn(
+    Arbiter::spawn(
         res.map(|res| {
-            # Arbiter::system().do_send(actix::msgs::SystemExit(0));
+            # System::current().stop();
             println!("RESULT: {}", res == 20);
         })
         .map_err(|_| ()));
 
-    system.run();
+    system.run()
 }
 ```
 

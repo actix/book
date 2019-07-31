@@ -1,6 +1,5 @@
 language: rust
-sudo: false
-dist: trusty
+dist: bionic
 
 cache:
   cargo: false
@@ -14,20 +13,16 @@ matrix:
   allow_failures:
     - rust: nightly
 
-# script:
-#  - |
-#       #cargo clean
-#       RUST_BACKTRACE=1 cargo test -- --nocapture
+script:
+  - cargo test --verbose
 
 # Upload docs
-# after_success:
-script:
+after_success:
   - export PATH=$PATH:~/.cargo/bin
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" && "$TRAVIS_PULL_REQUEST" = "false" && "$TRAVIS_BRANCH" == "master" && "$TRAVIS_RUST_VERSION" == "beta" ]]; then
       curl -sL https://github.com/rust-lang-nursery/mdBook/releases/download/v0.1.5/mdbook-v0.1.5-x86_64-unknown-linux-gnu.tar.gz | tar xvz -C $HOME/.cargo/bin &&
       cd actix && mdbook build -d ../target/doc/actix && cd .. &&
-      cd actix-web && mdbook build -d ../target/doc/actix-web && cd .. &&
       git clone https://github.com/davisp/ghp-import.git &&
       ./ghp-import/ghp_import.py -n -p -f -m "Documentation upload" -r https://"$GH_TOKEN"@github.com/"$TRAVIS_REPO_SLUG.git" target/doc &&
       echo "Uploaded documentation"
