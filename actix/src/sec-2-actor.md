@@ -155,7 +155,7 @@ fn main() {
 #           System::current().stop();
         })
         .map_err(|e| {
-            println!("Actor is probably died: {}", e);
+            println!("Actor is probably dead: {}", e);
         }));
 
     sys.run();
@@ -257,7 +257,7 @@ fn main() {
 #               System::current().stop();
             })
             .map_err(|e| {
-                println!("Actor is probably died: {}", e);
+                println!("Actor is probably dead: {}", e);
             }),
     );
 
@@ -272,7 +272,7 @@ fn main() {
 #               System::current().stop();
             })
             .map_err(|e| {
-                println!("Actor is probably died: {}", e);
+                println!("Actor is probably dead: {}", e);
             }),
     );
 
