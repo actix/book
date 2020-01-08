@@ -15,12 +15,13 @@ cargo new actor-ping --bin
 cd actor-ping
 ```
 
-Now, add actix as a dependency of your project by ensuring your Cargo.toml
+Now, add actix and actix-rt as a dependency of your project by ensuring your Cargo.toml
 contains the following:
 
 ```toml
 [dependencies]
-actix = "0.8"
+actix = "0.9"
+actix-rt = "1.0"
 ```
 
 Let's create an actor that will accept a `Ping` message and respond with the number of pings processed.
@@ -113,8 +114,6 @@ In the following example we are going to create a `MyActor` actor and send one m
 
 ```rust
 # extern crate actix;
-# extern crate futures;
-# use futures::Future;
 # use std::io;
 # use actix::prelude::*;
 # struct MyActor {
@@ -138,23 +137,19 @@ In the following example we are going to create a `MyActor` actor and send one m
 #     }
 # }
 #
-fn main() -> std::io::Result<()> {
-    let system = System::new("test");
-
+#[actix_rt::main]
+async fn main() {
     // start new actor
-    let addr = MyActor{count: 10}.start();
+    let addr = MyActor { count: 10 }.start();
 
     // send message and get future for result
-    let res = addr.send(Ping(10));
+    let res = addr.send(Ping(10)).await;
 
-    Arbiter::spawn(
-        res.map(|res| {
-            # System::current().stop();
-            println!("RESULT: {}", res == 20);
-        })
-        .map_err(|_| ()));
+    // handle() returns tokio handle
+    println!("RESULT: {}", res.unwrap() == 20);
 
-    system.run()
+    // stop system and exit
+    System::current().stop();
 }
 ```
 

@@ -1,3 +1,5 @@
+cargo-features = ["edition"]
+
 [package]
 name = "actix-book"
 version = "0.7.0"
@@ -14,13 +16,15 @@ categories = ["network-programming", "asynchronous",
 license = "MIT/Apache-2.0"
 exclude = [".gitignore", ".travis.yml", ".cargo/config", "appveyor.yml"]
 build = "build.rs"
+edition = "2018"
 
 [lib]
 src="src/lib.rs"
 crate-type = ["dylib"]
 
 [dependencies]
-actix = "^0.8"
+actix = "^0.9"
+actix-rt = "1.0"
 
 flate2 = "1.0"
 serde = "1.0"
@@ -38,5 +42,6 @@ skeptic = "0.13"
 serde_derive = "1.0"
 
 [build-dependencies]
-skeptic = "0.13"
+skeptic = "0.13.4"
 futures = "0.1"
+
