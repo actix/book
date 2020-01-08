@@ -83,10 +83,12 @@ be any actor that implements the `Handler<Signal>` trait.
 # #[macro_use] extern crate actix;
 # use actix::prelude::*;
 #[derive(Message)]
+#[rtype(result = "()")]
 struct Signal(usize);
 
 /// Subscribe to process signals.
 #[derive(Message)]
+#[rtype(result = "()")]
 struct Subscribe(pub Recipient<Signal>);
 
 /// Actor that provides signal subscriptions
