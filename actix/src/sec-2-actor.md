@@ -7,7 +7,7 @@ allows applications to be written as a group of independently executing but coop
 "Actors" which communicate via messages. Actors are objects which encapsulate
 state and behavior and run within the *Actor System* provided by the actix library.
 
-Actors run within a specific execution context [*Context<A>*](../actix/struct.Context.html).
+Actors run within a specific execution context [*Context<A>*](./sec-4-context.html).
 The context object is available only during execution. Each actor has a separate
 execution context. The execution context also controls the lifecycle of an actor.
 
