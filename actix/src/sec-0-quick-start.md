@@ -5,10 +5,10 @@ We recommend you use rustup to install or configure such a version.
 
 ## Install Rust
 
-Before we begin, we need to install Rust using the [rustup](https://www.rustup.rs/) installer:
+Before we begin, we need to install Rust using the [rustup](https://rustup.rs/) installer:
 
 ```bash
-curl https://sh.rustup.rs -sSf | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
 If you already have rustup installed, run this command to ensure you have the latest version of Rust:
@@ -17,7 +17,7 @@ If you already have rustup installed, run this command to ensure you have the la
 rustup update
 ```
 
-The actix framework requires rust version 1.21 and up.
+The actix framework requires Rust version 1.39.0 and up.
 
 ## Running Examples
 

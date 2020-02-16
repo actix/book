@@ -8,7 +8,7 @@ two helper methods for starting an actor. Both return the address of the started
 
 Here is an example of `Actor::start()` method usage. In this example `MyActor` actor
 is asynchronous and is started in the same thread as the caller - threads are covered in
-the [SyncArbiter](./sec-6-sync-arbiter.md) chapter.
+the [SyncArbiter] chapter.
 
 ```rust
 # extern crate actix;
@@ -41,10 +41,12 @@ impl Actor for MyActor {
 # fn main() {}
 ```
 
+[SyncArbiter]: ./sec-6-sync-arbiter.md
+
 ## Message
 
 To be able to handle a specific message the actor has to provide a
-[`Handler<M>`](../actix/trait.Handler.html) implementation for this message.
+[`Handler<M>`] implementation for this message.
 All messages are statically typed. The message can be handled in an asynchronous
 fashion. The actor can spawn other actors or add futures or
 streams to the execution context. The actor trait provides several methods that allow
@@ -60,11 +62,14 @@ ways to send a message.
 
   * `Addr::try_send(M)` - this method tries to send the message immediately. If
   the mailbox is full or closed (actor is dead), this method returns a
-  [`SendError`](../actix/prelude/enum.SendError.html).
+  [`SendError`].
 
   * `Addr::send(M)` - This message returns a future object that resolves to a result
   of a message handling process. If the returned `Future` object is dropped, the
   message is cancelled.
+
+[`Handler<M>`]: https://actix.rs/actix/actix/trait.Handler.html
+[`SendError`]: https://actix.rs/actix/actix/prelude/enum.SendError.html
 
 ## Recipient
 

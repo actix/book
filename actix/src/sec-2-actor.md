@@ -2,12 +2,12 @@
 
 Actix is a rust library providing a framework for developing concurrent applications.
 
-Actix is built on the [Actor Model](https://en.wikipedia.org/wiki/Actor_model) which
+Actix is built on the [Actor Model] which
 allows applications to be written as a group of independently executing but cooperating
 "Actors" which communicate via messages. Actors are objects which encapsulate
 state and behavior and run within the *Actor System* provided by the actix library.
 
-Actors run within a specific execution context [*Context<A>*](./sec-4-context.html).
+Actors run within a specific execution context [`Context<A>`].
 The context object is available only during execution. Each actor has a separate
 execution context. The execution context also controls the lifecycle of an actor.
 
@@ -15,14 +15,18 @@ Actors communicate exclusively by exchanging messages. The sending actor can
 optionally wait for the response. Actors are not referenced directly, but by means
 of addresses.
 
-Any rust type can be an actor, it only needs to implement the [*Actor*](../actix/trait.Actor.html) trait.
+Any rust type can be an actor, it only needs to implement the [`Actor`] trait.
 
 To be able to handle a specific message the actor has to provide a
-[*Handler<M>*](../actix/trait.Handler.html) implementation for this message. All messages
+[`Handler<M>`] implementation for this message. All messages
 are statically typed. The message can be handled in an asynchronous fashion.
 Actor can spawn other actors or add futures or streams to execution context.
 The `Actor` trait provides several methods that allow controlling the actor's lifecycle.
 
+[Actor Model]: https://en.wikipedia.org/wiki/Actor_model
+[`Context<A>`]: ./sec-4-context.html
+[`Actor`]: https://actix.rs/actix/actix/trait.Actor.html
+[`Handler<M>`]: https://actix.rs/actix/actix/trait.Handler.html
 
 ## Actor lifecycle
 
@@ -66,7 +70,7 @@ to `Stopped`. This state is considered final and at this point the actor is drop
 
 An Actor communicates with other actors by sending messages. In actix all
 messages are typed. A message can be any rust type which implements the
-[Message](../actix/trait.Message.html) trait. *Message::Result* defines the return type.
+[`Message`] trait. `Message::Result` defines the return type.
 Let's define a simple `Ping` message - an actor which will accept this message needs to return
 `io::Result<bool>`.
 
@@ -84,11 +88,13 @@ impl Message for Ping {
 # fn main() {}
 ```
 
+[`Message`]: https://actix.rs/actix/actix/trait.Message.html
+
 ## Spawning an actor
 
 How to start an actor depends on its context. Spawning a new async actor
 is achieved via the `start` and `create` methods of
-the [Actor](../actix/trait.Actor.html) trait. It provides several different ways of
+the [`Actor`] trait. It provides several different ways of
 creating actors; for details check the docs.
 
 ## Complete example

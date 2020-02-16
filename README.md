@@ -12,7 +12,7 @@
 
 ## Using this library
 
-This repository is an [`mdBook`](https://github.com/rust-lang-nursery/mdBook)
+This repository is an [`mdBook`](https://github.com/rust-lang/mdBook)
 project. To use it for this project:
 
 - Install `mdBook` if you haven't already: `cargo install mdbook`
