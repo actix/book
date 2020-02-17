@@ -5,3 +5,8 @@ author = "Actix Project and Contributors"
 
 [output.html]
 google-analytics = "UA-110322332-1"
+git-repository-url = "https://github.com/actix/book"
+
+[output.linkcheck]
+follow-web-links = true
+warning-policy = "error"

@@ -12,11 +12,10 @@ categories = ["network-programming", "asynchronous",
               "web-programming::http-client",
               "web-programming::websocket"]
 license = "MIT/Apache-2.0"
-exclude = [".gitignore", ".travis.yml", ".cargo/config", "appveyor.yml"]
+exclude = [".gitignore", "/.github", ".cargo/config", "appveyor.yml"]
 build = "build.rs"
 
 [lib]
-src="src/lib.rs"
 crate-type = ["dylib"]
 
 [dependencies]
