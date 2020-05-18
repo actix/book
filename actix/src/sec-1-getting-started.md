@@ -50,6 +50,7 @@ Now we need to define the `Message` that the actor needs to accept. The message 
 that implements the `Message` trait.
 
 ```rust
+# extern crate actix;
 use actix::prelude::*;
 
 struct Ping(usize);
@@ -64,6 +65,7 @@ The implementation of the `Message` trait can be removed by using `#[derive(Mess
 
 The code above is the same as
 ```rust
+# extern crate actix;
 use actix::prelude::*;
 
 #[derive(Message)]
@@ -81,6 +83,7 @@ And finally, we need to declare that our actor `MyActor` can accept `Ping` and h
 To do this, the actor needs to implement the `Handler<Ping>` trait.
 
 ```rust
+# extern crate actix;
 # use actix::prelude::*;
 #
 # struct MyActor {
@@ -125,6 +128,7 @@ In the following example we are going to create a `MyActor` actor and send one m
 Here we use the actix-rt as way to start our System and drive our main Future so we can easily .await for the messages sent to the Actor.
 
 ```rust
+# extern crate actix;
 # use actix::prelude::*;
 # struct MyActor {
 #    count: usize,
