@@ -8,6 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
+          - 1.40.0
           - stable
           - beta
           - nightly
