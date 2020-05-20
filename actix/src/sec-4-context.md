@@ -88,21 +88,18 @@ This is an adjusted Ping example that stops after 4 pings are received.
 
 ```rust
 # extern crate actix;
-# extern crate futures;
-# use futures::Future;
 # use actix::prelude::*;
 # struct MyActor {
-#    count: usize,
+#     count: usize,
 # }
 # impl Actor for MyActor {
 #     type Context = Context<Self>;
 # }
-#
+
+# #[derive(Message)]
+# #[rtype(result = "usize")]
 # struct Ping(usize);
-#
-# impl Message for Ping {
-#    type Result = usize;
-# }
+
 impl Handler<Ping> for MyActor {
     type Result = usize;
 
@@ -118,29 +115,20 @@ impl Handler<Ping> for MyActor {
     }
 }
 
-fn main() {
-#     let system = System::new("test");
-#
-#     // start new actor
-#     let addr = MyActor{count: 10}.start();
-#
-#     // send message and get future for result
+# #[actix_rt::main]
+# async fn main() {
+    // start new actor
+    let addr = MyActor { count: 10 }.start();
+
+    // send message and get future for result
     let addr_2 = addr.clone();
-    let res = addr.send(Ping(6));
+    let res = addr.send(Ping(6)).await;
 
-    Arbiter::spawn(
-        res.map(move |res| {
-            // Now, the ping actor should have stopped, so a second message will fail
-            // With a SendError::Closed
-            assert!(addr_2.try_send(Ping(6)).is_err());
-
-            // Shutdown gracefully now.
-            System::current().stop();
-        })
-#         .map_err(|_| ()));
-#
-#     system.run();
-}
+    match res {
+        Ok(_) => assert!(addr_2.try_send(Ping(6)).is_err()),
+#        _ => {}
+#    }
+# }
 ```
 
 [`Context::stop()`]: https://actix.rs/actix/actix/struct.Context.html#method.stop
