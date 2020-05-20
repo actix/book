@@ -77,51 +77,109 @@ Recipient is a specialized version of an address that supports only one type of 
 It can be used in case the message needs to be sent to a different type of actor.
 A recipient object can be created from an address with `Addr::recipient()`.
 
+Address objects require an actor type, but if we just want to send a specific message 
+to an actor that can handle the message, we can use the Recipient interface.
+
 For example recipient can be used for a subscription system. In the following example
-`ProcessSignals` actor sends a `Signal` message to all subscribers. A subscriber can
-be any actor that implements the `Handler<Signal>` trait.
+`OrderEvents` actor sends a `OrderShipped` message to all subscribers. A subscriber can
+be any actor that implements the `Handler<OrderShipped>` trait.
 
 ```rust
-# // This example is incomplete, so I don't think people can follow it and get value from what it's
-# // trying to communicate or teach.
+# extern crate actix;
+use actix::prelude::*;
 
-# #[macro_use] extern crate actix;
-# use actix::prelude::*;
 #[derive(Message)]
 #[rtype(result = "()")]
-struct Signal(usize);
+struct OrderShipped(usize);
 
-/// Subscribe to process signals.
 #[derive(Message)]
 #[rtype(result = "()")]
-struct Subscribe(pub Recipient<Signal>);
+struct Ship(usize);
 
-/// Actor that provides signal subscriptions
-struct ProcessSignals {
-    subscribers: Vec<Recipient<Signal>>,
+/// Subscribe to order shipped event.
+#[derive(Message)]
+#[rtype(result = "()")]
+struct Subscribe(pub Recipient<OrderShipped>);
+
+/// Actor that provides order shipped event subscriptions
+struct OrderEvents {
+    subscribers: Vec<Recipient<OrderShipped>>,
 }
 
-impl Actor for ProcessSignals {
-    type Context = Context<Self>;
-}
-
-impl ProcessSignals {
-
-    /// Send signal to all subscribers
-    fn send_signal(&mut self, sig: usize) {
-        for subscr in &self.subscribers {
-           subscr.do_send(Signal(sig));
+impl OrderEvents {
+    fn new() -> Self {
+        OrderEvents {
+            subscribers: vec![]
         }
     }
 }
 
-/// Subscribe to signals
-impl Handler<Subscribe> for ProcessSignals {
+impl Actor for OrderEvents {
+    type Context = Context<Self>;
+}
+
+impl OrderEvents {
+    /// Send event to all subscribers
+    fn notify(&mut self, order_id: usize) {
+        for subscr in &self.subscribers {
+           subscr.do_send(OrderShipped(order_id));
+        }
+    }
+}
+
+/// Subscribe to shipment event
+impl Handler<Subscribe> for OrderEvents {
     type Result = ();
 
     fn handle(&mut self, msg: Subscribe, _: &mut Self::Context) {
         self.subscribers.push(msg.0);
     }
 }
-# fn main() {}
+
+/// Subscribe to ship message
+impl Handler<Ship> for OrderEvents {
+    type Result = ();
+    fn handle(&mut self, msg: Ship, ctx: &mut Self::Context) -> Self::Result {
+        self.notify(msg.0);
+        System::current().stop();
+    }
+
+} 
+
+// Email Subscriber 
+struct EmailSubscriber;
+impl Actor for EmailSubscriber {
+    type Context = Context<Self>;
+}
+
+impl Handler<OrderShipped> for EmailSubscriber {
+    type Result = ();
+    fn handle(&mut self, msg: OrderShipped, _ctx: &mut Self::Context) -> Self::Result {
+        println!("Email sent for order {}", msg.0)
+    }
+    
+}
+struct SmsSubscriber;
+impl Actor for SmsSubscriber {
+    type Context = Context<Self>;
+}
+
+impl Handler<OrderShipped> for SmsSubscriber {
+    type Result = ();
+    fn handle(&mut self, msg: OrderShipped, _ctx: &mut Self::Context) -> Self::Result {
+        println!("SMS sent for order {}", msg.0)
+    }
+    
+}
+
+fn main() {
+    let system = System::new("events");
+    let email_subscriber = Subscribe(EmailSubscriber{}.start().recipient());
+    let sms_subscriber = Subscribe(SmsSubscriber{}.start().recipient());
+    let order_event = OrderEvents::new().start();
+    order_event.do_send(email_subscriber);
+    order_event.do_send(sms_subscriber);
+    order_event.do_send(Ship(1));
+    system.run();
+}
 ```
