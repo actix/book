@@ -76,7 +76,6 @@ Let's define a simple `Ping` message - an actor which will accept this message n
 
 ```rust
 # extern crate actix;
-use std::io;
 use actix::prelude::*;
 
 struct Ping;
@@ -101,18 +100,12 @@ creating actors; for details check the docs.
 
 ```rust
 # extern crate actix;
-# extern crate futures;
-use std::io;
 use actix::prelude::*;
-use futures::Future;
 
 /// Define message
+#[derive(Message)]
+#[rtype(result = "Result<bool, io::Error>")]
 struct Ping;
-
-impl Message for Ping {
-    type Result = Result<bool, io::Error>;
-}
-
 
 // Define actor
 struct MyActor;
@@ -141,30 +134,19 @@ impl Handler<Ping> for MyActor {
     }
 }
 
-fn main() {
-    let sys = System::new("example");
-
+#[actix_rt::main]
+async fn main() {
     // Start MyActor in current thread
     let addr = MyActor.start();
 
     // Send Ping message.
     // send() message returns Future object, that resolves to message result
-    let result = addr.send(Ping);
+    let result = addr.send(Ping).await;
 
-    // spawn future to reactor
-    Arbiter::spawn(
-        result.map(|res| {
-            match res {
-                Ok(result) => println!("Got result: {}", result),
-                Err(err) => println!("Got error: {}", err),
-            }
-#           System::current().stop();
-        })
-        .map_err(|e| {
-            println!("Actor is probably dead: {}", e);
-        }));
-
-    sys.run();
+    match result {
+        Ok(res) => println!("Got result: {}", res.unwrap()),
+        Err(err) => println!("Got error: {}", err),
+    } 
 }
 ```
 
@@ -172,7 +154,7 @@ fn main() {
 
 Let's take a look at the `Result` type defined for the `impl Handler` in the above example. See how we're returning a `Result<bool, io::Error>`? We're able to respond to our actor's incoming message with this type because it has the `MessageResponse` trait implemented for that type. Here's the definition for that trait:
 
-```
+```rust
 pub trait MessageResponse<A: Actor, M: Message> {
     fn handle<R: ResponseChannel<M>>(self, ctx: &mut A::Context, tx: Option<R>);
 }
@@ -182,11 +164,11 @@ Sometimes it makes sense to respond to incoming messages with types that don't h
 
 ```rust
 # extern crate actix;
-# extern crate futures;
 use actix::dev::{MessageResponse, ResponseChannel};
 use actix::prelude::*;
-use futures::Future;
 
+#[derive(Message)]
+#[rtype(result = "Responses")]
 enum Messages {
     Ping,
     Pong,
@@ -209,10 +191,6 @@ where
     }
 }
 
-impl Message for Messages {
-    type Result = Responses;
-}
-
 // Define actor
 struct MyActor;
 
@@ -220,11 +198,11 @@ struct MyActor;
 impl Actor for MyActor {
     type Context = Context<Self>;
 
-    fn started(&mut self, ctx: &mut Context<Self>) {
+    fn started(&mut self, _ctx: &mut Context<Self>) {
         println!("Actor is alive");
     }
 
-    fn stopped(&mut self, ctx: &mut Context<Self>) {
+    fn stopped(&mut self, _ctx: &mut Context<Self>) {
         println!("Actor is stopped");
     }
 }
@@ -233,7 +211,7 @@ impl Actor for MyActor {
 impl Handler<Messages> for MyActor {
     type Result = Responses;
 
-    fn handle(&mut self, msg: Messages, ctx: &mut Context<Self>) -> Self::Result {
+    fn handle(&mut self, msg: Messages, _ctx: &mut Context<Self>) -> Self::Result {
         match msg {
             Messages::Ping => Responses::GotPing,
             Messages::Pong => Responses::GotPong,
@@ -241,47 +219,30 @@ impl Handler<Messages> for MyActor {
     }
 }
 
-fn main() {
-    let sys = System::new("example");
-
+#[actix_rt::main]
+async fn main() {
     // Start MyActor in current thread
     let addr = MyActor.start();
 
     // Send Ping message.
     // send() message returns Future object, that resolves to message result
-    let ping_future = addr.send(Messages::Ping);
-    let pong_future = addr.send(Messages::Pong);
+    let ping_future = addr.send(Messages::Ping).await;
+    let pong_future = addr.send(Messages::Pong).await;
 
-    // Spawn pong_future onto event loop
-    Arbiter::spawn(
-        pong_future
-            .map(|res| {
-                match res {
-                    Responses::GotPing => println!("Ping received"),
-                    Responses::GotPong => println!("Pong received"),
-                }
-#               System::current().stop();
-            })
-            .map_err(|e| {
-                println!("Actor is probably dead: {}", e);
-            }),
-    );
+    match pong_future {
+        Ok(res) => match res {
+            Responses::GotPing => println!("Ping received"),
+            Responses::GotPong => println!("Pong received"),
+        },
+        Err(e) => println!("Actor is probably dead: {}", e),
+    }
 
-    // Spawn ping_future onto event loop
-    Arbiter::spawn(
-        ping_future
-            .map(|res| {
-                match res {
-                    Responses::GotPing => println!("Ping received"),
-                    Responses::GotPong => println!("Pong received"),
-                }
-#               System::current().stop();
-            })
-            .map_err(|e| {
-                println!("Actor is probably dead: {}", e);
-            }),
-    );
-
-    sys.run();
+    match ping_future {
+        Ok(res) => match res {
+            Responses::GotPing => println!("Ping received"),
+            Responses::GotPong => println!("Pong received"),
+        },
+        Err(e) => println!("Actor is probably dead: {}", e),
+    }
 }
 ```
