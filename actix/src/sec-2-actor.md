@@ -72,7 +72,7 @@ An Actor communicates with other actors by sending messages. In actix all
 messages are typed. A message can be any rust type which implements the
 [`Message`] trait. `Message::Result` defines the return type.
 Let's define a simple `Ping` message - an actor which will accept this message needs to return
-`io::Result<bool>`.
+`Result<bool, std::io::Error>`.
 
 ```rust
 # extern crate actix;
@@ -81,7 +81,7 @@ use actix::prelude::*;
 struct Ping;
 
 impl Message for Ping {
-    type Result = Result<bool, io::Error>;
+    type Result = Result<bool, std::io::Error>;
 }
 
 # fn main() {}
@@ -104,7 +104,7 @@ use actix::prelude::*;
 
 /// Define message
 #[derive(Message)]
-#[rtype(result = "Result<bool, io::Error>")]
+#[rtype(result = "Result<bool, std::io::Error>")]
 struct Ping;
 
 // Define actor
@@ -125,7 +125,7 @@ impl Actor for MyActor {
 
 /// Define handler for `Ping` message
 impl Handler<Ping> for MyActor {
-    type Result = Result<bool, io::Error>;
+    type Result = Result<bool, std::io::Error>;
 
     fn handle(&mut self, msg: Ping, ctx: &mut Context<Self>) -> Self::Result {
         println!("Ping received");
@@ -152,9 +152,13 @@ async fn main() {
 
 ## Responding with a MessageResponse
 
-Let's take a look at the `Result` type defined for the `impl Handler` in the above example. See how we're returning a `Result<bool, io::Error>`? We're able to respond to our actor's incoming message with this type because it has the `MessageResponse` trait implemented for that type. Here's the definition for that trait:
+Let's take a look at the `Result` type defined for the `impl Handler` in the above example. See how we're returning a `Result<bool, std::io::Error>`? We're able to respond to our actor's incoming message with this type because it has the `MessageResponse` trait implemented for that type. Here's the definition for that trait:
 
 ```rust
+# extern crate actix;
+# use actix::dev::{MessageResponse, ResponseChannel};
+# use actix::prelude::*;
+
 pub trait MessageResponse<A: Actor, M: Message> {
     fn handle<R: ResponseChannel<M>>(self, ctx: &mut A::Context, tx: Option<R>);
 }
