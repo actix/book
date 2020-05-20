@@ -150,9 +150,9 @@ Here we use the actix-rt as way to start our System and drive our main Future so
 #         self.count
 #     }
 # }
-#
- #[actix_rt::main] // <- starts the system and block until future resolves
- async fn main() {
+
+#[actix_rt::main] 
+async fn main() {
     // start new actor
     let addr = MyActor { count: 10 }.start();
 
@@ -166,5 +166,6 @@ Here we use the actix-rt as way to start our System and drive our main Future so
     System::current().stop();
 }
 ```
+`#[actix_rt::main]` starts the system and block until future resolves
 
 The Ping example is available in the [examples directory](https://github.com/actix/actix/tree/master/examples/).
