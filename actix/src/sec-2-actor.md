@@ -100,6 +100,7 @@ creating actors; for details check the docs.
 
 ```rust
 # extern crate actix;
+# extern crate actix_rt;
 use actix::prelude::*;
 
 /// Define message
@@ -164,6 +165,7 @@ Sometimes it makes sense to respond to incoming messages with types that don't h
 
 ```rust
 # extern crate actix;
+# extern crate actix_rt;
 use actix::dev::{MessageResponse, ResponseChannel};
 use actix::prelude::*;
 

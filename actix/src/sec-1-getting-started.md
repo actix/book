@@ -129,6 +129,7 @@ Here we use the actix-rt as way to start our System and drive our main Future so
 
 ```rust
 # extern crate actix;
+# extern crate actix_rt;
 # use actix::prelude::*;
 # struct MyActor {
 #    count: usize,

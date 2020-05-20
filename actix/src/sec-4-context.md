@@ -88,6 +88,7 @@ This is an adjusted Ping example that stops after 4 pings are received.
 
 ```rust
 # extern crate actix;
+# extern crate actix_rt;
 # use actix::prelude::*;
 # struct MyActor {
 #     count: usize,
