@@ -154,11 +154,7 @@ async fn main() {
 
 Let's take a look at the `Result` type defined for the `impl Handler` in the above example. See how we're returning a `Result<bool, std::io::Error>`? We're able to respond to our actor's incoming message with this type because it has the `MessageResponse` trait implemented for that type. Here's the definition for that trait:
 
-```rust
-# extern crate actix;
-# use actix::dev::{MessageResponse, ResponseChannel};
-# use actix::prelude::*;
-
+```
 pub trait MessageResponse<A: Actor, M: Message> {
     fn handle<R: ResponseChannel<M>>(self, ctx: &mut A::Context, tx: Option<R>);
 }
