@@ -21,9 +21,8 @@ contains the following:
 ```toml
 [dependencies]
 actix = "0.10.0-alpha.3"
-actix-rt = "1.1" //<-- Runtime for actix
+actix-rt = "1.1" # <-- Runtime for actix
 ```
-actix
 Let's create an actor that will accept a `Ping` message and respond with the number of pings processed.
 
 An actor is a type that implements the `Actor` trait:
@@ -71,7 +70,7 @@ use actix::prelude::*;
 #[derive(Message)]
 #[rtype(result = "usize")]
 struct Ping(usize);
-
+#
 # fn main() {}
 ```
 
@@ -167,6 +166,6 @@ async fn main() {
     System::current().stop();
 }
 ```
-`#[actix_rt::main]` starts the system and block until future resolves
+`#[actix_rt::main]` starts the system and block until future resolves.
 
 The Ping example is available in the [examples directory](https://github.com/actix/actix/tree/master/examples/).

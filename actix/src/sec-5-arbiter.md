@@ -47,7 +47,7 @@ B, and we want to run an event on B only once a result from A is completed. We
 can use `Arbiter::spawn` to assist with this task.
 
 ```rust
-extern crate actix;
+# extern crate actix;
 use actix::prelude::*;
 
 struct SumActor {}

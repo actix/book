@@ -146,7 +146,7 @@ impl Handler<Ship> for OrderEvents {
 
 } 
 
-// Email Subscriber 
+/// Email Subscriber 
 struct EmailSubscriber;
 impl Actor for EmailSubscriber {
     type Context = Context<Self>;

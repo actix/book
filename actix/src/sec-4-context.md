@@ -127,8 +127,8 @@ impl Handler<Ping> for MyActor {
 
     match res {
         Ok(_) => assert!(addr_2.try_send(Ping(6)).is_err()),
-#        _ => {}
-#    }
+        _ => {}
+    }
 # }
 ```
 
