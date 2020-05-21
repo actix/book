@@ -13,6 +13,7 @@ the [SyncArbiter] chapter.
 ```rust
 # extern crate actix;
 # use actix::prelude::*;
+#
 struct MyActor;
 impl Actor for MyActor {
     type Context = Context<Self>;
@@ -30,7 +31,9 @@ implement the `AsyncContext` trait. `AsyncContext::address()` provides the actor
 ```rust
 # extern crate actix;
 # use actix::prelude::*;
+#
 struct MyActor;
+
 impl Actor for MyActor {
     type Context = Context<Self>;
 
@@ -38,6 +41,7 @@ impl Actor for MyActor {
        let addr = ctx.address();
     }
 }
+#
 # fn main() {}
 ```
 

@@ -83,7 +83,7 @@ struct Ping;
 impl Message for Ping {
     type Result = Result<bool, std::io::Error>;
 }
-
+#
 # fn main() {}
 ```
 

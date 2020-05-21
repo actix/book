@@ -26,11 +26,10 @@ struct MySyncActor;
 impl Actor for MySyncActor {
     type Context = SyncContext<Self>;
 }
-
+#
 # fn main() {
 # System::new("test");
 # }
-
 ```
 
 ## Starting the Sync Arbiter
@@ -53,7 +52,6 @@ impl Actor for MySyncActor {
 # System::new("test");
 let addr = SyncArbiter::start(2, || MySyncActor);
 # }
-
 ```
 
 We can communicate with the addr the same way as we have with our previous Actors

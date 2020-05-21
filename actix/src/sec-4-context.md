@@ -14,7 +14,9 @@ specific to the context implementation. For the `Context`  type the capacity is 
 ```rust
 # extern crate actix;
 # use actix::prelude::*;
+#
 struct MyActor;
+
 impl Actor for MyActor {
     type Context = Context<Self>;
 
@@ -47,7 +49,7 @@ To get your address from the context you call [`Context::address()`]. An example
 ```rust
 # extern crate actix;
 # use actix::prelude::*;
-
+#
 struct MyActor;
 
 struct WhoAmI;
@@ -96,11 +98,11 @@ This is an adjusted Ping example that stops after 4 pings are received.
 # impl Actor for MyActor {
 #     type Context = Context<Self>;
 # }
-
+#
 # #[derive(Message)]
 # #[rtype(result = "usize")]
 # struct Ping(usize);
-
+#
 impl Handler<Ping> for MyActor {
     type Result = usize;
 

@@ -38,7 +38,7 @@ struct MyActor {
 impl Actor for MyActor {
     type Context = Context<Self>;
 }
-
+#
 # fn main() {}
 ```
 
@@ -82,7 +82,7 @@ To do this, the actor needs to implement the `Handler<Ping>` trait.
 # impl Message for Ping {
 #    type Result = usize;
 # }
-
+#
 impl Handler<Ping> for MyActor {
     type Result = usize;
 
@@ -92,7 +92,7 @@ impl Handler<Ping> for MyActor {
         self.count
     }
 }
-
+#
 # fn main() {}
 ```
 
@@ -135,7 +135,7 @@ Here we use the actix-rt as way to start our System and drive our main Future so
 #         self.count
 #     }
 # }
-
+#
 #[actix_rt::main] 
 async fn main() {
     // start new actor
