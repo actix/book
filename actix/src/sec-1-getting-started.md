@@ -52,21 +52,6 @@ that implements the `Message` trait.
 # extern crate actix;
 use actix::prelude::*;
 
-struct Ping(usize);
-
-impl Message for Ping {
-    type Result = usize;
-}
-
-# fn main() {}
-```
-The implementation of the `Message` trait can be removed by using `#[derive(Message)]` and `#[rtype(result = "the result")]` attributes
-
-The code above is the same as
-```rust
-# extern crate actix;
-use actix::prelude::*;
-
 #[derive(Message)]
 #[rtype(result = "usize")]
 struct Ping(usize);
