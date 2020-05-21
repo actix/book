@@ -11,7 +11,7 @@ Let’s write our first actix application! Start by creating a new binary-based
 Cargo project and changing into the new directory:
 
 ```bash
-cargo new actor-ping --bin
+cargo new actor-ping
 cd actor-ping
 ```
 
@@ -20,9 +20,9 @@ contains the following:
 
 ```toml
 [dependencies]
-actix = "0.8"
+actix = "0.10.0-alpha.3"
+actix-rt = "1.1" # <-- Runtime for actix
 ```
-
 Let's create an actor that will accept a `Ping` message and respond with the number of pings processed.
 
 An actor is a type that implements the `Actor` trait:
@@ -38,7 +38,7 @@ struct MyActor {
 impl Actor for MyActor {
     type Context = Context<Self>;
 }
-
+#
 # fn main() {}
 ```
 
@@ -52,12 +52,10 @@ that implements the `Message` trait.
 # extern crate actix;
 use actix::prelude::*;
 
+#[derive(Message)]
+#[rtype(result = "usize")]
 struct Ping(usize);
-
-impl Message for Ping {
-    type Result = usize;
-}
-
+#
 # fn main() {}
 ```
 
@@ -84,7 +82,7 @@ To do this, the actor needs to implement the `Handler<Ping>` trait.
 # impl Message for Ping {
 #    type Result = usize;
 # }
-
+#
 impl Handler<Ping> for MyActor {
     type Result = usize;
 
@@ -94,7 +92,7 @@ impl Handler<Ping> for MyActor {
         self.count
     }
 }
-
+#
 # fn main() {}
 ```
 
@@ -111,11 +109,11 @@ Both `start()` and `create()` return an address object.
 
 In the following example we are going to create a `MyActor` actor and send one message.
 
+Here we use the actix-rt as way to start our System and drive our main Future so we can easily .await for the messages sent to the Actor.
+
 ```rust
 # extern crate actix;
-# extern crate futures;
-# use futures::Future;
-# use std::io;
+# extern crate actix_rt;
 # use actix::prelude::*;
 # struct MyActor {
 #    count: usize,
@@ -138,24 +136,21 @@ In the following example we are going to create a `MyActor` actor and send one m
 #     }
 # }
 #
-fn main() -> std::io::Result<()> {
-    let system = System::new("test");
-
+#[actix_rt::main] 
+async fn main() {
     // start new actor
-    let addr = MyActor{count: 10}.start();
+    let addr = MyActor { count: 10 }.start();
 
     // send message and get future for result
-    let res = addr.send(Ping(10));
+    let res = addr.send(Ping(10)).await;
 
-    Arbiter::spawn(
-        res.map(|res| {
-            # System::current().stop();
-            println!("RESULT: {}", res == 20);
-        })
-        .map_err(|_| ()));
+    // handle() returns tokio handle
+    println!("RESULT: {}", res.unwrap() == 20);
 
-    system.run()
+    // stop system and exit
+    System::current().stop();
 }
 ```
+`#[actix_rt::main]` starts the system and block until future resolves.
 
 The Ping example is available in the [examples directory](https://github.com/actix/actix/tree/master/examples/).

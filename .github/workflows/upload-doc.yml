@@ -22,7 +22,7 @@ jobs:
 
       - name: Upload documentation
         run: |
-          cargo install mdbook --no-default-features --features output --version 0.3.5
+          cargo install mdbook --no-default-features --features output --version 0.3.7
           mdbook build ./actix/ -d ../target/doc/actix
           cp -r ./target/doc/actix/html/* ./target/doc/actix/
           rm -r ./target/doc/actix/html ./target/doc/actix/linkcheck
