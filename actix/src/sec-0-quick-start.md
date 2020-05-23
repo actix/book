@@ -17,7 +17,7 @@ If you already have rustup installed, run this command to ensure you have the la
 rustup update
 ```
 
-The actix framework requires Rust version 1.39.0 and up.
+The actix framework requires Rust version 1.40.0 and up.
 
 ## Running Examples
 

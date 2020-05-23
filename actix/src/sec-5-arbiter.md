@@ -1,6 +1,6 @@
 # Arbiter
 
-`Arbiter`s provide an asynchronous execution context for `Actor`s. Where an
+`Arbiter`s provide an asynchronous execution context for `Actor`s, `functions` and `futures`. Where an
 actor contains a `Context` that defines its Actor specific execution state,
 Arbiters host the environment where an actor runs.
 
@@ -48,21 +48,17 @@ can use `Arbiter::spawn` to assist with this task.
 
 ```rust
 # extern crate actix;
-# extern crate futures;
-# use actix::prelude::*;
-# use futures::Future;
-#
+use actix::prelude::*;
+
 struct SumActor {}
 
 impl Actor for SumActor {
     type Context = Context<Self>;
 }
 
+#[derive(Message)]
+#[rtype(result = "usize")]
 struct Value(usize, usize);
-
-impl Message for Value {
-    type Result = usize;
-}
 
 impl Handler<Value> for SumActor {
     type Result = usize;
@@ -78,11 +74,9 @@ impl Actor for DisplayActor {
     type Context = Context<Self>;
 }
 
+#[derive(Message)]
+#[rtype(result = "()")]
 struct Display(usize);
-
-impl Message for Display {
-    type Result = ();
-}
 
 impl Handler<Display> for DisplayActor {
     type Result = ();
@@ -95,44 +89,40 @@ impl Handler<Display> for DisplayActor {
 fn main() {
     let system = System::new("single-arbiter-example");
 
-    // `Actor::start` spawns the `Actor` on the *current* `Arbiter`, which
-    // in this case is the System arbiter
-    let sum_addr = SumActor {}.start();
-    let dis_addr = DisplayActor {}.start();
-
     // Define an execution flow using futures
-    //
-    // Start by sending a `Value(6, 7)` to our `SumActor`.
-    // `Addr::send` responds with a `Request`, which implements `Future`.
-    // When awaited or mapped, it will resolve to a `Result<usize, MailboxError>`.
-    let execution = sum_addr
-        .send(Value(6, 7))
-        // `.map_err` turns `Future<usize, MailboxError>` into `Future<usize, ()>`
-        //   and prints any `MailboxError`s we encounter
-        .map_err(|e| {
-            eprintln!("Encountered mailbox error: {:?}", e);
-        })
-        // Assuming the send was successful, chain another computation
-        //   onto the future. Returning a future from `and_then` chains
-        //   that computation to the end of the existing future.
-        .and_then(move |res| {
-            // `res` is now the `usize` returned from `SumActor` as a response to `Value(6, 7)`
+    let execution = async {
+        // `Actor::start` spawns the `Actor` on the *current* `Arbiter`, which
+        // in this case is the System arbiter
+        let sum_addr = SumActor {}.start();
+        let dis_addr = DisplayActor {}.start();
 
-            // Once the future is complete, send the successful response (`usize`)
-            // to the `DisplayActor` wrapped in a `Display
-            dis_addr.send(Display(res)).map(move |_| ()).map_err(|_| ())
-        })
-        .map(move |_| {
-            // We only want to do one computation in this example, so we
-            // shut down the `System` which will stop any Arbiters within
-            // it (including the System Arbiter), which will in turn stop
-            // any Actor Contexts running within those Arbiters, finally
-            // shutting down all Actors.
-            System::current().stop();
-        });
+        // Start by sending a `Value(6, 7)` to our `SumActor`.
+        // `Addr::send` responds with a `Request`, which implements `Future`.
+        // When awaited, it will resolve to a `Result<usize, MailboxError>`.
+        let sum_result = sum_addr.send(Value(6, 7)).await;
+
+        match sum_result {
+            Ok(res) => {
+                // `res` is now the `usize` returned from `SumActor` as a response to `Value(6, 7)`
+                // Once the future is complete, send the successful response (`usize`)
+                // to the `DisplayActor` wrapped in a `Display
+                dis_addr.send(Display(res)).await;
+            }
+            Err(e) => {
+                eprintln!("Encountered mailbox error: {:?}", e);
+            }
+        };
+    };
 
     // Spawn the future onto the current Arbiter/event loop
     Arbiter::spawn(execution);
+
+    // We only want to do one computation in this example, so we
+    // shut down the `System` which will stop any Arbiters within
+    // it (including the System Arbiter), which will in turn stop
+    // any Actor Contexts running within those Arbiters, finally
+    // shutting down all Actors.
+    System::current().stop();
 
     system.run();
 }

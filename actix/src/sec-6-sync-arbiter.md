@@ -26,11 +26,10 @@ struct MySyncActor;
 impl Actor for MySyncActor {
     type Context = SyncContext<Self>;
 }
-
+#
 # fn main() {
 # System::new("test");
 # }
-
 ```
 
 ## Starting the Sync Arbiter
@@ -53,15 +52,12 @@ impl Actor for MySyncActor {
 # System::new("test");
 let addr = SyncArbiter::start(2, || MySyncActor);
 # }
-
 ```
 
 We can communicate with the addr the same way as we have with our previous Actors
-that we started. We can send messages, recieve futures and results, and more.
+that we started. We can send messages, receive futures and results, and more.
 
 ## Sync Actor Mailboxes
 
 Sync Actors have no Mailbox limits, but you should still use `do_send`, `try_send` and `send`
-as normal to account for other possible errors or sync vs async behaviour.
-
-
+as normal to account for other possible errors or sync vs async behavior.
