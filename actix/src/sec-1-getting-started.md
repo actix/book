@@ -23,6 +23,7 @@ contains the following:
 actix = "0.10.0-alpha.3"
 actix-rt = "1.1" # <-- Runtime for actix
 ```
+
 Let's create an actor that will accept a `Ping` message and respond with the number of pings processed.
 
 An actor is a type that implements the `Actor` trait:
@@ -109,7 +110,8 @@ Both `start()` and `create()` return an address object.
 
 In the following example we are going to create a `MyActor` actor and send one message.
 
-Here we use the actix-rt as way to start our System and drive our main Future so we can easily .await for the messages sent to the Actor.
+Here we use the actix-rt as way to start our System and drive our main Future
+so we can easily `.await` for the messages sent to the Actor.
 
 ```rust
 # extern crate actix;
@@ -151,6 +153,7 @@ async fn main() {
     System::current().stop();
 }
 ```
+
 `#[actix_rt::main]` starts the system and block until future resolves.
 
 The Ping example is available in the [examples directory](https://github.com/actix/actix/tree/master/examples/).

@@ -54,7 +54,7 @@ To be able to handle a specific message the actor has to provide a
 All messages are statically typed. The message can be handled in an asynchronous
 fashion. The actor can spawn other actors or add futures or
 streams to the execution context. The actor trait provides several methods that allow
- controlling the actor's lifecycle.
+controlling the actor's lifecycle.
 
 To send a message to an actor, the `Addr` object needs to be used. `Addr` provides several
 ways to send a message.

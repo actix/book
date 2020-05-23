@@ -73,9 +73,8 @@ impl Handler<WhoAmI> for MyActor {
 # fn main() {
 #     System::new("scratch");
 #     let addr = MyActor.start();
-let who_addr = addr.do_send(WhoAmI {} );
+let who_addr = addr.do_send(WhoAmI{});
 # }
-
 ```
 
 [`Context::address()`]: https://actix.rs/actix/actix/struct.Context.html#method.address
@@ -118,8 +117,8 @@ impl Handler<Ping> for MyActor {
     }
 }
 
-# #[actix_rt::main]
-# async fn main() {
+#[actix_rt::main]
+async fn main() {
     // start new actor
     let addr = MyActor { count: 10 }.start();
 
@@ -131,7 +130,7 @@ impl Handler<Ping> for MyActor {
         Ok(_) => assert!(addr_2.try_send(Ping(6)).is_err()),
         _ => {}
     }
-# }
+}
 ```
 
 [`Context::stop()`]: https://actix.rs/actix/actix/struct.Context.html#method.stop

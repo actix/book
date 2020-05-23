@@ -153,15 +153,21 @@ async fn main() {
 
 ## Responding with a MessageResponse
 
-Let's take a look at the `Result` type defined for the `impl Handler` in the above example. See how we're returning a `Result<bool, std::io::Error>`? We're able to respond to our actor's incoming message with this type because it has the `MessageResponse` trait implemented for that type. Here's the definition for that trait:
+Let's take a look at the `Result` type defined for the `impl Handler` in the above example.
+See how we're returning a `Result<bool, std::io::Error>`? We're able to respond to our actor's
+incoming message with this type because it has the `MessageResponse` trait implemented for that type.
+Here's the definition for that trait:
 
-```
+```rust,ignore
 pub trait MessageResponse<A: Actor, M: Message> {
     fn handle<R: ResponseChannel<M>>(self, ctx: &mut A::Context, tx: Option<R>);
 }
 ```
 
-Sometimes it makes sense to respond to incoming messages with types that don't have this trait implemented for them. When that happens we can implement the trait ourselves. Here's an example where we're responding to a `Ping` message with a `GotPing`, and responding with `GotPong` for a `Pong` message.
+Sometimes it makes sense to respond to incoming messages with types that don't have this trait
+implemented for them. When that happens we can implement the trait ourselves.
+Here's an example where we're responding to a `Ping` message with a `GotPing`,
+and responding with `GotPong` for a `Pong` message.
 
 ```rust
 # extern crate actix;
