@@ -98,7 +98,7 @@ impl Handler<Ping> for MyActor {
 ```
 
 That's it. Now we just need to start our actor and send a message to it.
-The start procedure depends on the actor's context implementation. In our case can we use
+The start procedure depends on the actor's context implementation. In our case we can use
 `Context<A>` which is tokio/future based. We can start it with `Actor::start()`
 or `Actor::create()`. The first is used when the actor instance can be created immediately.
 The second method is used in case we need access to the context object before we can create
