@@ -1,0 +1,350 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Getting Started - Actix</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Actix - actor framework in Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="sec-0-quick-start.html">Actix Quickstart</a></li><li class="chapter-item expanded "><a href="sec-1-getting-started.html" class="active"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="sec-2-actor.html"><strong aria-hidden="true">2.</strong> Actor</a></li><li class="chapter-item expanded "><a href="sec-3-address.html"><strong aria-hidden="true">3.</strong> Address</a></li><li class="chapter-item expanded "><a href="sec-4-context.html"><strong aria-hidden="true">4.</strong> Context</a></li><li class="chapter-item expanded "><a href="sec-5-arbiter.html"><strong aria-hidden="true">5.</strong> Arbiter</a></li><li class="chapter-item expanded "><a href="sec-6-sync-arbiter.html"><strong aria-hidden="true">6.</strong> SyncArbiter</a></li><li class="chapter-item expanded "><a href="sec-7-stream.html"><strong aria-hidden="true">7.</strong> Stream</a></li><li class="chapter-item expanded "><a href="sec-8-io-helpers.html"><strong aria-hidden="true">8.</strong> IO helpers</a></li><li class="chapter-item expanded "><a href="sec-9-supervisor.html"><strong aria-hidden="true">9.</strong> Supervisor</a></li><li class="chapter-item expanded "><a href="sec-10-registry.html"><strong aria-hidden="true">10.</strong> Registry</a></li><li class="chapter-item expanded "><a href="sec-11-helper-actors.html"><strong aria-hidden="true">11.</strong> Helper actors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Actix</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        <a href="https://github.com/actix/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#getting-started" id="getting-started">Getting Started</a></h1>
+<p>Let’s create and run our first actix application. We’ll create a new Cargo project
+that depends on actix and then run the application.</p>
+<p>In previous section we already installed required rust version. Now let's create new cargo projects.</p>
+<h2><a class="header" href="#ping-actor" id="ping-actor">Ping actor</a></h2>
+<p>Let’s write our first actix application! Start by creating a new binary-based
+Cargo project and changing into the new directory:</p>
+<pre><code class="language-bash">cargo new actor-ping
+cd actor-ping
+</code></pre>
+<p>Now, add actix as a dependency of your project by ensuring your Cargo.toml
+contains the following:</p>
+<pre><code class="language-toml">[dependencies]
+actix = &quot;0.10.0-alpha.3&quot;
+actix-rt = &quot;1.1&quot; # &lt;-- Runtime for actix
+</code></pre>
+<p>Let's create an actor that will accept a <code>Ping</code> message and respond with the number of pings processed.</p>
+<p>An actor is a type that implements the <code>Actor</code> trait:</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span>use actix::prelude::*;
+
+struct MyActor {
+    count: usize,
+}
+
+impl Actor for MyActor {
+    type Context = Context&lt;Self&gt;;
+}
+<span class="boring">
+</span><span class="boring">fn main() {}
+</span></code></pre></pre>
+<p>Each actor has an execution context, for <code>MyActor</code> we are going to use <code>Context&lt;A&gt;</code>. More information
+on actor contexts is available in the next section.</p>
+<p>Now we need to define the <code>Message</code> that the actor needs to accept. The message can be any type
+that implements the <code>Message</code> trait.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span>use actix::prelude::*;
+
+#[derive(Message)]
+#[rtype(result = &quot;usize&quot;)]
+struct Ping(usize);
+<span class="boring">
+</span><span class="boring">fn main() {}
+</span></code></pre></pre>
+<p>The main purpose of the <code>Message</code> trait is to define a result type. The <code>Ping</code> message defines
+<code>usize</code>, which indicates that any actor that can accept a <code>Ping</code> message needs to
+return <code>usize</code> value.</p>
+<p>And finally, we need to declare that our actor <code>MyActor</code> can accept <code>Ping</code> and handle it.
+To do this, the actor needs to implement the <code>Handler&lt;Ping&gt;</code> trait.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">use actix::prelude::*;
+</span><span class="boring">
+</span><span class="boring">struct MyActor {
+</span><span class="boring">   count: usize,
+</span><span class="boring">}
+</span><span class="boring">impl Actor for MyActor {
+</span><span class="boring">    type Context = Context&lt;Self&gt;;
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">struct Ping(usize);
+</span><span class="boring">
+</span><span class="boring">impl Message for Ping {
+</span><span class="boring">   type Result = usize;
+</span><span class="boring">}
+</span><span class="boring">
+</span>impl Handler&lt;Ping&gt; for MyActor {
+    type Result = usize;
+
+    fn handle(&amp;mut self, msg: Ping, _ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        self.count += msg.0;
+
+        self.count
+    }
+}
+<span class="boring">
+</span><span class="boring">fn main() {}
+</span></code></pre></pre>
+<p>That's it. Now we just need to start our actor and send a message to it.
+The start procedure depends on the actor's context implementation. In our case we can use
+<code>Context&lt;A&gt;</code> which is tokio/future based. We can start it with <code>Actor::start()</code>
+or <code>Actor::create()</code>. The first is used when the actor instance can be created immediately.
+The second method is used in case we need access to the context object before we can create
+the actor instance. In case of the <code>MyActor</code> actor we can use <code>start()</code>.</p>
+<p>All communication with actors goes through an address. You can <code>do_send</code> a message
+without waiting for a response, or <code>send</code> to an actor with a specific message.
+Both <code>start()</code> and <code>create()</code> return an address object.</p>
+<p>In the following example we are going to create a <code>MyActor</code> actor and send one message.</p>
+<p>Here we use the actix-rt as way to start our System and drive our main Future
+so we can easily <code>.await</code> for the messages sent to the Actor.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">extern crate actix_rt;
+</span><span class="boring">use actix::prelude::*;
+</span><span class="boring">struct MyActor {
+</span><span class="boring">   count: usize,
+</span><span class="boring">}
+</span><span class="boring">impl Actor for MyActor {
+</span><span class="boring">    type Context = Context&lt;Self&gt;;
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">struct Ping(usize);
+</span><span class="boring">
+</span><span class="boring">impl Message for Ping {
+</span><span class="boring">   type Result = usize;
+</span><span class="boring">}
+</span><span class="boring">impl Handler&lt;Ping&gt; for MyActor {
+</span><span class="boring">    type Result = usize;
+</span><span class="boring">
+</span><span class="boring">    fn handle(&amp;mut self, msg: Ping, ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+</span><span class="boring">        self.count += msg.0;
+</span><span class="boring">        self.count
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span>#[actix_rt::main] 
+async fn main() {
+    // start new actor
+    let addr = MyActor { count: 10 }.start();
+
+    // send message and get future for result
+    let res = addr.send(Ping(10)).await;
+
+    // handle() returns tokio handle
+    println!(&quot;RESULT: {}&quot;, res.unwrap() == 20);
+
+    // stop system and exit
+    System::current().stop();
+}
+</code></pre></pre>
+<p><code>#[actix_rt::main]</code> starts the system and block until future resolves.</p>
+<p>The Ping example is available in the <a href="https://github.com/actix/actix/tree/master/examples/">examples directory</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="sec-0-quick-start.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="sec-2-actor.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="sec-0-quick-start.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="sec-2-actor.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+        <!-- Google Analytics Tag -->
+        <script type="text/javascript">
+            var localAddrs = ["localhost", "127.0.0.1", ""];
+
+            // make sure we don't activate google analytics if the developer is
+            // inspecting the book locally...
+            if (localAddrs.indexOf(document.location.hostname) === -1) {
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-110322332-1', 'auto');
+                ga('send', 'pageview');
+            }
+        </script>
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

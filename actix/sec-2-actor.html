@@ -1,0 +1,435 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Actor - Actix</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Actix - actor framework in Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="sec-0-quick-start.html">Actix Quickstart</a></li><li class="chapter-item expanded "><a href="sec-1-getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="sec-2-actor.html" class="active"><strong aria-hidden="true">2.</strong> Actor</a></li><li class="chapter-item expanded "><a href="sec-3-address.html"><strong aria-hidden="true">3.</strong> Address</a></li><li class="chapter-item expanded "><a href="sec-4-context.html"><strong aria-hidden="true">4.</strong> Context</a></li><li class="chapter-item expanded "><a href="sec-5-arbiter.html"><strong aria-hidden="true">5.</strong> Arbiter</a></li><li class="chapter-item expanded "><a href="sec-6-sync-arbiter.html"><strong aria-hidden="true">6.</strong> SyncArbiter</a></li><li class="chapter-item expanded "><a href="sec-7-stream.html"><strong aria-hidden="true">7.</strong> Stream</a></li><li class="chapter-item expanded "><a href="sec-8-io-helpers.html"><strong aria-hidden="true">8.</strong> IO helpers</a></li><li class="chapter-item expanded "><a href="sec-9-supervisor.html"><strong aria-hidden="true">9.</strong> Supervisor</a></li><li class="chapter-item expanded "><a href="sec-10-registry.html"><strong aria-hidden="true">10.</strong> Registry</a></li><li class="chapter-item expanded "><a href="sec-11-helper-actors.html"><strong aria-hidden="true">11.</strong> Helper actors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Actix</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        <a href="https://github.com/actix/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#actor" id="actor">Actor</a></h1>
+<p>Actix is a rust library providing a framework for developing concurrent applications.</p>
+<p>Actix is built on the <a href="https://en.wikipedia.org/wiki/Actor_model">Actor Model</a> which
+allows applications to be written as a group of independently executing but cooperating
+&quot;Actors&quot; which communicate via messages. Actors are objects which encapsulate
+state and behavior and run within the <em>Actor System</em> provided by the actix library.</p>
+<p>Actors run within a specific execution context <a href="./sec-4-context.html"><code>Context&lt;A&gt;</code></a>.
+The context object is available only during execution. Each actor has a separate
+execution context. The execution context also controls the lifecycle of an actor.</p>
+<p>Actors communicate exclusively by exchanging messages. The sending actor can
+optionally wait for the response. Actors are not referenced directly, but by means
+of addresses.</p>
+<p>Any rust type can be an actor, it only needs to implement the <a href="https://actix.rs/actix/actix/trait.Actor.html"><code>Actor</code></a> trait.</p>
+<p>To be able to handle a specific message the actor has to provide a
+<a href="https://actix.rs/actix/actix/trait.Handler.html"><code>Handler&lt;M&gt;</code></a> implementation for this message. All messages
+are statically typed. The message can be handled in an asynchronous fashion.
+Actor can spawn other actors or add futures or streams to execution context.
+The <code>Actor</code> trait provides several methods that allow controlling the actor's lifecycle.</p>
+<h2><a class="header" href="#actor-lifecycle" id="actor-lifecycle">Actor lifecycle</a></h2>
+<h3><a class="header" href="#started" id="started">Started</a></h3>
+<p>An actor always starts in the <code>Started</code> state. During this state the actor's <code>started()</code>
+method is called. The <code>Actor</code> trait provides a default implementation for this method.
+The actor context is available during this state and the actor can start more actors or register
+async streams or do any other required configuration.</p>
+<h3><a class="header" href="#running" id="running">Running</a></h3>
+<p>After an Actor's <code>started()</code> method is called, the actor transitions to the <code>Running</code> state.
+The Actor can stay in <code>running</code> state indefinitely.</p>
+<h3><a class="header" href="#stopping" id="stopping">Stopping</a></h3>
+<p>The Actor's execution state changes to the <code>stopping</code> state in the following situations:</p>
+<ul>
+<li><code>Context::stop</code> is called by the actor itself</li>
+<li>all addresses to the actor get dropped. i.e. no other actor references it.</li>
+<li>no event objects are registered in the context.</li>
+</ul>
+<p>An actor can restore from the <code>stopping</code> state to the <code>running</code> state by creating a new
+address or adding an event object, and by returning <code>Running::Continue</code>.</p>
+<p>If an actor changed state to <code>stopping</code> because <code>Context::stop()</code> is called
+then the context immediately stops processing incoming messages and calls
+<code>Actor::stopping()</code>. If the actor does not restore back to the <code>running</code> state, all
+unprocessed messages are dropped.</p>
+<p>By default this method returns <code>Running::Stop</code> which confirms the stop operation.</p>
+<h3><a class="header" href="#stopped" id="stopped">Stopped</a></h3>
+<p>If the actor does not modify the execution context during the stopping state, the actor state changes
+to <code>Stopped</code>. This state is considered final and at this point the actor is dropped.</p>
+<h2><a class="header" href="#message" id="message">Message</a></h2>
+<p>An Actor communicates with other actors by sending messages. In actix all
+messages are typed. A message can be any rust type which implements the
+<a href="https://actix.rs/actix/actix/trait.Message.html"><code>Message</code></a> trait. <code>Message::Result</code> defines the return type.
+Let's define a simple <code>Ping</code> message - an actor which will accept this message needs to return
+<code>Result&lt;bool, std::io::Error&gt;</code>.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span>use actix::prelude::*;
+
+struct Ping;
+
+impl Message for Ping {
+    type Result = Result&lt;bool, std::io::Error&gt;;
+}
+<span class="boring">
+</span><span class="boring">fn main() {}
+</span></code></pre></pre>
+<h2><a class="header" href="#spawning-an-actor" id="spawning-an-actor">Spawning an actor</a></h2>
+<p>How to start an actor depends on its context. Spawning a new async actor
+is achieved via the <code>start</code> and <code>create</code> methods of
+the <a href="https://actix.rs/actix/actix/trait.Actor.html"><code>Actor</code></a> trait. It provides several different ways of
+creating actors; for details check the docs.</p>
+<h2><a class="header" href="#complete-example" id="complete-example">Complete example</a></h2>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">extern crate actix_rt;
+</span>use actix::prelude::*;
+
+/// Define message
+#[derive(Message)]
+#[rtype(result = &quot;Result&lt;bool, std::io::Error&gt;&quot;)]
+struct Ping;
+
+// Define actor
+struct MyActor;
+
+// Provide Actor implementation for our actor
+impl Actor for MyActor {
+    type Context = Context&lt;Self&gt;;
+
+    fn started(&amp;mut self, ctx: &amp;mut Context&lt;Self&gt;) {
+       println!(&quot;Actor is alive&quot;);
+    }
+
+    fn stopped(&amp;mut self, ctx: &amp;mut Context&lt;Self&gt;) {
+       println!(&quot;Actor is stopped&quot;);
+    }
+}
+
+/// Define handler for `Ping` message
+impl Handler&lt;Ping&gt; for MyActor {
+    type Result = Result&lt;bool, std::io::Error&gt;;
+
+    fn handle(&amp;mut self, msg: Ping, ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        println!(&quot;Ping received&quot;);
+
+        Ok(true)
+    }
+}
+
+#[actix_rt::main]
+async fn main() {
+    // Start MyActor in current thread
+    let addr = MyActor.start();
+
+    // Send Ping message.
+    // send() message returns Future object, that resolves to message result
+    let result = addr.send(Ping).await;
+
+    match result {
+        Ok(res) =&gt; println!(&quot;Got result: {}&quot;, res.unwrap()),
+        Err(err) =&gt; println!(&quot;Got error: {}&quot;, err),
+    } 
+}
+</code></pre></pre>
+<h2><a class="header" href="#responding-with-a-messageresponse" id="responding-with-a-messageresponse">Responding with a MessageResponse</a></h2>
+<p>Let's take a look at the <code>Result</code> type defined for the <code>impl Handler</code> in the above example.
+See how we're returning a <code>Result&lt;bool, std::io::Error&gt;</code>? We're able to respond to our actor's
+incoming message with this type because it has the <code>MessageResponse</code> trait implemented for that type.
+Here's the definition for that trait:</p>
+<pre><code class="language-rust ignore">pub trait MessageResponse&lt;A: Actor, M: Message&gt; {
+    fn handle&lt;R: ResponseChannel&lt;M&gt;&gt;(self, ctx: &amp;mut A::Context, tx: Option&lt;R&gt;);
+}
+</code></pre>
+<p>Sometimes it makes sense to respond to incoming messages with types that don't have this trait
+implemented for them. When that happens we can implement the trait ourselves.
+Here's an example where we're responding to a <code>Ping</code> message with a <code>GotPing</code>,
+and responding with <code>GotPong</code> for a <code>Pong</code> message.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">extern crate actix_rt;
+</span>use actix::dev::{MessageResponse, ResponseChannel};
+use actix::prelude::*;
+
+#[derive(Message)]
+#[rtype(result = &quot;Responses&quot;)]
+enum Messages {
+    Ping,
+    Pong,
+}
+
+enum Responses {
+    GotPing,
+    GotPong,
+}
+
+impl&lt;A, M&gt; MessageResponse&lt;A, M&gt; for Responses
+where
+    A: Actor,
+    M: Message&lt;Result = Responses&gt;,
+{
+    fn handle&lt;R: ResponseChannel&lt;M&gt;&gt;(self, _: &amp;mut A::Context, tx: Option&lt;R&gt;) {
+        if let Some(tx) = tx {
+            tx.send(self);
+        }
+    }
+}
+
+// Define actor
+struct MyActor;
+
+// Provide Actor implementation for our actor
+impl Actor for MyActor {
+    type Context = Context&lt;Self&gt;;
+
+    fn started(&amp;mut self, _ctx: &amp;mut Context&lt;Self&gt;) {
+        println!(&quot;Actor is alive&quot;);
+    }
+
+    fn stopped(&amp;mut self, _ctx: &amp;mut Context&lt;Self&gt;) {
+        println!(&quot;Actor is stopped&quot;);
+    }
+}
+
+/// Define handler for `Messages` enum
+impl Handler&lt;Messages&gt; for MyActor {
+    type Result = Responses;
+
+    fn handle(&amp;mut self, msg: Messages, _ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        match msg {
+            Messages::Ping =&gt; Responses::GotPing,
+            Messages::Pong =&gt; Responses::GotPong,
+        }
+    }
+}
+
+#[actix_rt::main]
+async fn main() {
+    // Start MyActor in current thread
+    let addr = MyActor.start();
+
+    // Send Ping message.
+    // send() message returns Future object, that resolves to message result
+    let ping_future = addr.send(Messages::Ping).await;
+    let pong_future = addr.send(Messages::Pong).await;
+
+    match pong_future {
+        Ok(res) =&gt; match res {
+            Responses::GotPing =&gt; println!(&quot;Ping received&quot;),
+            Responses::GotPong =&gt; println!(&quot;Pong received&quot;),
+        },
+        Err(e) =&gt; println!(&quot;Actor is probably dead: {}&quot;, e),
+    }
+
+    match ping_future {
+        Ok(res) =&gt; match res {
+            Responses::GotPing =&gt; println!(&quot;Ping received&quot;),
+            Responses::GotPong =&gt; println!(&quot;Pong received&quot;),
+        },
+        Err(e) =&gt; println!(&quot;Actor is probably dead: {}&quot;, e),
+    }
+}
+</code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="sec-1-getting-started.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="sec-3-address.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="sec-1-getting-started.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="sec-3-address.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+        <!-- Google Analytics Tag -->
+        <script type="text/javascript">
+            var localAddrs = ["localhost", "127.0.0.1", ""];
+
+            // make sure we don't activate google analytics if the developer is
+            // inspecting the book locally...
+            if (localAddrs.indexOf(document.location.hostname) === -1) {
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-110322332-1', 'auto');
+                ga('send', 'pageview');
+            }
+        </script>
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

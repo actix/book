@@ -1,0 +1,336 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Arbiter - Actix</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Actix - actor framework in Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="sec-0-quick-start.html">Actix Quickstart</a></li><li class="chapter-item expanded "><a href="sec-1-getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="sec-2-actor.html"><strong aria-hidden="true">2.</strong> Actor</a></li><li class="chapter-item expanded "><a href="sec-3-address.html"><strong aria-hidden="true">3.</strong> Address</a></li><li class="chapter-item expanded "><a href="sec-4-context.html"><strong aria-hidden="true">4.</strong> Context</a></li><li class="chapter-item expanded "><a href="sec-5-arbiter.html" class="active"><strong aria-hidden="true">5.</strong> Arbiter</a></li><li class="chapter-item expanded "><a href="sec-6-sync-arbiter.html"><strong aria-hidden="true">6.</strong> SyncArbiter</a></li><li class="chapter-item expanded "><a href="sec-7-stream.html"><strong aria-hidden="true">7.</strong> Stream</a></li><li class="chapter-item expanded "><a href="sec-8-io-helpers.html"><strong aria-hidden="true">8.</strong> IO helpers</a></li><li class="chapter-item expanded "><a href="sec-9-supervisor.html"><strong aria-hidden="true">9.</strong> Supervisor</a></li><li class="chapter-item expanded "><a href="sec-10-registry.html"><strong aria-hidden="true">10.</strong> Registry</a></li><li class="chapter-item expanded "><a href="sec-11-helper-actors.html"><strong aria-hidden="true">11.</strong> Helper actors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Actix</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        <a href="https://github.com/actix/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#arbiter" id="arbiter">Arbiter</a></h1>
+<p><code>Arbiter</code>s provide an asynchronous execution context for <code>Actor</code>s, <code>functions</code> and <code>futures</code>. Where an
+actor contains a <code>Context</code> that defines its Actor specific execution state,
+Arbiters host the environment where an actor runs.</p>
+<p>As a result Arbiters perform a number of functions. Most notably, they are able
+to spawn a new OS thread, run an event loop, spawn tasks asynchronously on that
+event loop, and act as helpers for asynchronous tasks.</p>
+<h2><a class="header" href="#system-and-arbiter" id="system-and-arbiter">System and Arbiter</a></h2>
+<p>In all our previous code examples the function <code>System::new</code> creates an Arbiter
+for your actors to run inside. When you call <code>start()</code> on your actor it is then
+running inside of the System Arbiter's thread. In many cases, this is all you
+will need for a program using Actix.</p>
+<p>While it only uses one thread, it uses the very efficient event loop pattern
+which works well for asynchronous events. To handle synchronous, CPU-bound
+tasks, it's better to avoid blocking the event loop and instead offload the
+computation to other threads. For this usecase, read the next section and
+consider using <a href="./sec-6-sync-arbiter.html"><code>SyncArbiter</code></a>.</p>
+<h2><a class="header" href="#the-event-loop" id="the-event-loop">The event loop</a></h2>
+<p>One <code>Arbiter</code> is in control of one thread with one event pool. When an Arbiter
+spawns a task (via <code>Arbiter::spawn</code>, <code>Context&lt;Actor&gt;::run_later</code>, or similar
+constructs), the Arbiter queues the task for execution on that task queue. When
+you think <code>Arbiter</code>, you can think &quot;single-threaded event loop&quot;.</p>
+<p>Actix in general does support concurrency, but normal <code>Arbiter</code>s (not
+<code>SyncArbiter</code>s) do not. To use Actix in a concurrent way, you can spin up
+multiple <code>Arbiter</code>s using <code>Arbiter::new</code>, <code>ArbiterBuilder</code>, or <code>Arbiter::start</code>.</p>
+<p>When you create a new Arbiter, this creates a new execution context for Actors.
+The new thread is available to add new Actors to it, but Actors cannot freely
+move between Arbiters: they are tied to the Arbiter they were spawned in.
+However, Actors on different Arbiters can still communicate with each other
+using the normal <code>Addr</code>/<code>Recipient</code> methods. The method of passing messages is
+agnostic to whether the Actors are running on the same or different Arbiters.</p>
+<h2><a class="header" href="#using-arbiter-for-resolving-async-events" id="using-arbiter-for-resolving-async-events">Using Arbiter for resolving async events</a></h2>
+<p>If you aren't an expert in Rust Futures, Arbiter can be a helpful and simple
+wrapper to resolving async events in order. Consider we have two actors, A and
+B, and we want to run an event on B only once a result from A is completed. We
+can use <code>Arbiter::spawn</code> to assist with this task.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span>use actix::prelude::*;
+
+struct SumActor {}
+
+impl Actor for SumActor {
+    type Context = Context&lt;Self&gt;;
+}
+
+#[derive(Message)]
+#[rtype(result = &quot;usize&quot;)]
+struct Value(usize, usize);
+
+impl Handler&lt;Value&gt; for SumActor {
+    type Result = usize;
+
+    fn handle(&amp;mut self, msg: Value, _ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        msg.0 + msg.1
+    }
+}
+
+struct DisplayActor {}
+
+impl Actor for DisplayActor {
+    type Context = Context&lt;Self&gt;;
+}
+
+#[derive(Message)]
+#[rtype(result = &quot;()&quot;)]
+struct Display(usize);
+
+impl Handler&lt;Display&gt; for DisplayActor {
+    type Result = ();
+
+    fn handle(&amp;mut self, msg: Display, _ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        println!(&quot;Got {:?}&quot;, msg.0);
+    }
+}
+
+fn main() {
+    let system = System::new(&quot;single-arbiter-example&quot;);
+
+    // Define an execution flow using futures
+    let execution = async {
+        // `Actor::start` spawns the `Actor` on the *current* `Arbiter`, which
+        // in this case is the System arbiter
+        let sum_addr = SumActor {}.start();
+        let dis_addr = DisplayActor {}.start();
+
+        // Start by sending a `Value(6, 7)` to our `SumActor`.
+        // `Addr::send` responds with a `Request`, which implements `Future`.
+        // When awaited, it will resolve to a `Result&lt;usize, MailboxError&gt;`.
+        let sum_result = sum_addr.send(Value(6, 7)).await;
+
+        match sum_result {
+            Ok(res) =&gt; {
+                // `res` is now the `usize` returned from `SumActor` as a response to `Value(6, 7)`
+                // Once the future is complete, send the successful response (`usize`)
+                // to the `DisplayActor` wrapped in a `Display
+                dis_addr.send(Display(res)).await;
+            }
+            Err(e) =&gt; {
+                eprintln!(&quot;Encountered mailbox error: {:?}&quot;, e);
+            }
+        };
+    };
+
+    // Spawn the future onto the current Arbiter/event loop
+    Arbiter::spawn(execution);
+
+    // We only want to do one computation in this example, so we
+    // shut down the `System` which will stop any Arbiters within
+    // it (including the System Arbiter), which will in turn stop
+    // any Actor Contexts running within those Arbiters, finally
+    // shutting down all Actors.
+    System::current().stop();
+
+    system.run();
+}
+</code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="sec-4-context.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="sec-6-sync-arbiter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="sec-4-context.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="sec-6-sync-arbiter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+        <!-- Google Analytics Tag -->
+        <script type="text/javascript">
+            var localAddrs = ["localhost", "127.0.0.1", ""];
+
+            // make sure we don't activate google analytics if the developer is
+            // inspecting the book locally...
+            if (localAddrs.indexOf(document.location.hostname) === -1) {
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-110322332-1', 'auto');
+                ga('send', 'pageview');
+            }
+        </script>
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

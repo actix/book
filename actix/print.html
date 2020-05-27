@@ -1,0 +1,1034 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Actix</title>
+        
+        <meta name="robots" content="noindex" />
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Actix - actor framework in Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="sec-0-quick-start.html">Actix Quickstart</a></li><li class="chapter-item expanded "><a href="sec-1-getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="sec-2-actor.html"><strong aria-hidden="true">2.</strong> Actor</a></li><li class="chapter-item expanded "><a href="sec-3-address.html"><strong aria-hidden="true">3.</strong> Address</a></li><li class="chapter-item expanded "><a href="sec-4-context.html"><strong aria-hidden="true">4.</strong> Context</a></li><li class="chapter-item expanded "><a href="sec-5-arbiter.html"><strong aria-hidden="true">5.</strong> Arbiter</a></li><li class="chapter-item expanded "><a href="sec-6-sync-arbiter.html"><strong aria-hidden="true">6.</strong> SyncArbiter</a></li><li class="chapter-item expanded "><a href="sec-7-stream.html"><strong aria-hidden="true">7.</strong> Stream</a></li><li class="chapter-item expanded "><a href="sec-8-io-helpers.html"><strong aria-hidden="true">8.</strong> IO helpers</a></li><li class="chapter-item expanded "><a href="sec-9-supervisor.html"><strong aria-hidden="true">9.</strong> Supervisor</a></li><li class="chapter-item expanded "><a href="sec-10-registry.html"><strong aria-hidden="true">10.</strong> Registry</a></li><li class="chapter-item expanded "><a href="sec-11-helper-actors.html"><strong aria-hidden="true">11.</strong> Helper actors</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Actix</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        <a href="https://github.com/actix/book" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#quick-start" id="quick-start">Quick start</a></h1>
+<p>Before you can start writing an actix application, you’ll need a version of Rust installed.
+We recommend you use rustup to install or configure such a version.</p>
+<h2><a class="header" href="#install-rust" id="install-rust">Install Rust</a></h2>
+<p>Before we begin, we need to install Rust using the <a href="https://rustup.rs/">rustup</a> installer:</p>
+<pre><code class="language-bash">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+</code></pre>
+<p>If you already have rustup installed, run this command to ensure you have the latest version of Rust:</p>
+<pre><code class="language-bash">rustup update
+</code></pre>
+<p>The actix framework requires Rust version 1.40.0 and up.</p>
+<h2><a class="header" href="#running-examples" id="running-examples">Running Examples</a></h2>
+<p>The fastest way to start experimenting with actix is to clone the actix repository
+and run the included examples in the examples/ directory. The following set of
+commands runs the <code>ping</code> example:</p>
+<pre><code class="language-bash">git clone https://github.com/actix/actix
+cargo run --example ping
+</code></pre>
+<p>Check <a href="https://github.com/actix/actix/tree/master/examples">examples/</a> directory for more examples.</p>
+<h1><a class="header" href="#getting-started" id="getting-started">Getting Started</a></h1>
+<p>Let’s create and run our first actix application. We’ll create a new Cargo project
+that depends on actix and then run the application.</p>
+<p>In previous section we already installed required rust version. Now let's create new cargo projects.</p>
+<h2><a class="header" href="#ping-actor" id="ping-actor">Ping actor</a></h2>
+<p>Let’s write our first actix application! Start by creating a new binary-based
+Cargo project and changing into the new directory:</p>
+<pre><code class="language-bash">cargo new actor-ping
+cd actor-ping
+</code></pre>
+<p>Now, add actix as a dependency of your project by ensuring your Cargo.toml
+contains the following:</p>
+<pre><code class="language-toml">[dependencies]
+actix = &quot;0.10.0-alpha.3&quot;
+actix-rt = &quot;1.1&quot; # &lt;-- Runtime for actix
+</code></pre>
+<p>Let's create an actor that will accept a <code>Ping</code> message and respond with the number of pings processed.</p>
+<p>An actor is a type that implements the <code>Actor</code> trait:</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span>use actix::prelude::*;
+
+struct MyActor {
+    count: usize,
+}
+
+impl Actor for MyActor {
+    type Context = Context&lt;Self&gt;;
+}
+<span class="boring">
+</span><span class="boring">fn main() {}
+</span></code></pre></pre>
+<p>Each actor has an execution context, for <code>MyActor</code> we are going to use <code>Context&lt;A&gt;</code>. More information
+on actor contexts is available in the next section.</p>
+<p>Now we need to define the <code>Message</code> that the actor needs to accept. The message can be any type
+that implements the <code>Message</code> trait.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span>use actix::prelude::*;
+
+#[derive(Message)]
+#[rtype(result = &quot;usize&quot;)]
+struct Ping(usize);
+<span class="boring">
+</span><span class="boring">fn main() {}
+</span></code></pre></pre>
+<p>The main purpose of the <code>Message</code> trait is to define a result type. The <code>Ping</code> message defines
+<code>usize</code>, which indicates that any actor that can accept a <code>Ping</code> message needs to
+return <code>usize</code> value.</p>
+<p>And finally, we need to declare that our actor <code>MyActor</code> can accept <code>Ping</code> and handle it.
+To do this, the actor needs to implement the <code>Handler&lt;Ping&gt;</code> trait.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">use actix::prelude::*;
+</span><span class="boring">
+</span><span class="boring">struct MyActor {
+</span><span class="boring">   count: usize,
+</span><span class="boring">}
+</span><span class="boring">impl Actor for MyActor {
+</span><span class="boring">    type Context = Context&lt;Self&gt;;
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">struct Ping(usize);
+</span><span class="boring">
+</span><span class="boring">impl Message for Ping {
+</span><span class="boring">   type Result = usize;
+</span><span class="boring">}
+</span><span class="boring">
+</span>impl Handler&lt;Ping&gt; for MyActor {
+    type Result = usize;
+
+    fn handle(&amp;mut self, msg: Ping, _ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        self.count += msg.0;
+
+        self.count
+    }
+}
+<span class="boring">
+</span><span class="boring">fn main() {}
+</span></code></pre></pre>
+<p>That's it. Now we just need to start our actor and send a message to it.
+The start procedure depends on the actor's context implementation. In our case we can use
+<code>Context&lt;A&gt;</code> which is tokio/future based. We can start it with <code>Actor::start()</code>
+or <code>Actor::create()</code>. The first is used when the actor instance can be created immediately.
+The second method is used in case we need access to the context object before we can create
+the actor instance. In case of the <code>MyActor</code> actor we can use <code>start()</code>.</p>
+<p>All communication with actors goes through an address. You can <code>do_send</code> a message
+without waiting for a response, or <code>send</code> to an actor with a specific message.
+Both <code>start()</code> and <code>create()</code> return an address object.</p>
+<p>In the following example we are going to create a <code>MyActor</code> actor and send one message.</p>
+<p>Here we use the actix-rt as way to start our System and drive our main Future
+so we can easily <code>.await</code> for the messages sent to the Actor.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">extern crate actix_rt;
+</span><span class="boring">use actix::prelude::*;
+</span><span class="boring">struct MyActor {
+</span><span class="boring">   count: usize,
+</span><span class="boring">}
+</span><span class="boring">impl Actor for MyActor {
+</span><span class="boring">    type Context = Context&lt;Self&gt;;
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">struct Ping(usize);
+</span><span class="boring">
+</span><span class="boring">impl Message for Ping {
+</span><span class="boring">   type Result = usize;
+</span><span class="boring">}
+</span><span class="boring">impl Handler&lt;Ping&gt; for MyActor {
+</span><span class="boring">    type Result = usize;
+</span><span class="boring">
+</span><span class="boring">    fn handle(&amp;mut self, msg: Ping, ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+</span><span class="boring">        self.count += msg.0;
+</span><span class="boring">        self.count
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span>#[actix_rt::main] 
+async fn main() {
+    // start new actor
+    let addr = MyActor { count: 10 }.start();
+
+    // send message and get future for result
+    let res = addr.send(Ping(10)).await;
+
+    // handle() returns tokio handle
+    println!(&quot;RESULT: {}&quot;, res.unwrap() == 20);
+
+    // stop system and exit
+    System::current().stop();
+}
+</code></pre></pre>
+<p><code>#[actix_rt::main]</code> starts the system and block until future resolves.</p>
+<p>The Ping example is available in the <a href="https://github.com/actix/actix/tree/master/examples/">examples directory</a>.</p>
+<h1><a class="header" href="#actor" id="actor">Actor</a></h1>
+<p>Actix is a rust library providing a framework for developing concurrent applications.</p>
+<p>Actix is built on the <a href="https://en.wikipedia.org/wiki/Actor_model">Actor Model</a> which
+allows applications to be written as a group of independently executing but cooperating
+&quot;Actors&quot; which communicate via messages. Actors are objects which encapsulate
+state and behavior and run within the <em>Actor System</em> provided by the actix library.</p>
+<p>Actors run within a specific execution context <a href="./sec-4-context.html"><code>Context&lt;A&gt;</code></a>.
+The context object is available only during execution. Each actor has a separate
+execution context. The execution context also controls the lifecycle of an actor.</p>
+<p>Actors communicate exclusively by exchanging messages. The sending actor can
+optionally wait for the response. Actors are not referenced directly, but by means
+of addresses.</p>
+<p>Any rust type can be an actor, it only needs to implement the <a href="https://actix.rs/actix/actix/trait.Actor.html"><code>Actor</code></a> trait.</p>
+<p>To be able to handle a specific message the actor has to provide a
+<a href="https://actix.rs/actix/actix/trait.Handler.html"><code>Handler&lt;M&gt;</code></a> implementation for this message. All messages
+are statically typed. The message can be handled in an asynchronous fashion.
+Actor can spawn other actors or add futures or streams to execution context.
+The <code>Actor</code> trait provides several methods that allow controlling the actor's lifecycle.</p>
+<h2><a class="header" href="#actor-lifecycle" id="actor-lifecycle">Actor lifecycle</a></h2>
+<h3><a class="header" href="#started" id="started">Started</a></h3>
+<p>An actor always starts in the <code>Started</code> state. During this state the actor's <code>started()</code>
+method is called. The <code>Actor</code> trait provides a default implementation for this method.
+The actor context is available during this state and the actor can start more actors or register
+async streams or do any other required configuration.</p>
+<h3><a class="header" href="#running" id="running">Running</a></h3>
+<p>After an Actor's <code>started()</code> method is called, the actor transitions to the <code>Running</code> state.
+The Actor can stay in <code>running</code> state indefinitely.</p>
+<h3><a class="header" href="#stopping" id="stopping">Stopping</a></h3>
+<p>The Actor's execution state changes to the <code>stopping</code> state in the following situations:</p>
+<ul>
+<li><code>Context::stop</code> is called by the actor itself</li>
+<li>all addresses to the actor get dropped. i.e. no other actor references it.</li>
+<li>no event objects are registered in the context.</li>
+</ul>
+<p>An actor can restore from the <code>stopping</code> state to the <code>running</code> state by creating a new
+address or adding an event object, and by returning <code>Running::Continue</code>.</p>
+<p>If an actor changed state to <code>stopping</code> because <code>Context::stop()</code> is called
+then the context immediately stops processing incoming messages and calls
+<code>Actor::stopping()</code>. If the actor does not restore back to the <code>running</code> state, all
+unprocessed messages are dropped.</p>
+<p>By default this method returns <code>Running::Stop</code> which confirms the stop operation.</p>
+<h3><a class="header" href="#stopped" id="stopped">Stopped</a></h3>
+<p>If the actor does not modify the execution context during the stopping state, the actor state changes
+to <code>Stopped</code>. This state is considered final and at this point the actor is dropped.</p>
+<h2><a class="header" href="#message" id="message">Message</a></h2>
+<p>An Actor communicates with other actors by sending messages. In actix all
+messages are typed. A message can be any rust type which implements the
+<a href="https://actix.rs/actix/actix/trait.Message.html"><code>Message</code></a> trait. <code>Message::Result</code> defines the return type.
+Let's define a simple <code>Ping</code> message - an actor which will accept this message needs to return
+<code>Result&lt;bool, std::io::Error&gt;</code>.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span>use actix::prelude::*;
+
+struct Ping;
+
+impl Message for Ping {
+    type Result = Result&lt;bool, std::io::Error&gt;;
+}
+<span class="boring">
+</span><span class="boring">fn main() {}
+</span></code></pre></pre>
+<h2><a class="header" href="#spawning-an-actor" id="spawning-an-actor">Spawning an actor</a></h2>
+<p>How to start an actor depends on its context. Spawning a new async actor
+is achieved via the <code>start</code> and <code>create</code> methods of
+the <a href="https://actix.rs/actix/actix/trait.Actor.html"><code>Actor</code></a> trait. It provides several different ways of
+creating actors; for details check the docs.</p>
+<h2><a class="header" href="#complete-example" id="complete-example">Complete example</a></h2>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">extern crate actix_rt;
+</span>use actix::prelude::*;
+
+/// Define message
+#[derive(Message)]
+#[rtype(result = &quot;Result&lt;bool, std::io::Error&gt;&quot;)]
+struct Ping;
+
+// Define actor
+struct MyActor;
+
+// Provide Actor implementation for our actor
+impl Actor for MyActor {
+    type Context = Context&lt;Self&gt;;
+
+    fn started(&amp;mut self, ctx: &amp;mut Context&lt;Self&gt;) {
+       println!(&quot;Actor is alive&quot;);
+    }
+
+    fn stopped(&amp;mut self, ctx: &amp;mut Context&lt;Self&gt;) {
+       println!(&quot;Actor is stopped&quot;);
+    }
+}
+
+/// Define handler for `Ping` message
+impl Handler&lt;Ping&gt; for MyActor {
+    type Result = Result&lt;bool, std::io::Error&gt;;
+
+    fn handle(&amp;mut self, msg: Ping, ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        println!(&quot;Ping received&quot;);
+
+        Ok(true)
+    }
+}
+
+#[actix_rt::main]
+async fn main() {
+    // Start MyActor in current thread
+    let addr = MyActor.start();
+
+    // Send Ping message.
+    // send() message returns Future object, that resolves to message result
+    let result = addr.send(Ping).await;
+
+    match result {
+        Ok(res) =&gt; println!(&quot;Got result: {}&quot;, res.unwrap()),
+        Err(err) =&gt; println!(&quot;Got error: {}&quot;, err),
+    } 
+}
+</code></pre></pre>
+<h2><a class="header" href="#responding-with-a-messageresponse" id="responding-with-a-messageresponse">Responding with a MessageResponse</a></h2>
+<p>Let's take a look at the <code>Result</code> type defined for the <code>impl Handler</code> in the above example.
+See how we're returning a <code>Result&lt;bool, std::io::Error&gt;</code>? We're able to respond to our actor's
+incoming message with this type because it has the <code>MessageResponse</code> trait implemented for that type.
+Here's the definition for that trait:</p>
+<pre><code class="language-rust ignore">pub trait MessageResponse&lt;A: Actor, M: Message&gt; {
+    fn handle&lt;R: ResponseChannel&lt;M&gt;&gt;(self, ctx: &amp;mut A::Context, tx: Option&lt;R&gt;);
+}
+</code></pre>
+<p>Sometimes it makes sense to respond to incoming messages with types that don't have this trait
+implemented for them. When that happens we can implement the trait ourselves.
+Here's an example where we're responding to a <code>Ping</code> message with a <code>GotPing</code>,
+and responding with <code>GotPong</code> for a <code>Pong</code> message.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">extern crate actix_rt;
+</span>use actix::dev::{MessageResponse, ResponseChannel};
+use actix::prelude::*;
+
+#[derive(Message)]
+#[rtype(result = &quot;Responses&quot;)]
+enum Messages {
+    Ping,
+    Pong,
+}
+
+enum Responses {
+    GotPing,
+    GotPong,
+}
+
+impl&lt;A, M&gt; MessageResponse&lt;A, M&gt; for Responses
+where
+    A: Actor,
+    M: Message&lt;Result = Responses&gt;,
+{
+    fn handle&lt;R: ResponseChannel&lt;M&gt;&gt;(self, _: &amp;mut A::Context, tx: Option&lt;R&gt;) {
+        if let Some(tx) = tx {
+            tx.send(self);
+        }
+    }
+}
+
+// Define actor
+struct MyActor;
+
+// Provide Actor implementation for our actor
+impl Actor for MyActor {
+    type Context = Context&lt;Self&gt;;
+
+    fn started(&amp;mut self, _ctx: &amp;mut Context&lt;Self&gt;) {
+        println!(&quot;Actor is alive&quot;);
+    }
+
+    fn stopped(&amp;mut self, _ctx: &amp;mut Context&lt;Self&gt;) {
+        println!(&quot;Actor is stopped&quot;);
+    }
+}
+
+/// Define handler for `Messages` enum
+impl Handler&lt;Messages&gt; for MyActor {
+    type Result = Responses;
+
+    fn handle(&amp;mut self, msg: Messages, _ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        match msg {
+            Messages::Ping =&gt; Responses::GotPing,
+            Messages::Pong =&gt; Responses::GotPong,
+        }
+    }
+}
+
+#[actix_rt::main]
+async fn main() {
+    // Start MyActor in current thread
+    let addr = MyActor.start();
+
+    // Send Ping message.
+    // send() message returns Future object, that resolves to message result
+    let ping_future = addr.send(Messages::Ping).await;
+    let pong_future = addr.send(Messages::Pong).await;
+
+    match pong_future {
+        Ok(res) =&gt; match res {
+            Responses::GotPing =&gt; println!(&quot;Ping received&quot;),
+            Responses::GotPong =&gt; println!(&quot;Pong received&quot;),
+        },
+        Err(e) =&gt; println!(&quot;Actor is probably dead: {}&quot;, e),
+    }
+
+    match ping_future {
+        Ok(res) =&gt; match res {
+            Responses::GotPing =&gt; println!(&quot;Ping received&quot;),
+            Responses::GotPong =&gt; println!(&quot;Pong received&quot;),
+        },
+        Err(e) =&gt; println!(&quot;Actor is probably dead: {}&quot;, e),
+    }
+}
+</code></pre></pre>
+<h1><a class="header" href="#address" id="address">Address</a></h1>
+<p>Actors communicate exclusively by exchanging messages. The sending actor can optionally
+wait for the response. Actors cannot be referenced directly, only by their addresses.</p>
+<p>There are several ways to get the address of an actor. The <code>Actor</code> trait provides
+two helper methods for starting an actor. Both return the address of the started actor.</p>
+<p>Here is an example of <code>Actor::start()</code> method usage. In this example <code>MyActor</code> actor
+is asynchronous and is started in the same thread as the caller - threads are covered in
+the <a href="./sec-6-sync-arbiter.html">SyncArbiter</a> chapter.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">use actix::prelude::*;
+</span><span class="boring">
+</span>struct MyActor;
+impl Actor for MyActor {
+    type Context = Context&lt;Self&gt;;
+}
+
+<span class="boring">fn main() {
+</span><span class="boring">System::new(&quot;test&quot;);
+</span>let addr = MyActor.start();
+<span class="boring">}
+</span></code></pre></pre>
+<p>An async actor can get its address from the <code>Context</code> struct. The context needs to
+implement the <code>AsyncContext</code> trait. <code>AsyncContext::address()</code> provides the actor's address.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">use actix::prelude::*;
+</span><span class="boring">
+</span>struct MyActor;
+
+impl Actor for MyActor {
+    type Context = Context&lt;Self&gt;;
+
+    fn started(&amp;mut self, ctx: &amp;mut Context&lt;Self&gt;) {
+       let addr = ctx.address();
+    }
+}
+<span class="boring">
+</span><span class="boring">fn main() {}
+</span></code></pre></pre>
+<h2><a class="header" href="#message-1" id="message-1">Message</a></h2>
+<p>To be able to handle a specific message the actor has to provide a
+<a href="https://actix.rs/actix/actix/trait.Handler.html"><code>Handler&lt;M&gt;</code></a> implementation for this message.
+All messages are statically typed. The message can be handled in an asynchronous
+fashion. The actor can spawn other actors or add futures or
+streams to the execution context. The actor trait provides several methods that allow
+controlling the actor's lifecycle.</p>
+<p>To send a message to an actor, the <code>Addr</code> object needs to be used. <code>Addr</code> provides several
+ways to send a message.</p>
+<ul>
+<li>
+<p><code>Addr::do_send(M)</code> - this method ignores any errors in message sending. If the mailbox
+is full the message is still queued, bypassing the limit. If the actor's mailbox is closed,
+the message is silently dropped. This method does not return the result, so if the
+mailbox is closed and a failure occurs, you won't have an indication of this.</p>
+</li>
+<li>
+<p><code>Addr::try_send(M)</code> - this method tries to send the message immediately. If
+the mailbox is full or closed (actor is dead), this method returns a
+<a href="https://actix.rs/actix/actix/prelude/enum.SendError.html"><code>SendError</code></a>.</p>
+</li>
+<li>
+<p><code>Addr::send(M)</code> - This message returns a future object that resolves to a result
+of a message handling process. If the returned <code>Future</code> object is dropped, the
+message is cancelled.</p>
+</li>
+</ul>
+<h2><a class="header" href="#recipient" id="recipient">Recipient</a></h2>
+<p>Recipient is a specialized version of an address that supports only one type of message.
+It can be used in case the message needs to be sent to a different type of actor.
+A recipient object can be created from an address with <code>Addr::recipient()</code>.</p>
+<p>Address objects require an actor type, but if we just want to send a specific message 
+to an actor that can handle the message, we can use the Recipient interface.</p>
+<p>For example recipient can be used for a subscription system. In the following example
+<code>OrderEvents</code> actor sends a <code>OrderShipped</code> message to all subscribers. A subscriber can
+be any actor that implements the <code>Handler&lt;OrderShipped&gt;</code> trait.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span>use actix::prelude::*;
+
+#[derive(Message)]
+#[rtype(result = &quot;()&quot;)]
+struct OrderShipped(usize);
+
+#[derive(Message)]
+#[rtype(result = &quot;()&quot;)]
+struct Ship(usize);
+
+/// Subscribe to order shipped event.
+#[derive(Message)]
+#[rtype(result = &quot;()&quot;)]
+struct Subscribe(pub Recipient&lt;OrderShipped&gt;);
+
+/// Actor that provides order shipped event subscriptions
+struct OrderEvents {
+    subscribers: Vec&lt;Recipient&lt;OrderShipped&gt;&gt;,
+}
+
+impl OrderEvents {
+    fn new() -&gt; Self {
+        OrderEvents {
+            subscribers: vec![]
+        }
+    }
+}
+
+impl Actor for OrderEvents {
+    type Context = Context&lt;Self&gt;;
+}
+
+impl OrderEvents {
+    /// Send event to all subscribers
+    fn notify(&amp;mut self, order_id: usize) {
+        for subscr in &amp;self.subscribers {
+           subscr.do_send(OrderShipped(order_id));
+        }
+    }
+}
+
+/// Subscribe to shipment event
+impl Handler&lt;Subscribe&gt; for OrderEvents {
+    type Result = ();
+
+    fn handle(&amp;mut self, msg: Subscribe, _: &amp;mut Self::Context) {
+        self.subscribers.push(msg.0);
+    }
+}
+
+/// Subscribe to ship message
+impl Handler&lt;Ship&gt; for OrderEvents {
+    type Result = ();
+    fn handle(&amp;mut self, msg: Ship, ctx: &amp;mut Self::Context) -&gt; Self::Result {
+        self.notify(msg.0);
+        System::current().stop();
+    }
+
+} 
+
+/// Email Subscriber 
+struct EmailSubscriber;
+impl Actor for EmailSubscriber {
+    type Context = Context&lt;Self&gt;;
+}
+
+impl Handler&lt;OrderShipped&gt; for EmailSubscriber {
+    type Result = ();
+    fn handle(&amp;mut self, msg: OrderShipped, _ctx: &amp;mut Self::Context) -&gt; Self::Result {
+        println!(&quot;Email sent for order {}&quot;, msg.0)
+    }
+    
+}
+struct SmsSubscriber;
+impl Actor for SmsSubscriber {
+    type Context = Context&lt;Self&gt;;
+}
+
+impl Handler&lt;OrderShipped&gt; for SmsSubscriber {
+    type Result = ();
+    fn handle(&amp;mut self, msg: OrderShipped, _ctx: &amp;mut Self::Context) -&gt; Self::Result {
+        println!(&quot;SMS sent for order {}&quot;, msg.0)
+    }
+    
+}
+
+fn main() {
+    let system = System::new(&quot;events&quot;);
+    let email_subscriber = Subscribe(EmailSubscriber{}.start().recipient());
+    let sms_subscriber = Subscribe(SmsSubscriber{}.start().recipient());
+    let order_event = OrderEvents::new().start();
+    order_event.do_send(email_subscriber);
+    order_event.do_send(sms_subscriber);
+    order_event.do_send(Ship(1));
+    system.run();
+}
+</code></pre></pre>
+<h1><a class="header" href="#context" id="context">Context</a></h1>
+<p>Actors all maintain an internal execution context, or state. This
+allows an actor to determine its own Address, change mailbox limits,
+or stop its execution.</p>
+<h2><a class="header" href="#mailbox" id="mailbox">Mailbox</a></h2>
+<p>All messages go to the actor's mailbox first, then the actor's execution context
+calls specific message handlers. Mailboxes in general are bounded. The capacity is
+specific to the context implementation. For the <code>Context</code>  type the capacity is set to
+16 messages by default and can be increased with <a href="https://actix.rs/actix/actix/struct.Context.html#method.set_mailbox_capacity"><code>Context::set_mailbox_capacity()</code></a>.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">use actix::prelude::*;
+</span><span class="boring">
+</span>struct MyActor;
+
+impl Actor for MyActor {
+    type Context = Context&lt;Self&gt;;
+
+    fn started(&amp;mut self, ctx: &amp;mut Self::Context) {
+        ctx.set_mailbox_capacity(1);
+    }
+}
+
+<span class="boring">fn main() {
+</span><span class="boring">System::new(&quot;test&quot;);
+</span>let addr = MyActor.start();
+<span class="boring">}
+</span></code></pre></pre>
+<p>Remember that this doesn't apply to <code>Addr::do_send(M)</code> which bypasses the Mailbox queue limit, or
+<code>AsyncContext::notify(M)</code> and <code>AsyncContext::notify_later(M, Duration)</code> which bypasses the mailbox
+entirely.</p>
+<h2><a class="header" href="#getting-your-actors-address" id="getting-your-actors-address">Getting your actors Address</a></h2>
+<p>An actor can view its own address from its context. Perhaps you want to requeue an event for
+later, or you want to transform the message type. Maybe you want to respond with your address
+to a message. If you want an actor to send a message to itself, have a look at
+<code>AsyncContext::notify(M)</code> instead.</p>
+<p>To get your address from the context you call <a href="https://actix.rs/actix/actix/struct.Context.html#method.address"><code>Context::address()</code></a>. An example is:</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">use actix::prelude::*;
+</span><span class="boring">
+</span>struct MyActor;
+
+struct WhoAmI;
+
+impl Message for WhoAmI {
+    type Result = Result&lt;actix::Addr&lt;MyActor&gt;, ()&gt;;
+}
+
+impl Actor for MyActor {
+    type Context = Context&lt;Self&gt;;
+}
+
+impl Handler&lt;WhoAmI&gt; for MyActor {
+    type Result = Result&lt;actix::Addr&lt;MyActor&gt;, ()&gt;;
+
+    fn handle(&amp;mut self, msg: WhoAmI, ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        Ok(ctx.address())
+    }
+}
+
+<span class="boring">fn main() {
+</span><span class="boring">    System::new(&quot;scratch&quot;);
+</span><span class="boring">    let addr = MyActor.start();
+</span>let who_addr = addr.do_send(WhoAmI{});
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#stopping-an-actor" id="stopping-an-actor">Stopping an Actor</a></h2>
+<p>From within the actors execution context you can choose to stop the actor from processing
+any future Mailbox messages. This could be in response to an error condition, or as part
+of program shutdown. To do this you call <a href="https://actix.rs/actix/actix/struct.Context.html#method.stop"><code>Context::stop()</code></a>.</p>
+<p>This is an adjusted Ping example that stops after 4 pings are received.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span><span class="boring">extern crate actix_rt;
+</span><span class="boring">use actix::prelude::*;
+</span><span class="boring">struct MyActor {
+</span><span class="boring">    count: usize,
+</span><span class="boring">}
+</span><span class="boring">impl Actor for MyActor {
+</span><span class="boring">    type Context = Context&lt;Self&gt;;
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">#[derive(Message)]
+</span><span class="boring">#[rtype(result = &quot;usize&quot;)]
+</span><span class="boring">struct Ping(usize);
+</span><span class="boring">
+</span>impl Handler&lt;Ping&gt; for MyActor {
+    type Result = usize;
+
+    fn handle(&amp;mut self, msg: Ping, ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        self.count += msg.0;
+
+        if self.count &gt; 5 {
+            println!(&quot;Shutting down ping receiver.&quot;);
+            ctx.stop()
+        }
+
+        self.count
+    }
+}
+
+#[actix_rt::main]
+async fn main() {
+    // start new actor
+    let addr = MyActor { count: 10 }.start();
+
+    // send message and get future for result
+    let addr_2 = addr.clone();
+    let res = addr.send(Ping(6)).await;
+
+    match res {
+        Ok(_) =&gt; assert!(addr_2.try_send(Ping(6)).is_err()),
+        _ =&gt; {}
+    }
+}
+</code></pre></pre>
+<h1><a class="header" href="#arbiter" id="arbiter">Arbiter</a></h1>
+<p><code>Arbiter</code>s provide an asynchronous execution context for <code>Actor</code>s, <code>functions</code> and <code>futures</code>. Where an
+actor contains a <code>Context</code> that defines its Actor specific execution state,
+Arbiters host the environment where an actor runs.</p>
+<p>As a result Arbiters perform a number of functions. Most notably, they are able
+to spawn a new OS thread, run an event loop, spawn tasks asynchronously on that
+event loop, and act as helpers for asynchronous tasks.</p>
+<h2><a class="header" href="#system-and-arbiter" id="system-and-arbiter">System and Arbiter</a></h2>
+<p>In all our previous code examples the function <code>System::new</code> creates an Arbiter
+for your actors to run inside. When you call <code>start()</code> on your actor it is then
+running inside of the System Arbiter's thread. In many cases, this is all you
+will need for a program using Actix.</p>
+<p>While it only uses one thread, it uses the very efficient event loop pattern
+which works well for asynchronous events. To handle synchronous, CPU-bound
+tasks, it's better to avoid blocking the event loop and instead offload the
+computation to other threads. For this usecase, read the next section and
+consider using <a href="./sec-6-sync-arbiter.html"><code>SyncArbiter</code></a>.</p>
+<h2><a class="header" href="#the-event-loop" id="the-event-loop">The event loop</a></h2>
+<p>One <code>Arbiter</code> is in control of one thread with one event pool. When an Arbiter
+spawns a task (via <code>Arbiter::spawn</code>, <code>Context&lt;Actor&gt;::run_later</code>, or similar
+constructs), the Arbiter queues the task for execution on that task queue. When
+you think <code>Arbiter</code>, you can think &quot;single-threaded event loop&quot;.</p>
+<p>Actix in general does support concurrency, but normal <code>Arbiter</code>s (not
+<code>SyncArbiter</code>s) do not. To use Actix in a concurrent way, you can spin up
+multiple <code>Arbiter</code>s using <code>Arbiter::new</code>, <code>ArbiterBuilder</code>, or <code>Arbiter::start</code>.</p>
+<p>When you create a new Arbiter, this creates a new execution context for Actors.
+The new thread is available to add new Actors to it, but Actors cannot freely
+move between Arbiters: they are tied to the Arbiter they were spawned in.
+However, Actors on different Arbiters can still communicate with each other
+using the normal <code>Addr</code>/<code>Recipient</code> methods. The method of passing messages is
+agnostic to whether the Actors are running on the same or different Arbiters.</p>
+<h2><a class="header" href="#using-arbiter-for-resolving-async-events" id="using-arbiter-for-resolving-async-events">Using Arbiter for resolving async events</a></h2>
+<p>If you aren't an expert in Rust Futures, Arbiter can be a helpful and simple
+wrapper to resolving async events in order. Consider we have two actors, A and
+B, and we want to run an event on B only once a result from A is completed. We
+can use <code>Arbiter::spawn</code> to assist with this task.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span>use actix::prelude::*;
+
+struct SumActor {}
+
+impl Actor for SumActor {
+    type Context = Context&lt;Self&gt;;
+}
+
+#[derive(Message)]
+#[rtype(result = &quot;usize&quot;)]
+struct Value(usize, usize);
+
+impl Handler&lt;Value&gt; for SumActor {
+    type Result = usize;
+
+    fn handle(&amp;mut self, msg: Value, _ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        msg.0 + msg.1
+    }
+}
+
+struct DisplayActor {}
+
+impl Actor for DisplayActor {
+    type Context = Context&lt;Self&gt;;
+}
+
+#[derive(Message)]
+#[rtype(result = &quot;()&quot;)]
+struct Display(usize);
+
+impl Handler&lt;Display&gt; for DisplayActor {
+    type Result = ();
+
+    fn handle(&amp;mut self, msg: Display, _ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
+        println!(&quot;Got {:?}&quot;, msg.0);
+    }
+}
+
+fn main() {
+    let system = System::new(&quot;single-arbiter-example&quot;);
+
+    // Define an execution flow using futures
+    let execution = async {
+        // `Actor::start` spawns the `Actor` on the *current* `Arbiter`, which
+        // in this case is the System arbiter
+        let sum_addr = SumActor {}.start();
+        let dis_addr = DisplayActor {}.start();
+
+        // Start by sending a `Value(6, 7)` to our `SumActor`.
+        // `Addr::send` responds with a `Request`, which implements `Future`.
+        // When awaited, it will resolve to a `Result&lt;usize, MailboxError&gt;`.
+        let sum_result = sum_addr.send(Value(6, 7)).await;
+
+        match sum_result {
+            Ok(res) =&gt; {
+                // `res` is now the `usize` returned from `SumActor` as a response to `Value(6, 7)`
+                // Once the future is complete, send the successful response (`usize`)
+                // to the `DisplayActor` wrapped in a `Display
+                dis_addr.send(Display(res)).await;
+            }
+            Err(e) =&gt; {
+                eprintln!(&quot;Encountered mailbox error: {:?}&quot;, e);
+            }
+        };
+    };
+
+    // Spawn the future onto the current Arbiter/event loop
+    Arbiter::spawn(execution);
+
+    // We only want to do one computation in this example, so we
+    // shut down the `System` which will stop any Arbiters within
+    // it (including the System Arbiter), which will in turn stop
+    // any Actor Contexts running within those Arbiters, finally
+    // shutting down all Actors.
+    System::current().stop();
+
+    system.run();
+}
+</code></pre></pre>
+<h1><a class="header" href="#syncarbiter" id="syncarbiter">SyncArbiter</a></h1>
+<p>When you normally run Actors, there are multiple Actors running on the
+System's Arbiter thread, using its event loop. However for CPU bound workloads,
+or highly concurrent workloads, you may wish to have an Actor running multiple
+instances in parallel.</p>
+<p>This is what a SyncArbiter provides - the ability to launch multiple instances of
+an Actor on a pool of OS threads.</p>
+<p>It's important to note a SyncArbiter can only host a single type of Actor. This means
+you need to create a SyncArbiter for each type of Actor you want to run in this
+manner.</p>
+<h2><a class="header" href="#creating-a-sync-actor" id="creating-a-sync-actor">Creating a Sync Actor</a></h2>
+<p>When implementing your Actor to be run on a SyncArbiter, it requires that your Actor's
+Context is changed from <code>Context</code> to <code>SyncContext</code>.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span>use actix::prelude::*;
+
+struct MySyncActor;
+
+impl Actor for MySyncActor {
+    type Context = SyncContext&lt;Self&gt;;
+}
+<span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">System::new(&quot;test&quot;);
+</span><span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#starting-the-sync-arbiter" id="starting-the-sync-arbiter">Starting the Sync Arbiter</a></h2>
+<p>Now that we have defined a Sync Actor, we can run it on a thread pool, created by
+our <code>SyncArbiter</code>. We can only control the number of threads at SyncArbiter creation
+time - we can't add/remove threads later.</p>
+<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+</span>use actix::prelude::*;
+
+struct MySyncActor;
+
+impl Actor for MySyncActor {
+    type Context = SyncContext&lt;Self&gt;;
+}
+
+<span class="boring">fn main() {
+</span><span class="boring">System::new(&quot;test&quot;);
+</span>let addr = SyncArbiter::start(2, || MySyncActor);
+<span class="boring">}
+</span></code></pre></pre>
+<p>We can communicate with the addr the same way as we have with our previous Actors
+that we started. We can send messages, receive futures and results, and more.</p>
+<h2><a class="header" href="#sync-actor-mailboxes" id="sync-actor-mailboxes">Sync Actor Mailboxes</a></h2>
+<p>Sync Actors have no Mailbox limits, but you should still use <code>do_send</code>, <code>try_send</code> and <code>send</code>
+as normal to account for other possible errors or sync vs async behavior.</p>
+<p><strong>WIP</strong> </p>
+<p><strong>WIP</strong> </p>
+<p><strong>WIP</strong> </p>
+<p><strong>WIP</strong> </p>
+<p><strong>WIP</strong> </p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+        <!-- Google Analytics Tag -->
+        <script type="text/javascript">
+            var localAddrs = ["localhost", "127.0.0.1", ""];
+
+            // make sure we don't activate google analytics if the developer is
+            // inspecting the book locally...
+            if (localAddrs.indexOf(document.location.hostname) === -1) {
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-110322332-1', 'auto');
+                ga('send', 'pageview');
+            }
+        </script>
+        
+
+        
+        
+        
+        <script type="text/javascript">
+            window.playpen_copyable = true;
+        </script>
+        
+
+        
+
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
