@@ -30,18 +30,16 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: generate-lockfile
-      - name: Cache cargo registry
-        uses: actions/cache@v1
+      - name: Cache cargo dirs
+        uses: actions/cache@v2
         with:
-          path: ~/.cargo/registry
-          key: ${{ matrix.version }}-x86_64-unknown-linux-gnu-cargo-registry-trimmed-${{ hashFiles('**/Cargo.lock') }}
-      - name: Cache cargo index
-        uses: actions/cache@v1
-        with:
-          path: ~/.cargo/git
-          key: ${{ matrix.version }}-x86_64-unknown-linux-gnu-cargo-index-trimmed-${{ hashFiles('**/Cargo.lock') }}
+          path:
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+          key: ${{ matrix.version }}-x86_64-unknown-linux-gnu-cargo-trimmed-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache cargo build
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: target
           key: ${{ matrix.version }}-x86_64-unknown-linux-gnu-cargo-build-trimmed-${{ hashFiles('**/Cargo.lock') }}
@@ -54,11 +52,11 @@ jobs:
       - name: Build book and check links
         if: matrix.version == 'stable'
         run: |
-          cargo install mdbook --no-default-features --features output --version 0.3.7
-          cargo install mdbook-linkcheck --version 0.5.0
+          which mdbook ||cargo install mdbook --no-default-features --features output --version 0.3.7
+          which mdbook-linkcheck || cargo install mdbook-linkcheck --version 0.5.0
           mdbook build ./actix/
 
       - name: Clear the cargo caches
         run: |
-          cargo install cargo-cache --no-default-features --features ci-autoclean
+          which cargo-cache || cargo install cargo-cache --no-default-features --features ci-autoclean
           cargo-cache
