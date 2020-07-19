@@ -1,6 +1,14 @@
 name: CI
 
-on: [push, pull_request]
+env:
+  RUSTFLAGS: -A dead-code -A unused-variables
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - master
 
 jobs:
   build_and_test:
@@ -52,11 +60,11 @@ jobs:
       - name: Build book and check links
         if: matrix.version == 'stable'
         run: |
-          which mdbook ||cargo install mdbook --no-default-features --features output --version 0.3.7
-          which mdbook-linkcheck || cargo install mdbook-linkcheck --version 0.5.0
+          cargo install mdbook --no-default-features --version 0.4.1
+          cargo install mdbook-linkcheck --version 0.7.0
           mdbook build ./actix/
 
       - name: Clear the cargo caches
         run: |
-          which cargo-cache || cargo install cargo-cache --no-default-features --features ci-autoclean
+          cargo install cargo-cache --no-default-features --features ci-autoclean
           cargo-cache
