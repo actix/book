@@ -1,8 +1,5 @@
 name: CI
 
-env:
-  RUSTFLAGS: -A dead-code -A unused-variables
-
 on:
   pull_request:
     types: [opened, synchronize, reopened]
