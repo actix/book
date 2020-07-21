@@ -22,9 +22,14 @@ jobs:
 
       - name: Upload documentation
         run: |
-          cargo install mdbook --no-default-features --features output --version 0.3.7
+          cargo install mdbook --no-default-features --version 0.4.1
           mdbook build ./actix/ -d ../target/doc/actix
           cp -r ./target/doc/actix/html/* ./target/doc/actix/
           rm -r ./target/doc/actix/html ./target/doc/actix/linkcheck
-          git clone https://github.com/davisp/ghp-import.git
-          ./ghp-import/ghp_import.py -n -p -f -m "Documentation upload" -r https://${{ secrets.GITHUB_TOKEN }}@github.com/"${{ github.repository }}.git" target/doc
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3.5.8
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: target/doc
