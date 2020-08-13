@@ -5,13 +5,24 @@
         <meta charset="UTF-8">
         <title>Getting Started - Actix</title>
         
+        
+
+
+        <!-- Custom HTML head -->
+        
+
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="Actix - actor framework in Rust">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
         <link rel="shortcut icon" href="favicon.png">
+        
         <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
@@ -19,8 +30,9 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
 
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
@@ -36,7 +48,7 @@
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
             var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "light";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -154,7 +166,7 @@ actix-rt = &quot;1.1&quot; # &lt;-- Runtime for actix
 </code></pre>
 <p>Let's create an actor that will accept a <code>Ping</code> message and respond with the number of pings processed.</p>
 <p>An actor is a type that implements the <code>Actor</code> trait:</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span>use actix::prelude::*;
 
 struct MyActor {
@@ -171,7 +183,7 @@ impl Actor for MyActor {
 on actor contexts is available in the next section.</p>
 <p>Now we need to define the <code>Message</code> that the actor needs to accept. The message can be any type
 that implements the <code>Message</code> trait.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span>use actix::prelude::*;
 
 #[derive(Message)]
@@ -185,7 +197,7 @@ struct Ping(usize);
 return <code>usize</code> value.</p>
 <p>And finally, we need to declare that our actor <code>MyActor</code> can accept <code>Ping</code> and handle it.
 To do this, the actor needs to implement the <code>Handler&lt;Ping&gt;</code> trait.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">use actix::prelude::*;
 </span><span class="boring">
 </span><span class="boring">struct MyActor {
@@ -225,7 +237,7 @@ Both <code>start()</code> and <code>create()</code> return an address object.</p
 <p>In the following example we are going to create a <code>MyActor</code> actor and send one message.</p>
 <p>Here we use the actix-rt as way to start our System and drive our main Future
 so we can easily <code>.await</code> for the messages sent to the Actor.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">extern crate actix_rt;
 </span><span class="boring">use actix::prelude::*;
 </span><span class="boring">struct MyActor {
@@ -326,10 +338,10 @@ async fn main() {
         
 
         
-        
+
         
         <script type="text/javascript">
-            window.playpen_copyable = true;
+            window.playground_copyable = true;
         </script>
         
 

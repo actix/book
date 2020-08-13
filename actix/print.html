@@ -7,13 +7,24 @@
         
         <meta name="robots" content="noindex" />
         
+        
+
+
+        <!-- Custom HTML head -->
+        
+
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="Actix - actor framework in Rust">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
         <link rel="shortcut icon" href="favicon.png">
+        
         <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
@@ -21,8 +32,9 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
 
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
@@ -38,7 +50,7 @@
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
             var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "light";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -175,7 +187,7 @@ actix-rt = &quot;1.1&quot; # &lt;-- Runtime for actix
 </code></pre>
 <p>Let's create an actor that will accept a <code>Ping</code> message and respond with the number of pings processed.</p>
 <p>An actor is a type that implements the <code>Actor</code> trait:</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span>use actix::prelude::*;
 
 struct MyActor {
@@ -192,7 +204,7 @@ impl Actor for MyActor {
 on actor contexts is available in the next section.</p>
 <p>Now we need to define the <code>Message</code> that the actor needs to accept. The message can be any type
 that implements the <code>Message</code> trait.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span>use actix::prelude::*;
 
 #[derive(Message)]
@@ -206,7 +218,7 @@ struct Ping(usize);
 return <code>usize</code> value.</p>
 <p>And finally, we need to declare that our actor <code>MyActor</code> can accept <code>Ping</code> and handle it.
 To do this, the actor needs to implement the <code>Handler&lt;Ping&gt;</code> trait.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">use actix::prelude::*;
 </span><span class="boring">
 </span><span class="boring">struct MyActor {
@@ -246,7 +258,7 @@ Both <code>start()</code> and <code>create()</code> return an address object.</p
 <p>In the following example we are going to create a <code>MyActor</code> actor and send one message.</p>
 <p>Here we use the actix-rt as way to start our System and drive our main Future
 so we can easily <code>.await</code> for the messages sent to the Actor.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">extern crate actix_rt;
 </span><span class="boring">use actix::prelude::*;
 </span><span class="boring">struct MyActor {
@@ -337,7 +349,7 @@ messages are typed. A message can be any rust type which implements the
 <a href="https://actix.rs/actix/actix/trait.Message.html"><code>Message</code></a> trait. <code>Message::Result</code> defines the return type.
 Let's define a simple <code>Ping</code> message - an actor which will accept this message needs to return
 <code>Result&lt;bool, std::io::Error&gt;</code>.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span>use actix::prelude::*;
 
 struct Ping;
@@ -354,7 +366,7 @@ is achieved via the <code>start</code> and <code>create</code> methods of
 the <a href="https://actix.rs/actix/actix/trait.Actor.html"><code>Actor</code></a> trait. It provides several different ways of
 creating actors; for details check the docs.</p>
 <h2><a class="header" href="#complete-example" id="complete-example">Complete example</a></h2>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">extern crate actix_rt;
 </span>use actix::prelude::*;
 
@@ -418,7 +430,7 @@ Here's the definition for that trait:</p>
 implemented for them. When that happens we can implement the trait ourselves.
 Here's an example where we're responding to a <code>Ping</code> message with a <code>GotPing</code>,
 and responding with <code>GotPong</code> for a <code>Pong</code> message.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">extern crate actix_rt;
 </span>use actix::dev::{MessageResponse, ResponseChannel};
 use actix::prelude::*;
@@ -510,7 +522,7 @@ two helper methods for starting an actor. Both return the address of the started
 <p>Here is an example of <code>Actor::start()</code> method usage. In this example <code>MyActor</code> actor
 is asynchronous and is started in the same thread as the caller - threads are covered in
 the <a href="./sec-6-sync-arbiter.html">SyncArbiter</a> chapter.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">use actix::prelude::*;
 </span><span class="boring">
 </span>struct MyActor;
@@ -525,7 +537,7 @@ impl Actor for MyActor {
 </span></code></pre></pre>
 <p>An async actor can get its address from the <code>Context</code> struct. The context needs to
 implement the <code>AsyncContext</code> trait. <code>AsyncContext::address()</code> provides the actor's address.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">use actix::prelude::*;
 </span><span class="boring">
 </span>struct MyActor;
@@ -576,7 +588,7 @@ to an actor that can handle the message, we can use the Recipient interface.</p>
 <p>For example recipient can be used for a subscription system. In the following example
 <code>OrderEvents</code> actor sends a <code>OrderShipped</code> message to all subscribers. A subscriber can
 be any actor that implements the <code>Handler&lt;OrderShipped&gt;</code> trait.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span>use actix::prelude::*;
 
 #[derive(Message)]
@@ -683,7 +695,7 @@ or stop its execution.</p>
 calls specific message handlers. Mailboxes in general are bounded. The capacity is
 specific to the context implementation. For the <code>Context</code>  type the capacity is set to
 16 messages by default and can be increased with <a href="https://actix.rs/actix/actix/struct.Context.html#method.set_mailbox_capacity"><code>Context::set_mailbox_capacity()</code></a>.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">use actix::prelude::*;
 </span><span class="boring">
 </span>struct MyActor;
@@ -710,7 +722,7 @@ later, or you want to transform the message type. Maybe you want to respond with
 to a message. If you want an actor to send a message to itself, have a look at
 <code>AsyncContext::notify(M)</code> instead.</p>
 <p>To get your address from the context you call <a href="https://actix.rs/actix/actix/struct.Context.html#method.address"><code>Context::address()</code></a>. An example is:</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">use actix::prelude::*;
 </span><span class="boring">
 </span>struct MyActor;
@@ -744,7 +756,7 @@ impl Handler&lt;WhoAmI&gt; for MyActor {
 any future Mailbox messages. This could be in response to an error condition, or as part
 of program shutdown. To do this you call <a href="https://actix.rs/actix/actix/struct.Context.html#method.stop"><code>Context::stop()</code></a>.</p>
 <p>This is an adjusted Ping example that stops after 4 pings are received.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">extern crate actix_rt;
 </span><span class="boring">use actix::prelude::*;
 </span><span class="boring">struct MyActor {
@@ -824,7 +836,7 @@ agnostic to whether the Actors are running on the same or different Arbiters.</p
 wrapper to resolving async events in order. Consider we have two actors, A and
 B, and we want to run an event on B only once a result from A is completed. We
 can use <code>Arbiter::spawn</code> to assist with this task.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span>use actix::prelude::*;
 
 struct SumActor {}
@@ -917,7 +929,7 @@ manner.</p>
 <h2><a class="header" href="#creating-a-sync-actor" id="creating-a-sync-actor">Creating a Sync Actor</a></h2>
 <p>When implementing your Actor to be run on a SyncArbiter, it requires that your Actor's
 Context is changed from <code>Context</code> to <code>SyncContext</code>.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span>use actix::prelude::*;
 
 struct MySyncActor;
@@ -934,7 +946,7 @@ impl Actor for MySyncActor {
 <p>Now that we have defined a Sync Actor, we can run it on a thread pool, created by
 our <code>SyncArbiter</code>. We can only control the number of threads at SyncArbiter creation
 time - we can't add/remove threads later.</p>
-<pre><pre class="playpen"><code class="language-rust"><span class="boring">extern crate actix;
+<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span>use actix::prelude::*;
 
 struct MySyncActor;
@@ -1002,10 +1014,10 @@ as normal to account for other possible errors or sync vs async behavior.</p>
         
 
         
-        
+
         
         <script type="text/javascript">
-            window.playpen_copyable = true;
+            window.playground_copyable = true;
         </script>
         
 

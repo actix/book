@@ -3,8 +3,10 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Context - Actix</title>
+        <title></title>
         
+        
+        <base href="/">
         
 
 
@@ -93,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="sec-0-quick-start.html">Actix Quickstart</a></li><li class="chapter-item expanded "><a href="sec-1-getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="sec-2-actor.html"><strong aria-hidden="true">2.</strong> Actor</a></li><li class="chapter-item expanded "><a href="sec-3-address.html"><strong aria-hidden="true">3.</strong> Address</a></li><li class="chapter-item expanded "><a href="sec-4-context.html" class="active"><strong aria-hidden="true">4.</strong> Context</a></li><li class="chapter-item expanded "><a href="sec-5-arbiter.html"><strong aria-hidden="true">5.</strong> Arbiter</a></li><li class="chapter-item expanded "><a href="sec-6-sync-arbiter.html"><strong aria-hidden="true">6.</strong> SyncArbiter</a></li><li class="chapter-item expanded "><a href="sec-7-stream.html"><strong aria-hidden="true">7.</strong> Stream</a></li><li class="chapter-item expanded "><a href="sec-8-io-helpers.html"><strong aria-hidden="true">8.</strong> IO helpers</a></li><li class="chapter-item expanded "><a href="sec-9-supervisor.html"><strong aria-hidden="true">9.</strong> Supervisor</a></li><li class="chapter-item expanded "><a href="sec-10-registry.html"><strong aria-hidden="true">10.</strong> Registry</a></li><li class="chapter-item expanded "><a href="sec-11-helper-actors.html"><strong aria-hidden="true">11.</strong> Helper actors</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="sec-0-quick-start.html">Actix Quickstart</a></li><li class="chapter-item expanded "><a href="sec-1-getting-started.html"><strong aria-hidden="true">1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="sec-2-actor.html"><strong aria-hidden="true">2.</strong> Actor</a></li><li class="chapter-item expanded "><a href="sec-3-address.html"><strong aria-hidden="true">3.</strong> Address</a></li><li class="chapter-item expanded "><a href="sec-4-context.html"><strong aria-hidden="true">4.</strong> Context</a></li><li class="chapter-item expanded "><a href="sec-5-arbiter.html"><strong aria-hidden="true">5.</strong> Arbiter</a></li><li class="chapter-item expanded "><a href="sec-6-sync-arbiter.html"><strong aria-hidden="true">6.</strong> SyncArbiter</a></li><li class="chapter-item expanded "><a href="sec-7-stream.html"><strong aria-hidden="true">7.</strong> Stream</a></li><li class="chapter-item expanded "><a href="sec-8-io-helpers.html"><strong aria-hidden="true">8.</strong> IO helpers</a></li><li class="chapter-item expanded "><a href="sec-9-supervisor.html"><strong aria-hidden="true">9.</strong> Supervisor</a></li><li class="chapter-item expanded "><a href="sec-10-registry.html"><strong aria-hidden="true">10.</strong> Registry</a></li><li class="chapter-item expanded "><a href="sec-11-helper-actors.html"><strong aria-hidden="true">11.</strong> Helper actors</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,135 +150,15 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#context" id="context">Context</a></h1>
-<p>Actors all maintain an internal execution context, or state. This
-allows an actor to determine its own Address, change mailbox limits,
-or stop its execution.</p>
-<h2><a class="header" href="#mailbox" id="mailbox">Mailbox</a></h2>
-<p>All messages go to the actor's mailbox first, then the actor's execution context
-calls specific message handlers. Mailboxes in general are bounded. The capacity is
-specific to the context implementation. For the <code>Context</code>  type the capacity is set to
-16 messages by default and can be increased with <a href="https://actix.rs/actix/actix/struct.Context.html#method.set_mailbox_capacity"><code>Context::set_mailbox_capacity()</code></a>.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
-</span><span class="boring">use actix::prelude::*;
-</span><span class="boring">
-</span>struct MyActor;
-
-impl Actor for MyActor {
-    type Context = Context&lt;Self&gt;;
-
-    fn started(&amp;mut self, ctx: &amp;mut Self::Context) {
-        ctx.set_mailbox_capacity(1);
-    }
-}
-
-<span class="boring">fn main() {
-</span><span class="boring">System::new(&quot;test&quot;);
-</span>let addr = MyActor.start();
-<span class="boring">}
-</span></code></pre></pre>
-<p>Remember that this doesn't apply to <code>Addr::do_send(M)</code> which bypasses the Mailbox queue limit, or
-<code>AsyncContext::notify(M)</code> and <code>AsyncContext::notify_later(M, Duration)</code> which bypasses the mailbox
-entirely.</p>
-<h2><a class="header" href="#getting-your-actors-address" id="getting-your-actors-address">Getting your actors Address</a></h2>
-<p>An actor can view its own address from its context. Perhaps you want to requeue an event for
-later, or you want to transform the message type. Maybe you want to respond with your address
-to a message. If you want an actor to send a message to itself, have a look at
-<code>AsyncContext::notify(M)</code> instead.</p>
-<p>To get your address from the context you call <a href="https://actix.rs/actix/actix/struct.Context.html#method.address"><code>Context::address()</code></a>. An example is:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
-</span><span class="boring">use actix::prelude::*;
-</span><span class="boring">
-</span>struct MyActor;
-
-struct WhoAmI;
-
-impl Message for WhoAmI {
-    type Result = Result&lt;actix::Addr&lt;MyActor&gt;, ()&gt;;
-}
-
-impl Actor for MyActor {
-    type Context = Context&lt;Self&gt;;
-}
-
-impl Handler&lt;WhoAmI&gt; for MyActor {
-    type Result = Result&lt;actix::Addr&lt;MyActor&gt;, ()&gt;;
-
-    fn handle(&amp;mut self, msg: WhoAmI, ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
-        Ok(ctx.address())
-    }
-}
-
-<span class="boring">fn main() {
-</span><span class="boring">    System::new(&quot;scratch&quot;);
-</span><span class="boring">    let addr = MyActor.start();
-</span>let who_addr = addr.do_send(WhoAmI{});
-<span class="boring">}
-</span></code></pre></pre>
-<h2><a class="header" href="#stopping-an-actor" id="stopping-an-actor">Stopping an Actor</a></h2>
-<p>From within the actors execution context you can choose to stop the actor from processing
-any future Mailbox messages. This could be in response to an error condition, or as part
-of program shutdown. To do this you call <a href="https://actix.rs/actix/actix/struct.Context.html#method.stop"><code>Context::stop()</code></a>.</p>
-<p>This is an adjusted Ping example that stops after 4 pings are received.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
-</span><span class="boring">extern crate actix_rt;
-</span><span class="boring">use actix::prelude::*;
-</span><span class="boring">struct MyActor {
-</span><span class="boring">    count: usize,
-</span><span class="boring">}
-</span><span class="boring">impl Actor for MyActor {
-</span><span class="boring">    type Context = Context&lt;Self&gt;;
-</span><span class="boring">}
-</span><span class="boring">
-</span><span class="boring">#[derive(Message)]
-</span><span class="boring">#[rtype(result = &quot;usize&quot;)]
-</span><span class="boring">struct Ping(usize);
-</span><span class="boring">
-</span>impl Handler&lt;Ping&gt; for MyActor {
-    type Result = usize;
-
-    fn handle(&amp;mut self, msg: Ping, ctx: &amp;mut Context&lt;Self&gt;) -&gt; Self::Result {
-        self.count += msg.0;
-
-        if self.count &gt; 5 {
-            println!(&quot;Shutting down ping receiver.&quot;);
-            ctx.stop()
-        }
-
-        self.count
-    }
-}
-
-#[actix_rt::main]
-async fn main() {
-    // start new actor
-    let addr = MyActor { count: 10 }.start();
-
-    // send message and get future for result
-    let addr_2 = addr.clone();
-    let res = addr.send(Ping(6)).await;
-
-    match res {
-        Ok(_) =&gt; assert!(addr_2.try_send(Ping(6)).is_err()),
-        _ =&gt; {}
-    }
-}
-</code></pre></pre>
+                        <h1><a class="header" href="#document-not-found-404" id="document-not-found-404">Document not found (404)</a></h1>
+<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="sec-3-address.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <i class="fa fa-angle-left"></i>
-                            </a>
-                        
 
-                        
-                            <a rel="next" href="sec-5-arbiter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
                         
 
                         <div style="clear: both"></div>
@@ -286,15 +168,7 @@ async fn main() {
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="sec-3-address.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <i class="fa fa-angle-left"></i>
-                    </a>
-                
 
-                
-                    <a rel="next" href="sec-5-arbiter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
                 
             </nav>
 
