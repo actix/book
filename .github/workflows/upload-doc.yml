@@ -22,7 +22,8 @@ jobs:
 
       - name: Upload documentation
         run: |
-          cargo install mdbook --no-default-features --version 0.4.1
+          cargo install mdbook --no-default-features --version 0.4.2
+          cargo install mdbook-linkcheck --version 0.7.0
           mdbook build ./actix/ -d ../target/doc/actix
           cp -r ./target/doc/actix/html/* ./target/doc/actix/
           rm -r ./target/doc/actix/html ./target/doc/actix/linkcheck
