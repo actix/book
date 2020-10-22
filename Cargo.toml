@@ -16,7 +16,7 @@ exclude = [".gitignore", "/.github", ".cargo/config"]
 edition = "2018"
 
 [dependencies]
-actix = "0.10.0-alpha.3"
+actix = "0.10.0"
 actix-rt = "1.1"
 
 doc-comment = "0.3"

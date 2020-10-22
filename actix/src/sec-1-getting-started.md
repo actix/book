@@ -20,7 +20,7 @@ contains the following:
 
 ```toml
 [dependencies]
-actix = "0.10.0-alpha.3"
+actix = "0.10.0"
 actix-rt = "1.1" # <-- Runtime for actix
 ```
 
