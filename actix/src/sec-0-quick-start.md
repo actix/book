@@ -27,6 +27,7 @@ commands runs the `ping` example:
 
 ```bash
 git clone https://github.com/actix/actix
+cd actix
 cargo run --example ping
 ```
 
