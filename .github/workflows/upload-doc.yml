@@ -11,7 +11,7 @@ jobs:
     if: github.repository == 'actix/book'
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
@@ -29,7 +29,7 @@ jobs:
           rm -r ./target/doc/actix/html ./target/doc/actix/linkcheck
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@3.5.8
+        uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
