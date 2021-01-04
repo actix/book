@@ -57,8 +57,8 @@ jobs:
       - name: Build book and check links
         if: matrix.version == 'stable'
         run: |
-          cargo install mdbook --no-default-features --version 0.4.2
-          cargo install mdbook-linkcheck --version 0.7.0
+          cargo install mdbook --no-default-features --version 0.4.5
+          cargo install mdbook-linkcheck --version 0.7.2
           mdbook build ./actix/
 
       - name: Clear the cargo caches
