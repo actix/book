@@ -156,4 +156,4 @@ async fn main() {
 
 `#[actix_rt::main]` starts the system and block until future resolves.
 
-The Ping example is available in the [examples directory](https://github.com/actix/actix/tree/master/examples/).
+The Ping example is available in the [examples directory](https://github.com/actix/actix/tree/master/actix/examples/).

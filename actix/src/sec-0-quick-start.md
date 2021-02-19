@@ -31,4 +31,4 @@ cd actix
 cargo run --example ping
 ```
 
-Check [examples/](https://github.com/actix/actix/tree/master/examples) directory for more examples.
+Check [examples/](https://github.com/actix/actix/tree/master/actix/examples) directory for more examples.
