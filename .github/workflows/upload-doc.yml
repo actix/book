@@ -29,8 +29,7 @@ jobs:
           rm -r ./target/doc/actix/html ./target/doc/actix/linkcheck
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+        uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: target/doc
+          branch: gh-pages
+          folder: target/doc
