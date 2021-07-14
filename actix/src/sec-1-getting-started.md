@@ -20,8 +20,8 @@ contains the following:
 
 ```toml
 [dependencies]
-actix = "0.10.0"
-actix-rt = "1.1" # <-- Runtime for actix
+actix = "0.11.0"
+actix-rt = "2.2" # <-- Runtime for actix
 ```
 
 Let's create an actor that will accept a `Ping` message and respond with the number of pings processed.
