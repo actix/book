@@ -146,7 +146,7 @@ async fn main() {
 
     match result {
         Ok(res) => println!("Got result: {}", res.unwrap()),
-        Err(err) => println!("Got error: {}", err),
+        Err(err) => println!("Got error: {:?}", err),
     } 
 }
 ```
