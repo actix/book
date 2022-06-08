@@ -160,7 +160,7 @@ Here's the definition for that trait:
 
 ```rust,ignore
 pub trait MessageResponse<A: Actor, M: Message> {
-    fn handle<R: ResponseChannel<M>>(self, ctx: &mut A::Context, tx: Option<R>);
+    fn handle(self, ctx: &mut A::Context, tx: Option<OneshotSender<M::Result>>);
 }
 ```
 
@@ -172,7 +172,7 @@ and responding with `GotPong` for a `Pong` message.
 ```rust
 # extern crate actix;
 # extern crate actix_rt;
-use actix::dev::{MessageResponse, ResponseChannel};
+use actix::dev::{MessageResponse,OneshotSender};
 use actix::prelude::*;
 
 #[derive(Message)]
@@ -192,7 +192,7 @@ where
     A: Actor,
     M: Message<Result = Responses>,
 {
-    fn handle<R: ResponseChannel<M>>(self, _: &mut A::Context, tx: Option<R>) {
+    fn handle(self, ctx: &mut A::Context, tx: Option<OneshotSender<M::Result>>) {
         if let Some(tx) = tx {
             tx.send(self);
         }
