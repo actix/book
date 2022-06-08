@@ -276,7 +276,7 @@ See how we're returning a <code>Result&lt;bool, std::io::Error&gt;</code>? We're
 incoming message with this type because it has the <code>MessageResponse</code> trait implemented for that type.
 Here's the definition for that trait:</p>
 <pre><code class="language-rust ignore">pub trait MessageResponse&lt;A: Actor, M: Message&gt; {
-    fn handle&lt;R: ResponseChannel&lt;M&gt;&gt;(self, ctx: &amp;mut A::Context, tx: Option&lt;R&gt;);
+    fn handle(self, ctx: &amp;mut A::Context, tx: Option&lt;OneshotSender&lt;M::Result&gt;&gt;);
 }
 </code></pre>
 <p>Sometimes it makes sense to respond to incoming messages with types that don't have this trait
@@ -285,7 +285,7 @@ Here's an example where we're responding to a <code>Ping</code> message with a <
 and responding with <code>GotPong</code> for a <code>Pong</code> message.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">extern crate actix;
 </span><span class="boring">extern crate actix_rt;
-</span>use actix::dev::{MessageResponse, ResponseChannel};
+</span>use actix::dev::{MessageResponse,OneshotSender};
 use actix::prelude::*;
 
 #[derive(Message)]
@@ -305,7 +305,7 @@ where
     A: Actor,
     M: Message&lt;Result = Responses&gt;,
 {
-    fn handle&lt;R: ResponseChannel&lt;M&gt;&gt;(self, _: &amp;mut A::Context, tx: Option&lt;R&gt;) {
+    fn handle(self, ctx: &amp;mut A::Context, tx: Option&lt;OneshotSender&lt;M::Result&gt;&gt;) {
         if let Some(tx) = tx {
             tx.send(self);
         }
