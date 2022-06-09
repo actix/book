@@ -13,10 +13,9 @@ categories = ["network-programming", "asynchronous",
               "web-programming::websocket"]
 license = "MIT OR Apache-2.0"
 exclude = [".gitignore", "/.github", ".cargo/config"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
-actix = "0.10.0"
-actix-rt = "1.1"
-
+actix = "0.13"
+actix-rt = "2.7"
 doc-comment = "0.3"

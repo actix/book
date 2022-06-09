@@ -20,8 +20,8 @@ contains the following:
 
 ```toml
 [dependencies]
-actix = "0.11.0"
-actix-rt = "2.2" # <-- Runtime for actix
+actix = "0.13"
+actix-rt = "2.7"  # <-- Runtime for actix
 ```
 
 Let's create an actor that will accept a `Ping` message and respond with the number of pings processed.
@@ -29,7 +29,6 @@ Let's create an actor that will accept a `Ping` message and respond with the num
 An actor is a type that implements the `Actor` trait:
 
 ```rust
-# extern crate actix;
 use actix::prelude::*;
 
 struct MyActor {
@@ -50,7 +49,6 @@ Now we need to define the `Message` that the actor needs to accept. The message 
 that implements the `Message` trait.
 
 ```rust
-# extern crate actix;
 use actix::prelude::*;
 
 #[derive(Message)]
@@ -68,7 +66,6 @@ And finally, we need to declare that our actor `MyActor` can accept `Ping` and h
 To do this, the actor needs to implement the `Handler<Ping>` trait.
 
 ```rust
-# extern crate actix;
 # use actix::prelude::*;
 #
 # struct MyActor {
@@ -114,8 +111,6 @@ Here we use the actix-rt as way to start our System and drive our main Future
 so we can easily `.await` for the messages sent to the Actor.
 
 ```rust
-# extern crate actix;
-# extern crate actix_rt;
 # use actix::prelude::*;
 # struct MyActor {
 #    count: usize,

@@ -75,7 +75,6 @@ Let's define a simple `Ping` message - an actor which will accept this message n
 `Result<bool, std::io::Error>`.
 
 ```rust
-# extern crate actix;
 use actix::prelude::*;
 
 struct Ping;
@@ -99,8 +98,6 @@ creating actors; for details check the docs.
 ## Complete example
 
 ```rust
-# extern crate actix;
-# extern crate actix_rt;
 use actix::prelude::*;
 
 /// Define message
@@ -170,8 +167,6 @@ Here's an example where we're responding to a `Ping` message with a `GotPing`,
 and responding with `GotPong` for a `Pong` message.
 
 ```rust
-# extern crate actix;
-# extern crate actix_rt;
 use actix::dev::{MessageResponse,OneshotSender};
 use actix::prelude::*;
 
@@ -192,7 +187,7 @@ where
     A: Actor,
     M: Message<Result = Responses>,
 {
-    fn handle(self, ctx: &mut A::Context, tx: Option<OneshotSender<M::Result>>) {
+    fn handle(self, _ctx: &mut A::Context, tx: Option<OneshotSender<M::Result>>) {
         if let Some(tx) = tx {
             tx.send(self);
         }
