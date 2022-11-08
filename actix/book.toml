@@ -10,3 +10,6 @@ git-repository-url = "https://github.com/actix/book"
 [output.linkcheck]
 follow-web-links = true
 warning-policy = "error"
+
+[output.html.redirect]
+"/actix/index.html" = "/"
