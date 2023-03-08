@@ -17,8 +17,8 @@
 This repository is an [`mdBook`](https://github.com/rust-lang/mdBook)
 project. To use it for this project:
 
-- Install `mdBook` if you haven't already: `cargo install mdbook`
-- In the `actix` directory: `mdbook watch -o`
+- Install `mdBook`: `cargo install mdbook`
+- Install `linkcheck`: `cargo install mdbook-linkcheck`
+- Run from repo root: `mdbook watch -o actix`
   - This automatically opens your browser and watches the md files for changing
-  - You'll still have to refresh the page, as there is no hot-reloading for
-    `mdbook`
+  - You'll still have to refresh the page, as there is no hot-reloading for `mdbook`

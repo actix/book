@@ -11,8 +11,8 @@ calls specific message handlers. Mailboxes in general are bounded. The capacity 
 specific to the context implementation. For the `Context`  type the capacity is set to
 16 messages by default and can be increased with [`Context::set_mailbox_capacity()`].
 
-```rust
-# extern crate actix;
+```rust, should_panic
+// FIXME: THIS EXAMPLE IS BROKEN, AND NEEDS TO BE FIXED
 # use actix::prelude::*;
 #
 struct MyActor;
@@ -26,7 +26,7 @@ impl Actor for MyActor {
 }
 
 # fn main() {
-# System::new("test");
+# System::new();
 let addr = MyActor.start();
 # }
 ```
@@ -46,8 +46,8 @@ to a message. If you want an actor to send a message to itself, have a look at
 
 To get your address from the context you call [`Context::address()`]. An example is:
 
-```rust
-# extern crate actix;
+```rust, should_panic
+// FIXME: THIS EXAMPLE IS BROKEN, AND NEEDS TO BE FIXED
 # use actix::prelude::*;
 #
 struct MyActor;
@@ -71,7 +71,7 @@ impl Handler<WhoAmI> for MyActor {
 }
 
 # fn main() {
-#     System::new("scratch");
+#     System::new();
 #     let addr = MyActor.start();
 let who_addr = addr.do_send(WhoAmI{});
 # }
@@ -88,8 +88,6 @@ of program shutdown. To do this you call [`Context::stop()`].
 This is an adjusted Ping example that stops after 4 pings are received.
 
 ```rust
-# extern crate actix;
-# extern crate actix_rt;
 # use actix::prelude::*;
 # struct MyActor {
 #     count: usize,

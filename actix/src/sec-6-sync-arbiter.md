@@ -18,7 +18,6 @@ When implementing your Actor to be run on a SyncArbiter, it requires that your A
 Context is changed from `Context` to `SyncContext`.
 
 ```rust
-# extern crate actix;
 use actix::prelude::*;
 
 struct MySyncActor;
@@ -28,7 +27,7 @@ impl Actor for MySyncActor {
 }
 #
 # fn main() {
-# System::new("test");
+# System::new();
 # }
 ```
 
@@ -39,7 +38,6 @@ our `SyncArbiter`. We can only control the number of threads at SyncArbiter crea
 time - we can't add/remove threads later.
 
 ```rust
-# extern crate actix;
 use actix::prelude::*;
 
 struct MySyncActor;
@@ -49,7 +47,7 @@ impl Actor for MySyncActor {
 }
 
 # fn main() {
-# System::new("test");
+# System::new();
 let addr = SyncArbiter::start(2, || MySyncActor);
 # }
 ```

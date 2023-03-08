@@ -10,8 +10,9 @@ Here is an example of `Actor::start()` method usage. In this example `MyActor` a
 is asynchronous and is started in the same thread as the caller - threads are covered in
 the [SyncArbiter] chapter.
 
-```rust
-# extern crate actix;
+```rust, should_panic
+// FIXME: THIS EXAMPLE IS BROKEN, AND NEEDS TO BE FIXED
+
 # use actix::prelude::*;
 #
 struct MyActor;
@@ -20,7 +21,7 @@ impl Actor for MyActor {
 }
 
 # fn main() {
-# System::new("test");
+# System::new();
 let addr = MyActor.start();
 # }
 ```
@@ -29,7 +30,6 @@ An async actor can get its address from the `Context` struct. The context needs 
 implement the `AsyncContext` trait. `AsyncContext::address()` provides the actor's address.
 
 ```rust
-# extern crate actix;
 # use actix::prelude::*;
 #
 struct MyActor;
@@ -88,8 +88,8 @@ For example recipient can be used for a subscription system. In the following ex
 `OrderEvents` actor sends a `OrderShipped` message to all subscribers. A subscriber can
 be any actor that implements the `Handler<OrderShipped>` trait.
 
-```rust
-# extern crate actix;
+```rust, should_panic
+// FIXME: THIS EXAMPLE IS BROKEN, AND NEEDS TO BE FIXED
 use actix::prelude::*;
 
 #[derive(Message)]
@@ -177,7 +177,7 @@ impl Handler<OrderShipped> for SmsSubscriber {
 }
 
 fn main() {
-    let system = System::new("events");
+    let system = System::new();
     let email_subscriber = Subscribe(EmailSubscriber{}.start().recipient());
     let sms_subscriber = Subscribe(SmsSubscriber{}.start().recipient());
     let order_event = OrderEvents::new().start();

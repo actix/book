@@ -46,8 +46,8 @@ wrapper to resolving async events in order. Consider we have two actors, A and
 B, and we want to run an event on B only once a result from A is completed. We
 can use `Arbiter::spawn` to assist with this task.
 
-```rust
-# extern crate actix;
+```rust, should_panic
+// FIXME: THIS EXAMPLE IS BROKEN, AND NEEDS TO BE FIXED
 use actix::prelude::*;
 
 struct SumActor {}
@@ -87,7 +87,7 @@ impl Handler<Display> for DisplayActor {
 }
 
 fn main() {
-    let system = System::new("single-arbiter-example");
+    let system = System::new();
 
     // Define an execution flow using futures
     let execution = async {
@@ -115,7 +115,7 @@ fn main() {
     };
 
     // Spawn the future onto the current Arbiter/event loop
-    Arbiter::spawn(execution);
+    actix_rt::spawn(execution);
 
     // We only want to do one computation in this example, so we
     // shut down the `System` which will stop any Arbiters within

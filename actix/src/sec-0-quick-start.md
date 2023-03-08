@@ -17,7 +17,7 @@ If you already have rustup installed, run this command to ensure you have the la
 rustup update
 ```
 
-The actix framework requires Rust version 1.40.0 and up.
+The actix framework requires Rust version 1.54.0 and up.
 
 ## Running Examples
 
@@ -31,4 +31,4 @@ cd actix
 cargo run --example ping
 ```
 
-Check [examples/](https://github.com/actix/actix/tree/master/actix/examples) directory for more examples.
+Check [examples/](https://github.com/actix/actix/tree/HEAD/actix/examples) directory for more examples, or see many more [community examples](https://github.com/actix/examples).
