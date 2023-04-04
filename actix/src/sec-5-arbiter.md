@@ -115,7 +115,7 @@ fn main() {
     };
 
     // Spawn the future onto the current Arbiter/event loop
-    Arbiter::spawn(execution);
+    System::current().arbiter().spawn(execution);
 
     // We only want to do one computation in this example, so we
     // shut down the `System` which will stop any Arbiters within
